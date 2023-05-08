@@ -23,7 +23,7 @@ namespace TicketManagementSystem.Data
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<LocationType> LocationTypes { get; set; }
         public virtual DbSet<News> News { get; set; }
-        public virtual DbSet<Program> Programs { get; set; }
+        public virtual DbSet<TicketManagementSystem.Models.Program> Programs { get; set; }
         public virtual DbSet<ProgramImage> ProgramImages { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Show> Shows { get; set; }
