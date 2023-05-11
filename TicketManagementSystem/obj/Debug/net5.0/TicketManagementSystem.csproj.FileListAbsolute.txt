@@ -22,7 +22,6 @@ C:\Users\ad\source\repos\TicketManagementSystem\TicketManagementSystem\bin\Debug
 C:\Users\ad\source\repos\TicketManagementSystem\TicketManagementSystem\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\ad\source\repos\TicketManagementSystem\TicketManagementSystem\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\ad\source\repos\TicketManagementSystem\TicketManagementSystem\bin\Debug\net5.0\Microsoft.OpenApi.dll
-C:\Users\ad\source\repos\TicketManagementSystem\TicketManagementSystem\bin\Debug\net5.0\Newtonsoft.Json.dll
 C:\Users\ad\source\repos\TicketManagementSystem\TicketManagementSystem\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\ad\source\repos\TicketManagementSystem\TicketManagementSystem\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\ad\source\repos\TicketManagementSystem\TicketManagementSystem\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -59,3 +58,4 @@ C:\Users\ad\source\repos\TicketManagementSystem\TicketManagementSystem\obj\Debug
 C:\Users\ad\source\repos\TicketManagementSystem\TicketManagementSystem\obj\Debug\net5.0\ref\TicketManagementSystem.dll
 C:\Users\ad\source\repos\TicketManagementSystem\TicketManagementSystem\obj\Debug\net5.0\TicketManagementSystem.pdb
 C:\Users\ad\source\repos\TicketManagementSystem\TicketManagementSystem\obj\Debug\net5.0\TicketManagementSystem.genruntimeconfig.cache
+C:\Users\ad\source\repos\TicketManagementSystem\TicketManagementSystem\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
