@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TicketManagementSystem_BE.Data;
@@ -6,6 +7,7 @@ using TicketManagementSystem_BE.Models;
 
 namespace TicketManagementSystem_BE.Controllers
 {
+    [EnableCors("myOrigins")]
     [Route("api/[controller]")]
     [ApiController]
     public class SupportMenuController : ControllerBase
@@ -30,7 +32,7 @@ namespace TicketManagementSystem_BE.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<SupportMenu>> Get(string id)
         {
-            SupportMenu supportMenu = await _context.SupportMenus.FindAsync(id);
+            var supportMenu = await _context.SupportMenus.FindAsync(id);
             if (supportMenu == null)
             {
                 return NotFound();
@@ -47,7 +49,7 @@ namespace TicketManagementSystem_BE.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> Edit(SupportMenu supportMenu)
+        public async Task<ActionResult> Update(SupportMenu supportMenu)
         {
             _context.Entry(supportMenu).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -57,7 +59,7 @@ namespace TicketManagementSystem_BE.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(string id)
         {
-            SupportMenu supportMenu = await _context.SupportMenus.FindAsync(id);
+            var supportMenu = await _context.SupportMenus.FindAsync(id);
             if (supportMenu == null)
             {
                 return NotFound();
