@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HelpMenuComponent } from './help-menu.component';
+import { SupportMenuComponent } from './list-support-menu.component';
 
 describe('HelpMenuComponent', () => {
-  let component: HelpMenuComponent;
-  let fixture: ComponentFixture<HelpMenuComponent>;
+  let component: SupportMenuComponent;
+  let fixture: ComponentFixture<SupportMenuComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [HelpMenuComponent]
+      declarations: [SupportMenuComponent]
     });
-    fixture = TestBed.createComponent(HelpMenuComponent);
+    fixture = TestBed.createComponent(SupportMenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
