@@ -1,0 +1,30 @@
+<div class="container my-5">
+    <div class="row">
+        <div class="col-6">
+            <form #form="ngForm" (ngSubmit)="createOrUpdate()">
+                <input type="text" *ngIf="locationType.locationTypeId != ''" name="locationTypeId"
+                    [(ngModel)]="locationType.locationTypeId" hidden />
+                <p>
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Name</mat-label>
+                        <input matInput placeholder="Placeholder" id="locationTypeName" name="locationTypeName"
+                            [(ngModel)]="locationType.locationTypeName">
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Path</mat-label>
+                        <textarea matInput placeholder="Placeholder" id="locationTypePath" name="locationTypePath"
+                            [(ngModel)]="locationType.locationTypePath"></textarea>
+                    </mat-form-field>
+                </p>
+                <button mat-raised-button color="primary" type="submit"
+                    *ngIf="locationType.locationTypeId == ''">Thêm</button>
+                <div *ngIf="locationType.locationTypeId != ''">
+                    <button mat-raised-button color="primary" type="submit">Cập Nhật</button>
+                    <!--<button mat-raised-button color="warn" (click)="delete(locationType.locationTypeId)">Xoa</button>-->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

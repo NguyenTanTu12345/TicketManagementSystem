@@ -2,19 +2,27 @@
     <div class="row">
         <div class="col-6">
             <form #form="ngForm" (ngSubmit)="createOrUpdate()">
-                <input type="text" *ngIf="supportMenu.supportMenuId != ''" name="supportMenuId" [(ngModel)]="supportMenu.supportMenuId" hidden/>
-                <div class="mb-3">
-                    <label for="supportMenuTitle" class="form-label">Support Menu Title</label>
-                    <input type="text" class="form-control" id="supportMenuTitle" name="supportMenuTitle" [(ngModel)]="supportMenu.supportMenuTitle">
-                </div>
-                <div class="mb-3">
-                    <label for="supportMenuContent" class="form-label">Support Menu Content</label>
-                    <input type="text" class="form-control" id="supportMenuContent" name="supportMenuContent" [(ngModel)]="supportMenu.supportMenuContent">
-                </div>
-                <button type="submit" *ngIf="supportMenu.supportMenuId == ''" class="btn btn-primary">Thêm</button>
+                <input type="text" *ngIf="supportMenu.supportMenuId != ''" name="supportMenuId"
+                    [(ngModel)]="supportMenu.supportMenuId" hidden />
+                <p>
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Title</mat-label>
+                        <input matInput placeholder="Placeholder" id="supportMenuTitle" name="supportMenuTitle"
+                            [(ngModel)]="supportMenu.supportMenuTitle">
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Content</mat-label>
+                        <textarea matInput placeholder="Placeholder" id="supportMenuContent" name="supportMenuContent"
+                            [(ngModel)]="supportMenu.supportMenuContent"></textarea>
+                    </mat-form-field>
+                </p>
+                <button mat-raised-button color="primary" type="submit"
+                    *ngIf="supportMenu.supportMenuId == ''">Thêm</button>
                 <div *ngIf="supportMenu.supportMenuId != ''">
-                    <button type="submit" class="btn btn-primary">Cập Nhật</button>
-                    <button type="button" class="btn btn-danger" (click)="delete(supportMenu.supportMenuId)">Xoa</button>
+                    <button mat-raised-button color="primary" type="submit">Cập Nhật</button>
+                    <button mat-raised-button color="warn" (click)="delete(supportMenu.supportMenuId)">Xoa</button>
                 </div>
             </form>
         </div>

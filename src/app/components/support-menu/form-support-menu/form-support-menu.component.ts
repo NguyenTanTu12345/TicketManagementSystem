@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { SupportMenu } from 'src/app/models/support-menu.model';
-import { SupportMenuService } from 'src/app/service/support-menu.service';
+import { SupportMenuService } from 'src/app/services/support-menu/support-menu.service';
 
 @Component({
   selector: 'app-form-support-menu',
@@ -21,7 +21,7 @@ export class FormSupportMenuComponent implements OnInit{
   supportMenus: SupportMenu[] = [];
 
   constructor(private supportMenuService: SupportMenuService, private router: Router
-              ,private activedRoute: ActivatedRoute) { }
+              ,private activedRoute: ActivatedRoute, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.activedRoute.paramMap.subscribe({
@@ -93,4 +93,5 @@ export class FormSupportMenuComponent implements OnInit{
       }
     });
   }
+
 }

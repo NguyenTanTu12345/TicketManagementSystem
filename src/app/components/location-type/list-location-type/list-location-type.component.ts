@@ -1,32 +1,32 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { SupportMenu } from 'src/app/models/support-menu.model';
-import { SupportMenuService } from 'src/app/services/support-menu/support-menu.service';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
+import { LocationType } from 'src/app/models/location-type.model';
+import { LocationTypeService } from 'src/app/services/location-type/location-type.service';
 
 @Component({
-  selector: 'app-list-support-menu',
-  templateUrl: './list-support-menu.component.html',
-  styleUrls: ['./list-support-menu.component.css']
+  selector: 'app-list-location-type',
+  templateUrl: './list-location-type.component.html',
+  styleUrls: ['./list-location-type.component.css']
 })
-export class SupportMenuComponent implements OnInit{
+export class ListLocationTypeComponent {
 
-  displayedColumns: string[] = ['supportMenuId', 'supportMenuTitle', 'supportMenuContent', 'userId', 'action'];
+  displayedColumns: string[] = ['locationTypeId', 'locationTypeName', 'locationTypePath', 'action'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  supportMenus: SupportMenu[] = [];
+  locationTypes: LocationType[] = [];
 
-  constructor(private supportMenuService: SupportMenuService){  }
+  constructor(private locationTypeService: LocationTypeService){  }
 
   ngOnInit(): void {
-    this.supportMenuService.getAll().subscribe({
+    this.locationTypeService.getAll().subscribe({
       next: data => {
-        this.supportMenus = data;
-        this.dataSource = new MatTableDataSource(this.supportMenus);
+        this.locationTypes = data;
+        this.dataSource = new MatTableDataSource(this.locationTypes);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       },

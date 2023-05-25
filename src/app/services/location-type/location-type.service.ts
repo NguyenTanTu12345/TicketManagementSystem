@@ -1,0 +1,34 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { LocationType } from 'src/app/models/location-type.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class LocationTypeService {
+
+  url: string = "https://localhost:7189/api/LocationType";
+
+  constructor(private http: HttpClient) { }
+
+  getAll(): Observable<LocationType[]> {
+    return this.http.get<LocationType[]>(this.url);
+  }
+
+  get(id: string): Observable<LocationType> {
+    return this.http.get<LocationType>(this.url + "/" + id);
+  }
+
+  create(locationType: LocationType): Observable<LocationType> {
+    return this.http.post<LocationType>(this.url, locationType);
+  }
+
+  update(locationType: LocationType): Observable<LocationType> {
+    return this.http.put<LocationType>(this.url, locationType);
+  }
+
+  delete(id: string): Observable<LocationType> {
+    return this.http.delete<LocationType>(this.url + "/" + id);
+  }
+}
