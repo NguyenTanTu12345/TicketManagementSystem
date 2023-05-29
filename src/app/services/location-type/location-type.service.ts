@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LocationType } from 'src/app/models/location-type.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocationTypeService {
 
-  url: string = "https://localhost:7189/api/LocationType";
+  url: string = environment.apiUrl + "/api/LocationType";
 
   constructor(private http: HttpClient) { }
 

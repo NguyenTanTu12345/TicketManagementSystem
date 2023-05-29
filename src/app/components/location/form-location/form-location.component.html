@@ -1,0 +1,47 @@
+<div class="container my-5">
+    <div class="row">
+        <div class="col-6">
+            <form #form="ngForm" (ngSubmit)="createOrUpdate()">
+                <input type="text" *ngIf="location.locationId != ''" name="locationId" [(ngModel)]="location.locationId"
+                    hidden />
+                <div class="example-container">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Tên địa điểm</mat-label>
+                        <input matInput placeholder="Placeholder" id="locationName" name="locationName"
+                            [(ngModel)]="location.locationName">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Select me</mat-label>
+                        <mat-select>
+                            <mat-option *ngFor="let item of locationTypes" [value]="item.locationTypeId">
+                                {{item.locationTypeName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <p>
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Tóm tắt</mat-label>
+                        <textarea matInput placeholder="Placeholder" id="locationSummary" name="locationSummary"
+                            [(ngModel)]="location.locationSummary"></textarea>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Nội dung</mat-label>
+                        <textarea matInput placeholder="Placeholder" id="locationContent" name="locationContent"
+                            [(ngModel)]="location.locationContent"></textarea>
+                    </mat-form-field>
+                </p>
+                <div>
+                    <input type="file" id="fileupload" />
+                </div>
+                <button mat-raised-button color="primary" type="submit" *ngIf="location.locationId == ''">Thêm</button>
+                <div *ngIf="location.locationId != ''">
+                    <button mat-raised-button color="primary" type="submit">Cập Nhật</button>
+                    <button mat-raised-button color="warn" (click)="delete(location.locationId)">Xoa</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

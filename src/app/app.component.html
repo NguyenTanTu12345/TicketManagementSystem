@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<!--<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Hue Festival</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,6 +15,44 @@
       </ul>
     </div>
   </div>
-</nav>
+</nav>-->
 
-<router-outlet></router-outlet>
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer class="example-sidenav" mode="side" opened>
+    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+      <!-- This is the tree node template for leaf nodes -->
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+        <!-- use a disabled button to provide padding for tree leaf -->
+        <button mat-icon-button disabled></button>
+        <a *ngIf="node.name == 'Nhân viên'" style="text-decoration: none;color: black;" aria-current="page"
+          routerLink="support-menu">{{node.name}} </a>
+        <a *ngIf="node.name == 'Khách hàng'" style="text-decoration: none;color: black;" aria-current="page"
+          routerLink="support-menu">{{node.name}} </a>
+        <a *ngIf="node.name == 'Nghệ sĩ'" style="text-decoration: none;color: black;" aria-current="page"
+          routerLink="support-menu">{{node.name}} </a>
+        <a *ngIf="node.name == 'Chương trình'" style="text-decoration: none;color: black;" aria-current="page"
+          routerLink="support-menu">{{node.name}} </a>
+        <a *ngIf="node.name == 'Tin tức'" style="text-decoration: none;color: black;" aria-current="page"
+          routerLink="support-menu">{{node.name}} </a>
+        <a *ngIf="node.name == 'Loại địa điểm'" style="text-decoration: none;color: black;" aria-current="page"
+          routerLink="location-type">{{node.name}} </a>
+        <a *ngIf="node.name == 'Địa điểm'" style="text-decoration: none;color: black;" aria-current="page"
+          routerLink="location">{{node.name}} </a>
+        <a *ngIf="node.name == 'Menu hỗ trợ'" style="text-decoration: none;color: black;" aria-current="page"
+          routerLink="support-menu">{{node.name}} </a>
+      </mat-tree-node>
+      <!-- This is the tree node template for expandable nodes -->
+      <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+        <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
+        </button>
+        {{node.name}}
+      </mat-tree-node>
+    </mat-tree>
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

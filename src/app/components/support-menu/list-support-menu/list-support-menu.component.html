@@ -1,32 +1,3 @@
-<!--<div class="container my-5">
-  <div style="padding-bottom: 20px;">
-    <a [routerLink]="['create','']" class="btn btn-primary">Thêm mới</a>
-  </div>
-  <table class="table table-striped" *ngIf="supportMenus && supportMenus.length > 0">
-      <thead>
-        <tr>
-          <th scope="col">Id</th>
-          <th scope="col">Title</th>
-          <th scope="col">Content</th>
-          <th scope="col">User</th>
-          <th scope="col"> </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let supportMenu of supportMenus">
-          <th scope="row">{{ supportMenu.supportMenuId }}</th>
-          <td>{{ supportMenu.supportMenuTitle }}</td>
-          <td>{{ supportMenu.supportMenuContent }}</td>
-          <td>{{ supportMenu.userId }}</td>
-          <td>
-            <a [routerLink]="['update', supportMenu.supportMenuId]">Chi tiet</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <p *ngIf="!supportMenus || supportMenus.length <= 0">No Support Menu Found</p>
-</div>-->
-
 <div style="padding-bottom: 20px;">
   <a mat-raised-button color="primary" [routerLink]="['create','']" class="btn btn-primary">Thêm mới</a>
 </div>
@@ -42,7 +13,7 @@
     <!-- ID Column -->
     <ng-container matColumnDef="supportMenuId">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-      <td mat-cell *matCellDef="let row"> {{row.supportMenuId}} </td>
+      <td mat-cell *matCellDef="let row, let nd = index"> {{nd + 1}} </td>
     </ng-container>
 
     <!-- Title Column -->

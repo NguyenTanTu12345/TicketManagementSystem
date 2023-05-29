@@ -4,6 +4,8 @@ import { SupportMenuComponent } from './components/support-menu/list-support-men
 import { FormSupportMenuComponent } from './components/support-menu/form-support-menu/form-support-menu.component';
 import { ListLocationTypeComponent } from './components/location-type/list-location-type/list-location-type.component';
 import { FormLocationTypeComponent } from './components/location-type/form-location-type/form-location-type.component';
+import { ListLocationComponent } from './components/location/list-location/list-location.component';
+import { FormLocationComponent } from './components/location/form-location/form-location.component';
 
 const routes: Routes = [
   {
@@ -31,6 +33,19 @@ const routes: Routes = [
   {
     path: 'location-type/update/:id',
     component: FormLocationTypeComponent
+  },
+  {
+    path: 'location',
+    component: ListLocationComponent
+  },
+  {
+    path: 'location/create/',
+    component: FormLocationComponent
+  }
+  ,
+  {
+    path: 'location/update/:id',
+    component: FormLocationComponent
   }
 ];
 

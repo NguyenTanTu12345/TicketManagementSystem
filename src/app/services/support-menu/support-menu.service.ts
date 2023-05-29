@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SupportMenu } from '../../models/support-menu.model';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SupportMenuService {
 
-  url: string = "https://localhost:7189/api/SupportMenu";
+  url: string = environment.apiUrl + "/api/SupportMenu";
 
   constructor(private http: HttpClient) { }
 

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SupportMenu } from 'src/app/models/support-menu.model';
 import { SupportMenuService } from 'src/app/services/support-menu/support-menu.service';
+import {MatDialog, MatDialogRef, MatDialogModule} from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-form-support-menu',
@@ -48,6 +49,14 @@ export class FormSupportMenuComponent implements OnInit{
     });
   }
 
+  openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(DialogAnimationsExampleDialog, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+    });
+  }
+
   generateID(): string {
     let newID = '';
     let index = this.supportMenus.length - 1;
@@ -82,7 +91,6 @@ export class FormSupportMenuComponent implements OnInit{
     });
   }
 
-
   delete(id: string) {
     this.supportMenuService.delete(id).subscribe({
       next: data => {
@@ -93,5 +101,14 @@ export class FormSupportMenuComponent implements OnInit{
       }
     });
   }
+}
 
+@Component({
+  selector: 'dialog-animations-example-dialog',
+  templateUrl: 'dialog-animations-example-dialog.html',
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule],
+})
+export class DialogAnimationsExampleDialog {
+  constructor(public dialogRef: MatDialogRef<DialogAnimationsExampleDialog>) {}
 }
