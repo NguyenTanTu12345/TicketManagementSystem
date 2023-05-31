@@ -86,12 +86,12 @@ namespace TicketManagementSystem_BE.Data
                 entity.HasOne(d => d.TicketSchedule)
                     .WithMany(p => p.Histories)
                     .HasForeignKey(d => d.TicketScheduleId)
-                    .HasConstraintName("FK__History__TicketS__6EF57B66");
+                    .HasConstraintName("FK__History__TicketS__4F7CD00D");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Histories)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__History__UserID__6E01572D");
+                    .HasConstraintName("FK__History__UserID__4E88ABD4");
             });
 
             modelBuilder.Entity<Location>(entity =>
@@ -121,7 +121,7 @@ namespace TicketManagementSystem_BE.Data
                 entity.HasOne(d => d.LocationType)
                     .WithMany(p => p.Locations)
                     .HasForeignKey(d => d.LocationTypeId)
-                    .HasConstraintName("FK__Locations__Locat__4AB81AF0");
+                    .HasConstraintName("FK__Locations__Locat__30F848ED");
             });
 
             modelBuilder.Entity<LocationType>(entity =>
@@ -163,11 +163,11 @@ namespace TicketManagementSystem_BE.Data
                     .WithMany(p => p.News)
                     .UsingEntity<Dictionary<string, object>>(
                         "UserLikeNews",
-                        l => l.HasOne<User>().WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__UserLikeN__UserI__5CD6CB2B"),
-                        r => r.HasOne<News>().WithMany().HasForeignKey("NewsId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__UserLikeN__NewsI__5BE2A6F2"),
+                        l => l.HasOne<User>().WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__UserLikeN__UserI__403A8C7D"),
+                        r => r.HasOne<News>().WithMany().HasForeignKey("NewsId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__UserLikeN__NewsI__3F466844"),
                         j =>
                         {
-                            j.HasKey("NewsId", "UserId").HasName("PK__UserLike__44363119AE3FBA20");
+                            j.HasKey("NewsId", "UserId").HasName("PK__UserLike__443631196ED97542");
 
                             j.ToTable("UserLikeNews");
 
@@ -213,7 +213,7 @@ namespace TicketManagementSystem_BE.Data
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Programs)
                     .HasForeignKey(d => d.LocationId)
-                    .HasConstraintName("FK__Program__Locatio__4D94879B");
+                    .HasConstraintName("FK__Program__Locatio__33D4B598");
             });
 
             modelBuilder.Entity<ProgramImage>(entity =>
@@ -239,7 +239,7 @@ namespace TicketManagementSystem_BE.Data
                 entity.HasOne(d => d.Program)
                     .WithMany(p => p.ProgramImages)
                     .HasForeignKey(d => d.ProgramId)
-                    .HasConstraintName("FK__ProgramIm__Progr__534D60F1");
+                    .HasConstraintName("FK__ProgramIm__Progr__398D8EEE");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -256,7 +256,7 @@ namespace TicketManagementSystem_BE.Data
             modelBuilder.Entity<Show>(entity =>
             {
                 entity.HasKey(e => new { e.ProgramId, e.ArtistId })
-                    .HasName("PK__Show__6772668FC833955D");
+                    .HasName("PK__Show__6772668FE3010DA4");
 
                 entity.ToTable("Show");
 
@@ -278,13 +278,13 @@ namespace TicketManagementSystem_BE.Data
                     .WithMany(p => p.Shows)
                     .HasForeignKey(d => d.ArtistId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Show__ArtistID__59063A47");
+                    .HasConstraintName("FK__Show__ArtistID__3C69FB99");
 
                 entity.HasOne(d => d.Program)
                     .WithMany(p => p.Shows)
                     .HasForeignKey(d => d.ProgramId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Show__ProgramID__5812160E");
+                    .HasConstraintName("FK__Show__ProgramID__3B75D760");
             });
 
             modelBuilder.Entity<SupportMenu>(entity =>
@@ -310,7 +310,7 @@ namespace TicketManagementSystem_BE.Data
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.SupportMenus)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__SupportMe__UserI__5070F446");
+                    .HasConstraintName("FK__SupportMe__UserI__36B12243");
             });
 
             modelBuilder.Entity<TicketSchedule>(entity =>
@@ -352,24 +352,24 @@ namespace TicketManagementSystem_BE.Data
                     .IsFixedLength();
 
                 entity.Property(e => e.UserPassword)
-                    .HasMaxLength(12)
+                    .HasMaxLength(75)
                     .IsUnicode(false)
                     .IsFixedLength();
 
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleId)
-                    .HasConstraintName("FK__Users__RoleID__47DBAE45");
+                    .HasConstraintName("FK__Users__RoleID__2E1BDC42");
 
                 entity.HasMany(d => d.Locations)
                     .WithMany(p => p.Users)
                     .UsingEntity<Dictionary<string, object>>(
                         "UserLikeLocation",
-                        l => l.HasOne<Location>().WithMany().HasForeignKey("LocationId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__UserLikeL__Locat__60A75C0F"),
-                        r => r.HasOne<User>().WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__UserLikeL__UserI__5FB337D6"),
+                        l => l.HasOne<Location>().WithMany().HasForeignKey("LocationId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__UserLikeL__Locat__440B1D61"),
+                        r => r.HasOne<User>().WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__UserLikeL__UserI__4316F928"),
                         j =>
                         {
-                            j.HasKey("UserId", "LocationId").HasName("PK__UserLike__79F726EBDD5243EE");
+                            j.HasKey("UserId", "LocationId").HasName("PK__UserLike__79F726EB800BBEB2");
 
                             j.ToTable("UserLikeLocation");
 
@@ -382,7 +382,7 @@ namespace TicketManagementSystem_BE.Data
             modelBuilder.Entity<UserProgram>(entity =>
             {
                 entity.HasKey(e => new { e.UserId, e.ProgramId })
-                    .HasName("PK__UserProg__80DA9AAFD44DC5DB");
+                    .HasName("PK__UserProg__80DA9AAFDA126E5A");
 
                 entity.ToTable("UserProgram");
 
@@ -417,19 +417,19 @@ namespace TicketManagementSystem_BE.Data
                     .WithMany(p => p.UserPrograms)
                     .HasForeignKey(d => d.ProgramId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserProgr__Progr__6477ECF3");
+                    .HasConstraintName("FK__UserProgr__Progr__47DBAE45");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserPrograms)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserProgr__UserI__6383C8BA");
+                    .HasConstraintName("FK__UserProgr__UserI__46E78A0C");
             });
 
             modelBuilder.Entity<UserSchedule>(entity =>
             {
                 entity.HasKey(e => new { e.UserId, e.TicketScheduleId })
-                    .HasName("PK__UserSche__8253A5421B336717");
+                    .HasName("PK__UserSche__8253A5424A950712");
 
                 entity.ToTable("UserSchedule");
 
@@ -456,13 +456,13 @@ namespace TicketManagementSystem_BE.Data
                     .WithMany(p => p.UserSchedules)
                     .HasForeignKey(d => d.TicketScheduleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserSched__Ticke__68487DD7");
+                    .HasConstraintName("FK__UserSched__Ticke__4BAC3F29");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserSchedules)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserSched__UserI__6754599E");
+                    .HasConstraintName("FK__UserSched__UserI__4AB81AF0");
             });
 
             OnModelCreatingPartial(modelBuilder);
