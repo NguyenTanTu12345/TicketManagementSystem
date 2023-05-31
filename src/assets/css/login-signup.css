@@ -1,0 +1,35 @@
+.parent {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #00c3ff, #ffff1c);
+}
+
+.my-card {
+    width: 33.33%;
+    margin-top: 5%;
+}
+
+.my-h1 {
+    font-size: 28px;
+    text-align: center;
+    padding: 20px;
+}
+
+.form-child {
+    width: 100%;
+    padding: 0 10px 0 10px;
+    margin-bottom: 15px;
+}
+
+.my-p {
+    text-align: center;
+}
+
+@media screen and (max-width: 800px) {
+    .my-card {
+        width: 100%;
+    }
+}

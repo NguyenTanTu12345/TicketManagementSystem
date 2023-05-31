@@ -14,12 +14,16 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    data: { title: 'Hue Festival - Login Page'}
+    data: { title: 'Hue Festival - Login Page' }
   },
   {
     path: 'signup',
     component: SignupComponent,
-    data: { title: 'Hue Festival - Signup Page'}
+    data: { title: 'Hue Festival - Signup Page' }
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./components/user/user.module').then(m => m.UserModule)
   },
   {
     path: 'support-menu',
@@ -38,12 +42,12 @@ const routes: Routes = [
   {
     path: 'location-type',
     component: ListLocationTypeComponent,
-    data: { animation: 'locations'}
+    data: { animation: 'locations' }
   },
   {
     path: 'location-type/create/',
     component: FormLocationTypeComponent,
-    data: { animation: 'location'}
+    data: { animation: 'location' }
   }
   ,
   {
@@ -53,7 +57,7 @@ const routes: Routes = [
   {
     path: 'location',
     component: ListLocationComponent,
-    data: { animation: 'location1'}
+    data: { animation: 'location1' }
   },
   {
     path: 'location/create/',
