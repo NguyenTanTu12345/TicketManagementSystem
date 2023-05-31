@@ -1,6 +1,9 @@
-import {FlatTreeControl} from '@angular/cdk/tree';
-import {Component} from '@angular/core';
-import {MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule} from '@angular/material/tree';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { Component } from '@angular/core';
+import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
+import { slideInAnimation } from './animations';
+import { ChildrenOutletContexts } from '@angular/router';
+
 
 interface FoodNode {
   name: string;
@@ -10,19 +13,19 @@ interface FoodNode {
 const TREE_DATA: FoodNode[] = [
   {
     name: 'Quản lý người dùng',
-    children: [{name: 'Nhân viên'}, {name: 'Khách hàng'}, {name: 'Nghệ sĩ'}]
+    children: [{ name: 'Nhân viên' }, { name: 'Khách hàng' }, { name: 'Nghệ sĩ' }]
   },
   {
     name: 'Quản lý sự kiện',
-    children: [{name: 'Chương trình'}, {name: 'Tin tức'}]
+    children: [{ name: 'Chương trình' }, { name: 'Tin tức' }]
   },
   {
     name: 'Quản lý địa điểm',
-    children: [{name: 'Loại địa điểm'}, {name: 'Địa điểm'}]
+    children: [{ name: 'Loại địa điểm' }, { name: 'Địa điểm' }]
   },
   {
     name: 'Khác',
-    children: [{name: 'Menu hỗ trợ'}]
+    children: [{ name: 'Menu hỗ trợ' }]
   }
 ];
 
@@ -35,7 +38,8 @@ interface ExampleFlatNode {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  animations: [slideInAnimation]
 })
 export class AppComponent {
   title = 'TicketManagementSystem';
@@ -62,9 +66,13 @@ export class AppComponent {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  constructor() {
+  constructor(private contexts: ChildrenOutletContexts) {
     this.dataSource.data = TREE_DATA;
   }
 
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+
+  getAnimationData() {
+    return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
+  }
 }

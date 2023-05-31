@@ -6,28 +6,44 @@ import { ListLocationTypeComponent } from './components/location-type/list-locat
 import { FormLocationTypeComponent } from './components/location-type/form-location-type/form-location-type.component';
 import { ListLocationComponent } from './components/location/list-location/list-location.component';
 import { FormLocationComponent } from './components/location/form-location/form-location.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found/page-not-found.component';
+import { LoginComponent } from './components/login-signup/login/login.component';
+import { SignupComponent } from './components/login-signup/signup/signup.component';
 
 const routes: Routes = [
   {
-    path: 'support-menu',
-    component: SupportMenuComponent
+    path: 'login',
+    component: LoginComponent,
+    data: { title: 'Hue Festival - Login Page'}
   },
   {
-    path: 'support-menu/create/',
-    component: FormSupportMenuComponent
-  }
-  ,
+    path: 'signup',
+    component: SignupComponent,
+    data: { title: 'Hue Festival - Signup Page'}
+  },
   {
-    path: 'support-menu/update/:id',
-    component: FormSupportMenuComponent
+    path: 'support-menu',
+    component: SupportMenuComponent,
+    children: [
+      {
+        path: 'create',
+        component: FormSupportMenuComponent,
+      },
+      {
+        path: 'update/:id',
+        component: FormSupportMenuComponent,
+      },
+    ],
   },
   {
     path: 'location-type',
-    component: ListLocationTypeComponent
+    component: ListLocationTypeComponent,
+    data: { animation: 'locations'}
   },
   {
     path: 'location-type/create/',
-    component: FormLocationTypeComponent
+    component: FormLocationTypeComponent,
+    data: { animation: 'location'}
   }
   ,
   {
@@ -36,7 +52,8 @@ const routes: Routes = [
   },
   {
     path: 'location',
-    component: ListLocationComponent
+    component: ListLocationComponent,
+    data: { animation: 'location1'}
   },
   {
     path: 'location/create/',
@@ -46,6 +63,12 @@ const routes: Routes = [
   {
     path: 'location/update/:id',
     component: FormLocationComponent
+  },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  {
+    path: '**',
+    title: 'My project - 404 Not Found',
+    component: PageNotFoundComponent
   }
 ];
 

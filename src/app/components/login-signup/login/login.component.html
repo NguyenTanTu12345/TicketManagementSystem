@@ -1,0 +1,41 @@
+<div class="parent">
+    <mat-card class="my-card">
+        <mat-card-content>
+            <h1 class="my-h1">Đăng nhập</h1>
+            <form [formGroup]="loginForm">
+                <mat-form-field appearance="outline" class="form-child">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="userEmail" placeholder="Vui lòng nhập email">
+                    <mat-error *ngIf="loginForm.hasError('email', 'userEmail') && !loginForm.hasError('required', 'userEmail')">
+                        Please enter a valid email address
+                    </mat-error>
+                    <mat-error *ngIf="loginForm.hasError('required', 'userEmail')">
+                        Vui lòng điền email
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="form-child">
+                    <mat-label>Mật khẩu</mat-label>
+                    <input matInput formControlName="userPassword" [type]=" hide ? 'password' : 'text'"
+                        placeholder="Vui lòng nhập mật khẩu">
+                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="loginForm.hasError('required', 'userPassword')">
+                        Vui lòng nhập mật khẩu
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="form-child">
+                    <button mat-raised-button color="primary" style="width: 100%;" (click)="onSubmit()">Thêm</button>
+                </div>
+
+                <p class="my-p">
+                    Không có tài khoản?
+                    <a ariaCurrentWhenActive="page" routerLink="../signup">Đăng ký</a>
+                </p>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
