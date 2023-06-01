@@ -7,6 +7,9 @@
                 <mat-form-field appearance="outline" class="form-child">
                     <mat-label>Email</mat-label>
                     <input matInput formControlName="userEmail" placeholder="Vui lòng nhập email">
+                    <button mat-icon-button matSuffix>
+                        <mat-icon>mail</mat-icon>
+                    </button>
                     <mat-error *ngIf="signupForm.hasError('email', 'userEmail') && !signupForm.hasError('required', 'userEmail')">
                         Please enter a valid email address
                     </mat-error>

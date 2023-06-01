@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/user/auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { NgToastService } from 'ng-angular-popup';
 import { User } from 'src/app/models/user.model';
 import ValidateForm from 'src/app/helpers/validate-form';
@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
 
   loginForm!: FormGroup;
   hide = true;
-  userObj: User = {
+  private userObj: User = {
     userId: '',
     userPassword: '',
     mail: '',
@@ -44,9 +44,15 @@ export class LoginComponent implements OnInit {
       this.userObj.userPassword = this.loginForm.value.userPassword;
       this.authService.login(this.userObj).subscribe({
         next: (res) => {
-          localStorage.setItem('jwt', res.token);
+          this.authService.storeJWT(res.token);
+          const userPayLoad = this.authService.decodeJWT();
           this.toast.success({ detail: "SUCCESS", summary: res.message, duration: 5000 });
-          this.router.navigate(['../user/dashboard']);
+          if (userPayLoad.role === "User") {
+            this.router.navigate(['../user/dashboard']);
+          }
+          else if (userPayLoad.role === "Admin") {
+            this.router.navigate(['../admin/dashboard']);
+          }
         },
         error: (err) => {
           console.log(err);

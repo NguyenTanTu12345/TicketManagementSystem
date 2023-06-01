@@ -1,0 +1,38 @@
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-6">
+            <form #form="ngForm" (ngSubmit)="createOrUpdate()">
+                <input type="text" *ngIf="supportMenu.supportMenuId != ''" name="supportMenuId"
+                    [(ngModel)]="supportMenu.supportMenuId" hidden />
+                <p>
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Title</mat-label>
+                        <input matInput placeholder="Placeholder" id="supportMenuTitle" name="supportMenuTitle"
+                            [(ngModel)]="supportMenu.supportMenuTitle">
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Content</mat-label>
+                        <textarea matInput placeholder="Placeholder" id="supportMenuContent" name="supportMenuContent"
+                            [(ngModel)]="supportMenu.supportMenuContent"></textarea>
+                    </mat-form-field>
+                </p>
+                <button mat-raised-button color="primary" type="submit"
+                    *ngIf="supportMenu.supportMenuId == ''">Thêm</button>
+                <div *ngIf="supportMenu.supportMenuId != ''">
+                    <button mat-raised-button color="primary" type="submit">Cập Nhật</button>
+                    <button mat-raised-button color="warn" (click)="delete(supportMenu.supportMenuId)">Xoa</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<nav>
+    <button type="button" (click)="toggle()">Toggle Open/Close</button>
+</nav>
+
+<div [@openClose]="isOpen ? 'open' : 'closed'" class="open-close-container">
+    <p>The box is now {{ isOpen ? 'Open' : 'Closed' }}!</p>
+</div>

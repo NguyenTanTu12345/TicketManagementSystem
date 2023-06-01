@@ -1,12 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
+import { authGuard } from 'src/app/guards/auth/auth.guard';
 
 const routes: Routes = [
   {
     path: 'dashboard',
-    component: DashboardComponent,
-    data: {title: "Hue Festival | DashBoard"}
+    component: UserDashboardComponent,
+    data: {title: "Hue Festival | Home Page"},
+    canActivate: [authGuard],
+    children: [{
+      path: '',
+      children: [
+
+      ]
+    }]
   }
 ];
 

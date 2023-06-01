@@ -4,7 +4,7 @@ export class Location {
     locationSummary: string;
     locationContent: string;
     locationImagePath: string;
-    locationTypeID: string;
+    locationTypeID: string | null;
 
     constructor(locationId: string, lolocationName: string, locationSummary: string, locationContent: string, locationImagePath: string, locationTypeID: string) {
         this.locationId = locationId;

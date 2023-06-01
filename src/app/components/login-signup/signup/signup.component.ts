@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/user/auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { NgToastService } from 'ng-angular-popup';
 import { User } from 'src/app/models/user.model';
 import ValidateForm from 'src/app/helpers/validate-form';
@@ -14,7 +14,7 @@ import ValidateForm from 'src/app/helpers/validate-form';
 export class SignupComponent {
   signupForm!: FormGroup;
   hide = true;
-  userObj: User = {
+  private userObj: User = {
     userId: '',
     userPassword: '',
     mail: '',
