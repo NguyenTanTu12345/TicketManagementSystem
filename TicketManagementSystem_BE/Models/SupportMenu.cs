@@ -5,7 +5,7 @@ namespace TicketManagementSystem_BE.Models
 {
     public partial class SupportMenu
     {
-        public string SupportMenuId { get; set; } = null!;
+        public int SupportMenuId { get; set; }
         public string SupportMenuTitle { get; set; } = null!;
         public string SupportMenuContent { get; set; } = null!;
         public string? UserId { get; set; }

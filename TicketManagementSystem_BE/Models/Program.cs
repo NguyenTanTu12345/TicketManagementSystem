@@ -7,7 +7,6 @@ namespace TicketManagementSystem_BE.Models
     {
         public Program()
         {
-            ProgramImages = new HashSet<ProgramImage>();
             Shows = new HashSet<Show>();
             UserPrograms = new HashSet<UserProgram>();
         }
@@ -25,7 +24,6 @@ namespace TicketManagementSystem_BE.Models
         public string? LocationId { get; set; }
 
         public virtual Location? Location { get; set; }
-        public virtual ICollection<ProgramImage> ProgramImages { get; set; }
         public virtual ICollection<Show> Shows { get; set; }
         public virtual ICollection<UserProgram> UserPrograms { get; set; }
     }

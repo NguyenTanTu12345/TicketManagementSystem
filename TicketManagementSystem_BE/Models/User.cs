@@ -23,6 +23,7 @@ namespace TicketManagementSystem_BE.Models
         public string? RoleId { get; set; }
 
         public virtual Role? Role { get; set; }
+        public virtual UserToken? UserToken { get; set; }
         public virtual ICollection<History> Histories { get; set; }
         public virtual ICollection<SupportMenu> SupportMenus { get; set; }
         public virtual ICollection<UserProgram> UserPrograms { get; set; }

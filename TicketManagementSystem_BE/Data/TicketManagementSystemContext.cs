@@ -23,7 +23,6 @@ namespace TicketManagementSystem_BE.Data
         public virtual DbSet<LocationType> LocationTypes { get; set; } = null!;
         public virtual DbSet<News> News { get; set; } = null!;
         public virtual DbSet<Models.Program> Programs { get; set; } = null!;
-        public virtual DbSet<ProgramImage> ProgramImages { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Show> Shows { get; set; } = null!;
         public virtual DbSet<SupportMenu> SupportMenus { get; set; } = null!;
@@ -31,6 +30,7 @@ namespace TicketManagementSystem_BE.Data
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<UserProgram> UserPrograms { get; set; } = null!;
         public virtual DbSet<UserSchedule> UserSchedules { get; set; } = null!;
+        public virtual DbSet<UserToken> UserTokens { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -216,32 +216,6 @@ namespace TicketManagementSystem_BE.Data
                     .HasConstraintName("FK__Program__Locatio__33D4B598");
             });
 
-            modelBuilder.Entity<ProgramImage>(entity =>
-            {
-                entity.ToTable("ProgramImage");
-
-                entity.Property(e => e.ProgramImageId)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("ProgramImageID")
-                    .IsFixedLength();
-
-                entity.Property(e => e.ProgramId)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("ProgramID")
-                    .IsFixedLength();
-
-                entity.Property(e => e.ProgramImagePath)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.HasOne(d => d.Program)
-                    .WithMany(p => p.ProgramImages)
-                    .HasForeignKey(d => d.ProgramId)
-                    .HasConstraintName("FK__ProgramIm__Progr__398D8EEE");
-            });
-
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.Property(e => e.RoleId)
@@ -291,11 +265,7 @@ namespace TicketManagementSystem_BE.Data
             {
                 entity.ToTable("SupportMenu");
 
-                entity.Property(e => e.SupportMenuId)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("SupportMenuID")
-                    .IsFixedLength();
+                entity.Property(e => e.SupportMenuId).HasColumnName("SupportMenuID");
 
                 entity.Property(e => e.SupportMenuContent).HasMaxLength(1000);
 
@@ -310,7 +280,7 @@ namespace TicketManagementSystem_BE.Data
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.SupportMenus)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__SupportMe__UserI__36B12243");
+                    .HasConstraintName("FK__SupportMe__UserI__17F790F9");
             });
 
             modelBuilder.Entity<TicketSchedule>(entity =>
@@ -463,6 +433,33 @@ namespace TicketManagementSystem_BE.Data
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__UserSched__UserI__4AB81AF0");
+            });
+
+            modelBuilder.Entity<UserToken>(entity =>
+            {
+                entity.HasKey(e => e.UserId)
+                    .HasName("PK__UserToke__1788CCAC64FB5155");
+
+                entity.ToTable("UserToken");
+
+                entity.Property(e => e.UserId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("UserID")
+                    .IsFixedLength();
+
+                entity.Property(e => e.RefreshToken)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .IsFixedLength();
+
+                entity.Property(e => e.RefreshTokenExpiredTime).HasColumnType("datetime");
+
+                entity.HasOne(d => d.User)
+                    .WithOne(p => p.UserToken)
+                    .HasForeignKey<UserToken>(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserToken__UserI__625A9A57");
             });
 
             OnModelCreatingPartial(modelBuilder);

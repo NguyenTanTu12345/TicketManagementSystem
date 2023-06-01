@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TicketManagementSystem_BE.Data;
 
-namespace TicketManagementSystem_BE.Services
+namespace TicketManagementSystem_BE.Helpers
 {
-    public interface ICreateIDService
+    public interface INewID
     {
         public string CreateUserID(List<string> listID);
     }
 
-    public class CreateID : ICreateIDService
+    public class NewID : INewID
     {
         public string CreateUserID(List<string> listID)
         {
