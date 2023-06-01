@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { UserToken } from 'src/app/models/user-token.model';
 import { User } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
 
@@ -11,7 +12,7 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
 
   private url: string = environment.apiUrl;
-  private userPayload: any;
+  private jwtHelperService = new JwtHelperService();
 
   constructor(
     private http: HttpClient,
@@ -19,37 +20,40 @@ export class AuthService {
   ) {}
 
   login(userObj: User) {
-    return this.http.post<any>(this.url + "/api/User/authenticate", userObj);
+    return this.http.post<any>(this.url + "/api/user/authenticate", userObj);
   }
 
   signup(userObj: User) {
-    return this.http.post<any>(this.url + "/api/User/register", userObj);
+    return this.http.post<any>(this.url + "/api/user/register", userObj);
   }
 
-  storeJWT(token: string) {
-    localStorage.setItem('jwt', token);
+  refreshToken(userToken: UserToken) {
+    return this.http.post<any>(this.url + "/api/user/refresh-token", userToken);
+  }
+
+  storeJWT(accessToken: string, refreshToken: string) {
+    localStorage.setItem('jwt', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
   }
 
   getJWT() {
     return localStorage.getItem('jwt');
   }
 
+  getRefreshToken() {
+    return localStorage.getItem('refreshToken');
+  }
+
   decodeJWT() {
-    const jwtHelperService = new JwtHelperService();
-    this.userPayload = jwtHelperService.decodeToken(this.getJWT()!);
-    return jwtHelperService.decodeToken(this.getJWT()!);
+    return this.jwtHelperService.decodeToken(this.getJWT()!);
   }
 
   getMail() {
-    if (this.userPayload) {
-      return this.userPayload.email;
-    }
+      return this.decodeJWT().email;
   }
 
   getRole() {
-    if (this.userPayload) {
-      return this.userPayload.role;
-    }
+      return this.decodeJWT().role;
   }
 
   isLoggedIn(): boolean {

@@ -1,3 +1,8 @@
 <p>dashboard works!</p>
 <p>{{ mail }}</p>
 <button (click)="signOut()">Đăng xuất</button>
+<ul>
+    <li *ngFor="let item of supportMenu">
+        {{ item.supportMenuTitle }}
+    </li>
+</ul>

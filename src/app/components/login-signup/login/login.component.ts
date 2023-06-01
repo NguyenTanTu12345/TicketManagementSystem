@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { NgToastService } from 'ng-angular-popup';
 import { User } from 'src/app/models/user.model';
 import ValidateForm from 'src/app/helpers/validate-form';
+import { UserToken } from 'src/app/models/user-token.model';
 
 @Component({
   selector: 'app-login',
@@ -44,9 +45,9 @@ export class LoginComponent implements OnInit {
       this.userObj.userPassword = this.loginForm.value.userPassword;
       this.authService.login(this.userObj).subscribe({
         next: (res) => {
-          this.authService.storeJWT(res.token);
+          this.authService.storeJWT(res.accessToken, res.refreshToken);
           const userPayLoad = this.authService.decodeJWT();
-          this.toast.success({ detail: "SUCCESS", summary: res.message, duration: 5000 });
+          this.toast.success({ detail: "SUCCESS", summary: "Login Successful", duration: 5000 });
           if (userPayLoad.role === "User") {
             this.router.navigate(['../user/dashboard']);
           }
