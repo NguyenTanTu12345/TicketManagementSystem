@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -11,6 +10,7 @@ using TicketManagementSystem_BE.Data;
 using TicketManagementSystem_BE.DTO;
 using TicketManagementSystem_BE.Helpers;
 using TicketManagementSystem_BE.Models;
+using TicketManagementSystem_BE.Services;
 
 namespace TicketManagementSystem_BE.Controllers
 {
@@ -23,14 +23,17 @@ namespace TicketManagementSystem_BE.Controllers
         private readonly INewID _newID;
         private readonly IConfiguration _configuration;
         private readonly IPrincipal _principal;
+        private readonly ICustomEmailService _emailService;
 
         public UserController(TicketManagementSystemContext context, INewID newID, 
-            IConfiguration configuration, IPrincipal principal)
+            IConfiguration configuration, IPrincipal principal,
+            ICustomEmailService emailService)
         {
             _context = context;
             _newID = newID;
             _configuration = configuration;
             _principal = principal;
+            _emailService = emailService;
         }
 
         [HttpPost("authenticate")]
@@ -38,7 +41,7 @@ namespace TicketManagementSystem_BE.Controllers
         {
             if (userObj == null)
             {
-                return BadRequest();
+                return BadRequest(new { message = "Invalid Request!!!" });
             }
             var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail == userObj.Mail);
             if (user == null)
@@ -86,29 +89,20 @@ namespace TicketManagementSystem_BE.Controllers
         {
             if (String.IsNullOrEmpty(tokenDTO.AccessToken) || String.IsNullOrEmpty(tokenDTO.RefreshToken))
             {
-                return BadRequest(new
-                {
-                    meassage = tokenDTO.AccessToken,
-                    message1 = tokenDTO.RefreshToken
-                });
+                return BadRequest(new { meassage = "Invalid Request!!!" });
             }
             var principal = _principal.GetPrincipal(tokenDTO.AccessToken, _configuration["JWT:SecretKey"]);
             var userMail = principal.FindFirst(ClaimTypes.Email)?.Value;
             var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail == userMail);
             if (user == null)
             {
-                return BadRequest(new
-                {
-                    meassage = "Not Found That User 123"
-                });
+                return NotFound(new { meassage = "User Not Found!!!" });
             }
             var userToken = await _context.UserTokens.FindAsync(user.UserId);
-            if (userToken == null || userToken.RefreshToken.Trim() != tokenDTO.RefreshToken || userToken.RefreshTokenExpiredTime <= DateTime.Now)
+            if (userToken == null || userToken.RefreshToken.Trim() != tokenDTO.RefreshToken 
+                || userToken.RefreshTokenExpired <= DateTime.Now)
             {
-                return BadRequest(new
-                {
-                    meassage = "Not Found That User!!!"
-                }); 
+                return BadRequest(new { meassage = "Refuse Request!!!"}); 
             }
             string newAccessToken = await CreateJwt(user);
             string newRefreshToken = await CreateRefreshToken();
@@ -118,6 +112,100 @@ namespace TicketManagementSystem_BE.Controllers
                 AccessToken = newAccessToken,
                 RefreshToken = newRefreshToken
             });
+        }
+
+        [HttpPost("reset-password-token/{email}")]
+        public async Task<IActionResult> ResetPasswordToken(string email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail.Trim() == email);
+            if (user == null)
+            {
+                return NotFound(new { message = "User Not Found!!" });
+            }
+            Random random = new Random();
+            string resetPasswordToken = random.Next(100000, 999999).ToString();
+            string from = _configuration["Email:From"];
+            string password = _configuration["Email:Password"];
+            string content = "<p>Mã thay đổi mật khẩu của bạn: " + resetPasswordToken + "</p>";
+            var userToken = await _context.UserTokens.FirstOrDefaultAsync(s => s.UserId == user.UserId);
+            if (userToken == null)
+            {
+                UserToken userToken1 = new UserToken
+                {
+                    UserId = user.UserId,
+                    ResetPasswordToken = resetPasswordToken,
+                    ResetPasswordTokenExpired = DateTime.Now.AddMinutes(1),
+                    TotalInputWrongToken = 0
+                };
+                await _context.UserTokens.AddAsync(userToken1);
+            }
+            else
+            {
+                if (userToken.TotalInputWrongToken >= 3)
+                {
+                    return BadRequest(new { message = "Please Contact Administrator to Change Password!!!" });
+                }
+                else
+                {
+                    userToken.ResetPasswordToken = resetPasswordToken;
+                    userToken.ResetPasswordTokenExpired = DateTime.Now.AddMinutes(1);
+                    userToken.TotalInputWrongToken = 0;
+                    _context.UserTokens.Update(userToken);
+                }
+            }
+            await _context.SaveChangesAsync();
+            _emailService.SendEmail(from, password, email, "[Hue Festival] Reset Password", content);
+            return Ok(new { message = "Send Mail Successful~"});
+        }
+
+        [HttpPost("check-reset-pass-token")]
+        public async Task<IActionResult> CheckResetPassToken(ResetPasswordDTO resetPasswordDTO)
+        {
+            if (String.IsNullOrEmpty(resetPasswordDTO.ResetPasswordToken) 
+                || String.IsNullOrEmpty(resetPasswordDTO.Mail)) 
+            {
+                return BadRequest(new { message = "Invalid Request!!!" });
+            }
+            var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail.Trim() == resetPasswordDTO.Mail);
+            if (user == null)
+            {
+                return NotFound(new { message = "User Not Found!!!" });
+            }
+            var userToken = await _context.UserTokens.FirstOrDefaultAsync(s => s.UserId == user.UserId);
+            if (userToken == null)
+            {
+                return BadRequest(new { message = "Refuse Request!!!" });
+            }
+            if (userToken.TotalInputWrongToken >= 3)
+            {
+                return BadRequest(new { message = "Please Contact Administrator to Change Password!!!" });
+            }
+            if (userToken.ResetPasswordToken.Trim() != resetPasswordDTO.ResetPasswordToken) 
+            {
+                userToken.TotalInputWrongToken = (byte?)(userToken.TotalInputWrongToken + 1);
+                _context.UserTokens.Update(userToken);
+                await _context.SaveChangesAsync();
+                return BadRequest(new { message = "Wrong Reset Password Token" });
+            }
+            if (userToken.ResetPasswordTokenExpired < resetPasswordDTO.TimeSend)
+            {
+                return BadRequest(new { message = "Resset Password Token Expired!!!" });
+            }
+            return Ok(new { message = "Correct Resset Password" });
+        }
+
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword(User userObj)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail.Trim() == userObj.Mail);
+            if (user == null)
+            {
+                return BadRequest("Invalid Request!!!");
+            }
+            user.UserPassword = BCrypt.Net.BCrypt.HashPassword(userObj.UserPassword);
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Change Password Successful~" });
         }
 
         private async Task<string> CreateJwt(User user)
@@ -165,7 +253,7 @@ namespace TicketManagementSystem_BE.Controllers
                 UserToken userToken1 = new UserToken
                 {
                     RefreshToken = refreshToken,
-                    RefreshTokenExpiredTime = DateTime.Now.AddDays(1),
+                    RefreshTokenExpired = DateTime.Now.AddDays(1),
                     UserId = userId
                 };
                 await _context.UserTokens.AddAsync(userToken1);
@@ -173,7 +261,7 @@ namespace TicketManagementSystem_BE.Controllers
             else
             {
                 userToken.RefreshToken = refreshToken;
-                userToken.RefreshTokenExpiredTime = DateTime.Now.AddDays(1);
+                userToken.RefreshTokenExpired = DateTime.Now.AddDays(1);
                 _context.UserTokens.Update(userToken);
             }
             await _context.SaveChangesAsync();

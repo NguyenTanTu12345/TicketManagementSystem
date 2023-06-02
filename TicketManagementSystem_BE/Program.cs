@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TicketManagementSystem_BE.Data;
 using TicketManagementSystem_BE.Helpers;
+using TicketManagementSystem_BE.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddScoped<ICustomEmailService, CustomEmailService>();
 builder.Services.AddScoped<INewID, NewID>();
 builder.Services.AddScoped<IPrincipal, Principal>();
 

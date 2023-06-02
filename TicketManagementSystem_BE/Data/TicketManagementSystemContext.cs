@@ -438,7 +438,7 @@ namespace TicketManagementSystem_BE.Data
             modelBuilder.Entity<UserToken>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__UserToke__1788CCAC64FB5155");
+                    .HasName("PK__UserToke__1788CCACCA58F2D7");
 
                 entity.ToTable("UserToken");
 
@@ -453,13 +453,20 @@ namespace TicketManagementSystem_BE.Data
                     .IsUnicode(false)
                     .IsFixedLength();
 
-                entity.Property(e => e.RefreshTokenExpiredTime).HasColumnType("datetime");
+                entity.Property(e => e.RefreshTokenExpired).HasColumnType("datetime");
+
+                entity.Property(e => e.ResetPasswordToken)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .IsFixedLength();
+
+                entity.Property(e => e.ResetPasswordTokenExpired).HasColumnType("datetime");
 
                 entity.HasOne(d => d.User)
                     .WithOne(p => p.UserToken)
                     .HasForeignKey<UserToken>(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserToken__UserI__625A9A57");
+                    .HasConstraintName("FK__UserToken__UserI__0880433F");
             });
 
             OnModelCreatingPartial(modelBuilder);
