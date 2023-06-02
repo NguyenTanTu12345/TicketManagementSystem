@@ -16,6 +16,7 @@ import { SignupComponent } from './components/login-signup/signup/signup.compone
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found/page-not-found.component';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { MatButtonModule } from '@angular/material/button';
+import { ResetPasswordComponent } from './components/login-signup/reset-password/reset-password.component';
 
 
 @NgModule({
@@ -23,7 +24,9 @@ import { MatButtonModule } from '@angular/material/button';
     AppComponent,
     LoginComponent,
     SignupComponent,
-    PageNotFoundComponent
+    ResetPasswordComponent,
+    PageNotFoundComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

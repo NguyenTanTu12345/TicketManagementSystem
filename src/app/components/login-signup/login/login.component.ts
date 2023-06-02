@@ -4,8 +4,6 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { NgToastService } from 'ng-angular-popup';
 import { User } from 'src/app/models/user.model';
-import ValidateForm from 'src/app/helpers/validate-form';
-import { UserToken } from 'src/app/models/user-token.model';
 
 @Component({
   selector: 'app-login',
@@ -47,7 +45,7 @@ export class LoginComponent implements OnInit {
         next: (res) => {
           this.authService.storeJWT(res.accessToken, res.refreshToken);
           const userPayLoad = this.authService.decodeJWT();
-          this.toast.success({ detail: "SUCCESS", summary: "Login Successful", duration: 5000 });
+          this.toast.success({ detail: "SUCCESS", summary: "Đăng nhập thành công~", duration: 4000 });
           if (userPayLoad.role === "User") {
             this.router.navigate(['../user/dashboard']);
           }
@@ -57,13 +55,9 @@ export class LoginComponent implements OnInit {
         },
         error: (err) => {
           console.log(err);
-          this.toast.error({ detail: "ERROR", summary: err?.error.message, sticky: true });
+          this.toast.error({ detail: "ERROR", summary: err, sticky: true });
         }
       });
-    }
-    else {
-      console.log("Form is not valid");
-      ValidateForm.validateAllFormFields(this.loginForm);
     }
   }
 }

@@ -4,6 +4,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { LoginComponent } from './components/login-signup/login/login.component';
 import { SignupComponent } from './components/login-signup/signup/signup.component';
 import { authGuard } from './guards/auth/auth.guard';
+import { ResetPasswordComponent } from './components/login-signup/reset-password/reset-password.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,11 @@ const routes: Routes = [
     path: 'signup',
     component: SignupComponent,
     data: { title: 'Hue Festival - Signup Page' }
+  },
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent,
+    data: { title: 'Hue Festival - Reset Password' }
   },
   {
     path: 'admin',

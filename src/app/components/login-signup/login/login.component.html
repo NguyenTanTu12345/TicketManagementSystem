@@ -10,8 +10,9 @@
                     <button mat-icon-button matSuffix>
                         <mat-icon>mail</mat-icon>
                     </button>
-                    <mat-error *ngIf="loginForm.hasError('email', 'userEmail') && !loginForm.hasError('required', 'userEmail')">
-                        Please enter a valid email address
+                    <mat-error
+                        *ngIf="loginForm.hasError('email', 'userEmail') && !loginForm.hasError('required', 'userEmail')">
+                        Vui lòng điền email hợp lệ
                     </mat-error>
                     <mat-error *ngIf="loginForm.hasError('required', 'userEmail')">
                         Vui lòng điền email
@@ -31,13 +32,18 @@
                     </mat-error>
                 </mat-form-field>
 
+                <p style="justify-content: right; display: flex; width: 100%;">
+                    <a ariaCurrentWhenActive="page" routerLink="../reset-password">Quên mật khẩu?</a>
+                </p>
+
                 <div class="form-child">
-                    <button mat-raised-button color="primary" style="width: 100%;" (click)="onLogin()">Đăng nhập</button>
+                    <button mat-raised-button color="primary" style="width: 100%;" (click)="onLogin()">Đăng
+                        nhập</button>
                 </div>
 
-                <p class="my-p">
+                <p class="form-child" style="text-align: center;">
                     Không có tài khoản?
-                    <a ariaCurrentWhenActive="page" routerLink="../signup">Đăng ký</a>
+                    <a ariaCurrentWhenActive="page" routerLink="../signup">&nbsp;Đăng ký</a>
                 </p>
             </form>
         </mat-card-content>

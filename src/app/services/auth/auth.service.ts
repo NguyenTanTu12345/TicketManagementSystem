@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ResetPassword } from 'src/app/models/reset-password.model';
 import { UserToken } from 'src/app/models/user-token.model';
 import { User } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
@@ -29,6 +30,18 @@ export class AuthService {
 
   refreshToken(userToken: UserToken) {
     return this.http.post<any>(this.url + "/api/user/refresh-token", userToken);
+  }
+
+  resetPassword(email: string) {
+    return this.http.post<any>(this.url + "/api/user/reset-password-token/" + email, {});
+  }
+
+  checkResetPassword(resetPassword: ResetPassword) {
+    return this.http.post<any>(this.url + "/api/user/check-reset-pass-token", resetPassword);
+  }
+
+  changePassword(UserObj: User) {
+    return this.http.post<any>(this.url + "/api/user/change-password", UserObj);
   }
 
   storeJWT(accessToken: string, refreshToken: string) {

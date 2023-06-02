@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { NgToastService } from 'ng-angular-popup';
 import { User } from 'src/app/models/user.model';
-import ValidateForm from 'src/app/helpers/validate-form';
 
 @Component({
   selector: 'app-signup',
@@ -43,18 +42,14 @@ export class SignupComponent {
       this.userObj.userPassword = this.signupForm.value.userPassword;
       this.authService.signup(this.userObj).subscribe({
         next: (res) => {
-          this.toast.success({ detail: "SUCCESS", summary: res.message, duration: 5000 });
+          this.toast.success({ detail: "SUCCESS", summary: "Tạo tài khoản thành công~", duration: 4000 });
           this.router.navigate(['../login']);
         },
         error: (err) => {
           console.log(err);
-          this.toast.error({ detail: "ERROR", summary: err?.error.message, sticky: true });
+          this.toast.error({ detail: "ERROR", summary: "Something Wrong Happen!!!", sticky: true });
         }
       });
-    }
-    else {
-      console.log("Form is not valid");
-      ValidateForm.validateAllFormFields(this.signupForm);
     }
   }
 }
