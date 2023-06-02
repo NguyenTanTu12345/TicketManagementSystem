@@ -9,7 +9,7 @@ import { Location } from 'src/app/models/location.model';
 })
 export class LocationService {
 
-  url: string = environment.apiUrl + "/api/Location";
+  url: string = environment.apiUrl + "/api/location";
 
   constructor(private http: HttpClient) { }
 
@@ -21,15 +21,11 @@ export class LocationService {
     return this.http.get<Location>(this.url + "/" + id);
   }
 
-  create(locationType: Location): Observable<Location> {
-    return this.http.post<Location>(this.url, locationType);
+  create(location: Location){
+    return this.http.post<any>(this.url + "/create", location);
   }
 
-  update(locationType: Location): Observable<Location> {
-    return this.http.put<Location>(this.url, locationType);
-  }
-
-  delete(id: string): Observable<Location> {
-    return this.http.delete<Location>(this.url + "/" + id);
+  update(location: Location) {
+    return this.http.put<any>(this.url+ "/update", location);
   }
 }

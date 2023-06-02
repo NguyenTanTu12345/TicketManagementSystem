@@ -11,15 +11,33 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTreeModule } from '@angular/material/tree';
 import { FormsModule } from '@angular/forms';
-import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { ListSupportMenuComponent } from './support-menu/list-support-menu/list-support-menu.component';
+import { FormSupportMenuComponent } from './support-menu/form-support-menu/form-support-menu.component';
+import { ListUserComponent } from './user/list-user/list-user.component';
+import { FormUserComponent } from './user/form-user/form-user.component';
+import { ListLocationTypeComponent } from './location-type/list-location-type/list-location-type.component';
+import { FormLocationTypeComponent } from './location-type/form-location-type/form-location-type.component';
+import { ListLocationComponent } from './location/list-location/list-location.component';
+import { FormLocationComponent } from './location/form-location/form-location.component';
+
 @NgModule({
   declarations: [
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    ListSupportMenuComponent,
+    FormSupportMenuComponent,
+    ListUserComponent,
+    FormUserComponent,
+    ListLocationTypeComponent,
+    FormLocationTypeComponent,
+    ListLocationComponent,
+    FormLocationComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +57,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatListModule,
     MatButtonModule,
     FormsModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    ReactiveFormsModule
   ]
 })
 export class AdminModule { }

@@ -18,9 +18,13 @@ export class LoginComponent implements OnInit {
     userId: '',
     userPassword: '',
     mail: '',
-    phoneNumber: null,
+    phoneNumber: '',
     userState: true,
-    roleID: null
+    cccd: '',
+    fullName: '',
+    dateOfBirth: null,
+    roleId: '',
+    accessToken: ''
   };
 
   constructor(
@@ -49,7 +53,7 @@ export class LoginComponent implements OnInit {
           if (userPayLoad.role === "User") {
             this.router.navigate(['../user/dashboard']);
           }
-          else if (userPayLoad.role === "Admin") {
+          else if (userPayLoad.role === "Administrator") {
             this.router.navigate(['../admin/dashboard']);
           }
         },

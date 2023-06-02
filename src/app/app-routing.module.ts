@@ -5,6 +5,7 @@ import { LoginComponent } from './components/login-signup/login/login.component'
 import { SignupComponent } from './components/login-signup/signup/signup.component';
 import { authGuard } from './guards/auth/auth.guard';
 import { ResetPasswordComponent } from './components/login-signup/reset-password/reset-password.component';
+import { roleGuard } from './guards/role/role.guard';
 
 const routes: Routes = [
   {
@@ -25,7 +26,7 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./components/admin/admin.module').then(m => m.AdminModule),
-    canActivate: [authGuard]
+    canActivate: [authGuard, roleGuard]
   },
   {
     path: 'user',

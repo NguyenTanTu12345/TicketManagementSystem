@@ -27,9 +27,13 @@ export class ResetPasswordComponent {
     userId: '',
     userPassword: '',
     mail: '',
-    phoneNumber: null,
+    phoneNumber: '',
     userState: true,
-    roleID: 'RO01'
+    cccd: '',
+    fullName: '',
+    dateOfBirth: null,
+    roleId: '',
+    accessToken: ''
   };
 
   constructor(

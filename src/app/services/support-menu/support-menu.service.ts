@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class SupportMenuService {
 
-  url: string = environment.apiUrl + "/api/SupportMenu";
+  url: string = environment.apiUrl + "/api/support-menu";
 
   constructor(private http: HttpClient) { }
 
@@ -17,19 +17,19 @@ export class SupportMenuService {
     return this.http.get<SupportMenu[]>(this.url);
   }
 
-  get(supportMenuID: string): Observable<SupportMenu> {
-    return this.http.get<SupportMenu>(this.url + "/" + supportMenuID);
+  get(id: string): Observable<SupportMenu> {
+    return this.http.get<SupportMenu>(this.url + "/" + id);
   }
 
-  create(supportMenu: SupportMenu): Observable<SupportMenu> {
-    return this.http.post<SupportMenu>(this.url, supportMenu);
+  create(supportMenu: SupportMenu) {
+    return this.http.post<any>(this.url + "/create", supportMenu);
   }
 
-  update(supportMenu: SupportMenu): Observable<SupportMenu> {
-    return this.http.put<SupportMenu>(this.url, supportMenu);
+  update(supportMenu: SupportMenu) {
+    return this.http.put<any>(this.url + "/update", supportMenu);
   }
 
-  delete(id: string): Observable<SupportMenu> {
-    return this.http.delete<SupportMenu>(this.url + "/" + id);
+  delete(id: number) {
+    return this.http.delete<any>(this.url + "/" + id);
   }
 }

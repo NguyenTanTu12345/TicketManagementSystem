@@ -1,0 +1,31 @@
+<div class="container my-5">
+    <div class="row">
+        <div class="col-6">
+            <form [formGroup]="customForm">
+
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Họ và tên</mat-label>
+                    <input matInput placeholder="Vui lòng điền họ và tên" formControlName="userFullName">
+                    <mat-error *ngIf="customForm.hasError('required', 'userFullName')">
+                        Vui lòng điền họ và tên
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Email</mat-label>
+                    <input matInput placeholder="Vui lòng điền email" formControlName="userEmail">
+                    <mat-error *ngIf="customForm.hasError('required', 'userEmail')">
+                        Vui lòng điền email
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Chức vụ</mat-label>
+                    <input matInput #input maxlength="10" disabled value="Staff">
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" (click)="create()">Thêm</button>
+            </form>
+        </div>
+    </div>
+</div>

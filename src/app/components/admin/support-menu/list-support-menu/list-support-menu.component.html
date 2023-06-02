@@ -1,6 +1,6 @@
-<!--<div style="padding-bottom: 20px;">  mat-raised-button color="primary" class="btn btn-primary"-->
-  <a routerLink="create">Thêm mới</a>
-<!--</div>-->
+<div style="margin-bottom: 20px; margin-top: 20px;">
+  <a mat-raised-button color="primary" routerLink="create">Thêm mới</a>
+</div>
 
 <mat-form-field>
   <mat-label>Filter</mat-label>
@@ -11,36 +11,31 @@
   <table mat-table [dataSource]="dataSource" matSort>
 
     <!-- ID Column -->
-    <ng-container matColumnDef="supportMenuId">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-      <td mat-cell *matCellDef="let row; let pos = index"> {{pos + 1}} </td>
+    <ng-container matColumnDef="No.">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 5%;"> No. </th>
+      <td mat-cell *matCellDef="let row; let pos = index" style="width: 5%;"> {{pos + 1}} </td>
     </ng-container>
 
     <!-- Title Column -->
     <ng-container matColumnDef="supportMenuTitle">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
-      <td mat-cell *matCellDef="let row"> {{row.supportMenuTitle}} </td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Tiêu đề </th>
+      <td mat-cell *matCellDef="let row" style="width: 20%;"> {{row.supportMenuTitle}} </td>
     </ng-container>
 
     <!-- Content Column -->
     <ng-container matColumnDef="supportMenuContent">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Content </th>
-      <td mat-cell *matCellDef="let row"> {{row.supportMenuContent}} </td>
-    </ng-container>
-
-    <!-- userId Column -->
-    <ng-container matColumnDef="userId">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> userId </th>
-      <td mat-cell *matCellDef="let row"> {{row.userId}} </td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 60%;"> Nội dung </th>
+      <td mat-cell *matCellDef="let row" style="width: 10%;"> {{row.supportMenuContent}} </td>
     </ng-container>
 
     <!-- action Column -->
-    <ng-container matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> action </th>
-      <td mat-cell *matCellDef="let row">
+    <ng-container matColumnDef="other">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;"> Khác </th>
+      <td mat-cell *matCellDef="let row" style="width: 10%;">
         <a mat-icon-button color="primary" [routerLink]="['update', row.supportMenuId]">
           <mat-icon>edit</mat-icon>
         </a>
+        <mat-icon (click)="checkDelete(row.supportMenuId)">delete</mat-icon>
       </td>
     </ng-container>
 
@@ -55,5 +50,3 @@
 
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
 </div>
-<router-outlet></router-outlet>
-

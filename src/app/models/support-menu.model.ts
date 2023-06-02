@@ -1,13 +1,13 @@
 export class SupportMenu {
-    supportMenuId: string;
+    supportMenuId: number;
     supportMenuTitle: string;
     supportMenuContent: string;
-    userId: string | null;
+    accessToken: string;
 
-    constructor(supportMenuId: string, supportMenuTitle: string, supportMenuContent: string, userId: string) {
+    constructor(supportMenuId: number, supportMenuTitle: string, supportMenuContent: string, accessToken: string) {
         this.supportMenuId = supportMenuId;
         this.supportMenuTitle = supportMenuTitle;
         this.supportMenuContent = supportMenuContent;
-        this.userId = userId;
+        this.accessToken = accessToken;
     }
 }

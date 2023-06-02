@@ -7,10 +7,10 @@ export const roleGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.getRole() === "Admin") {
+  if (authService.getRole() === "Administrator") {
     return true;
   }
 
   // Redirect to the login page
-  return router.parseUrl('dashboard');
+  return router.parseUrl('user/dashboard');
 };

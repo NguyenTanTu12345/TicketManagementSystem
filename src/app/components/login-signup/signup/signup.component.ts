@@ -17,9 +17,13 @@ export class SignupComponent {
     userId: '',
     userPassword: '',
     mail: '',
-    phoneNumber: null,
+    phoneNumber: '',
     userState: true,
-    roleID: 'RO01'
+    cccd: '',
+    fullName: '',
+    dateOfBirth: null,
+    roleId: 'RO02',
+    accessToken: ''
   };
 
   constructor(

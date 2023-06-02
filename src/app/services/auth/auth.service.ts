@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Observable } from 'rxjs';
 import { ResetPassword } from 'src/app/models/reset-password.model';
 import { UserToken } from 'src/app/models/user-token.model';
 import { User } from 'src/app/models/user.model';
@@ -12,36 +13,52 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
 
-  private url: string = environment.apiUrl;
+  private url: string = environment.apiUrl + '/api/user';
   private jwtHelperService = new JwtHelperService();
 
   constructor(
     private http: HttpClient,
     private router: Router
-  ) {}
+  ) { }
 
   login(userObj: User) {
-    return this.http.post<any>(this.url + "/api/user/authenticate", userObj);
+    return this.http.post<any>(this.url + "/authenticate", userObj);
   }
 
   signup(userObj: User) {
-    return this.http.post<any>(this.url + "/api/user/register", userObj);
+    return this.http.post<any>(this.url + "/register", userObj);
   }
 
   refreshToken(userToken: UserToken) {
-    return this.http.post<any>(this.url + "/api/user/refresh-token", userToken);
+    return this.http.post<any>(this.url + "/refresh-token", userToken);
   }
 
   resetPassword(email: string) {
-    return this.http.post<any>(this.url + "/api/user/reset-password-token/" + email, {});
+    return this.http.post<any>(this.url + "/reset-password-token/" + email, {});
   }
 
   checkResetPassword(resetPassword: ResetPassword) {
-    return this.http.post<any>(this.url + "/api/user/check-reset-pass-token", resetPassword);
+    return this.http.post<any>(this.url + "/check-reset-pass-token", resetPassword);
   }
 
   changePassword(UserObj: User) {
-    return this.http.post<any>(this.url + "/api/user/change-password", UserObj);
+    return this.http.put<any>(this.url + "/change-password", UserObj);
+  }
+
+  getAll(): Observable<User[]> {
+    return this.http.get<User[]>(this.url);
+  }
+
+  get(id: string): Observable<User> {
+    return this.http.get<User>(this.url + "/" + id);
+  }
+
+  create(user: User) {
+    return this.http.post<any>(this.url + "/create", user);
+  }
+
+  delete(id: number) {
+    return this.http.delete<any>(this.url + "/" + id);
   }
 
   storeJWT(accessToken: string, refreshToken: string) {
@@ -62,11 +79,11 @@ export class AuthService {
   }
 
   getMail() {
-      return this.decodeJWT().email;
+    return this.decodeJWT().email;
   }
 
   getRole() {
-      return this.decodeJWT().role;
+    return this.decodeJWT().role;
   }
 
   isLoggedIn(): boolean {
@@ -75,6 +92,6 @@ export class AuthService {
 
   signOut() {
     localStorage.clear();
-    this.router.navigate(['login'])
+    this.router.navigate(['login']);
   }
 }

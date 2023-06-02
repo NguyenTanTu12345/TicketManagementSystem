@@ -1,0 +1,53 @@
+<div class="container my-5">
+    <div class="row">
+        <div class="col-6">
+            <form [formGroup]="customForm" (ngSubmit)="createOrUpdate()">
+                <input type="hidden" formControlName="locationId" />
+
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Tên địa điểm</mat-label>
+                    <input matInput placeholder="Vui lòng điền tên địa điểm" formControlName="locationName">
+                    <mat-error *ngIf="customForm.hasError('required', 'locationName')">
+                        Vui lòng điền tên địa điểm
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Loại địa điểm</mat-label>
+                    <mat-select formControlName="locationTypeId">
+                        <mat-option *ngFor="let item of locationTypes" [value]="item.locationTypeId">
+                            {{item.locationTypeName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Tóm tắt</mat-label>
+                    <textarea matInput placeholder="Vui lòng điền tóm tắt" formControlName="locationSummary"></textarea>
+                    <mat-error *ngIf="customForm.hasError('required', 'locationSummary')">
+                        Vui lòng điền tên loại tóm tắt
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Nội dung</mat-label>
+                    <textarea matInput placeholder="Vui lòng điền nội dung"
+                        formControlName="locationContent"></textarea>
+                    <mat-error *ngIf="customForm.hasError('required', 'locationContent')">
+                        Vui lòng điền nội dung
+                    </mat-error>
+                </mat-form-field>
+
+
+                <img [src]="mySrc" style="width: 100%; height: auto; margin-bottom: 20px;">
+
+                <div class="btn btn-warning" style="color: white; margin-right: 10px;"
+                    onclick="document.getElementById('inputFile').click();">
+                    <input style="display: none;" id="inputFile" (change)="onChangeFile($event)" type="file" />
+                    <i class="fa fa-folder"></i> Chọn ảnh
+                </div>
+                <button mat-raised-button color="primary" type="submit">{{ btnValue }}</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,24 +1,20 @@
-import {MediaMatcher} from '@angular/cdk/layout';
-import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
-import {MatListModule} from '@angular/material/list';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {NgIf, NgFor} from '@angular/common';
-import { ChildrenOutletContexts } from '@angular/router';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { AuthService } from 'src/app/services/auth/auth.service';
-interface FoodNode {
+import { ChildrenOutletContexts } from '@angular/router';
+import { slideInAnimation } from 'src/app/helpers/animations';
+
+interface TableNode {
   name: string;
-  children?: FoodNode[];
+  children?: TableNode[];
 }
 
-const TREE_DATA: FoodNode[] = [
+const TREE_DATA: TableNode[] = [
   {
     name: 'Quản lý người dùng',
-    children: [{ name: 'Nhân viên' }, { name: 'Khách hàng' }, { name: 'Nghệ sĩ' }]
+    children: [{ name: 'Người dùng' }]
   },
   {
     name: 'Quản lý sự kiện',
@@ -30,7 +26,7 @@ const TREE_DATA: FoodNode[] = [
   },
   {
     name: 'Khác',
-    children: [{ name: 'Menu hỗ trợ' }, {name: 'Đăng xuất'}]
+    children: [{ name: 'Nghệ sĩ' },{ name: 'Menu hỗ trợ' }, { name: 'Đăng xuất' }]
   },
 ];
 
@@ -43,44 +39,34 @@ interface ExampleFlatNode {
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './admin-dashboard.component.html',
-  styleUrls: ['./admin-dashboard.component.css']
+  styleUrls: ['./admin-dashboard.component.css'],
+  animations: [ slideInAnimation ]
 })
-export class AdminDashboardComponent {
+export class AdminDashboardComponent implements OnInit {
 
   mobileQuery: MediaQueryList;
-
-  fillerNav = Array.from({ length: 50 }, (_, i) => `Nav Item ${i + 1}`);
-
-  fillerContent = Array.from(
-    { length: 50 },
-    () =>
-      `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-       labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-       laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-       voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-       cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
-  );
-
   private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, 
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     private authService: AuthService,
-    media: MediaMatcher, private contexts: ChildrenOutletContexts) {
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    private media: MediaMatcher,
+    private contexts: ChildrenOutletContexts
+  ) {
+    this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => this.changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+  }
+
+  ngOnInit(): void {
     this.dataSource.data = TREE_DATA;
   }
 
-  ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
-  }
-
-  private _transformer = (node: FoodNode, level: number) => {
+  private _transformer = (node: TableNode, level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
       name: node.name,
-      level: level,
+      level: level
     };
   };
 
@@ -98,10 +84,15 @@ export class AdminDashboardComponent {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-
-
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
+  getAnimationData() {
+    return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
+  }
+
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
 
   logOut() {
     this.authService.signOut();

@@ -22,14 +22,10 @@ export class LocationTypeService {
   }
 
   create(locationType: LocationType): Observable<LocationType> {
-    return this.http.post<LocationType>(this.url, locationType);
+    return this.http.post<LocationType>(this.url + "/create", locationType);
   }
 
   update(locationType: LocationType): Observable<LocationType> {
-    return this.http.put<LocationType>(this.url, locationType);
-  }
-
-  delete(id: string): Observable<LocationType> {
-    return this.http.delete<LocationType>(this.url + "/" + id);
+    return this.http.put<LocationType>(this.url + "/update", locationType);
   }
 }

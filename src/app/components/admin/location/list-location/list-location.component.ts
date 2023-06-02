@@ -1,27 +1,26 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { LocationType } from 'src/app/models/location-type.model';
-import { LocationTypeService } from 'src/app/services/location-type/location-type.service';
+import { LocationService } from 'src/app/services/location/location.service';
+import { Location } from 'c:/Users/ad/source/repos/TicketManagementSystem/TicketManagementSystem_FE/src/app/models/location.model';
 
 @Component({
-  selector: 'app-list-location-type',
-  templateUrl: './list-location-type.component.html',
-  styleUrls: ['./list-location-type.component.css']
+  selector: 'app-list-location',
+  templateUrl: './list-location.component.html',
+  styleUrls: ['./list-location.component.css']
 })
-export class ListLocationTypeComponent {
-
-  displayedColumns: string[] = ['No.', 'locationTypePath', 'locationTypeName', 'other'];
+export class ListLocationComponent {
+  displayedColumns: string[] = ['No.', 'locationImagePath', 'locationName', 'locationSummary', 'other'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  locationTypes: LocationType[] = [];
+  locations: Location[] = [];
 
   constructor(
-    private locationTypeService: LocationTypeService
+    private locationService: LocationService
   ) { }
 
   ngOnInit(): void {
@@ -29,10 +28,10 @@ export class ListLocationTypeComponent {
   }
 
   getAll() {
-    this.locationTypeService.getAll().subscribe({
+    this.locationService.getAll().subscribe({
       next: (res) => {
-        this.locationTypes = res;
-        this.dataSource = new MatTableDataSource(this.locationTypes);
+        this.locations = res;
+        this.dataSource = new MatTableDataSource(this.locations);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       },
