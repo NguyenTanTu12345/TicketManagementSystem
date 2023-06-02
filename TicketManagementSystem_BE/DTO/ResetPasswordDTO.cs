@@ -2,9 +2,9 @@
 {
     public class ResetPasswordDTO
     {
-        public string? Mail { get; set; }
-        public string? ResetPasswordToken { get; set; }
+        public string Mail { get; set; } = null!;
+        public string ResetPasswordToken { get; set; } = null!;
 
-        public DateTime? TimeSend { get; set; }
+        public DateTime TimeSend { get; set; } 
     }
 }

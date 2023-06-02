@@ -3,22 +3,32 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Security.Claims;
 using TicketManagementSystem_BE.Data;
+using TicketManagementSystem_BE.DTO;
+using TicketManagementSystem_BE.Helpers;
 using TicketManagementSystem_BE.Models;
 
 namespace TicketManagementSystem_BE.Controllers
 {
     [EnableCors("myOrigins")]
-    [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/location")]
     [ApiController]
     public class LocationController : ControllerBase
     {
         private readonly TicketManagementSystemContext _context;
+        private readonly INewID _newID;
+        private readonly IPrincipal _principal;
+        private readonly IConfiguration _configuration;
 
-        public LocationController(TicketManagementSystemContext context)
+        public LocationController(TicketManagementSystemContext context, INewID newID,
+            IPrincipal principal, IConfiguration configuration)
         {
             _context = context;
+            _newID = newID;
+            _principal = principal;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -34,41 +44,79 @@ namespace TicketManagementSystem_BE.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Location>> Get(string id)
         {
-            var location = await _context.Locations.FindAsync(id);
-            if (location == null)
+            var locations = await _context.Locations.FindAsync(id);
+            if (locations == null)
             {
                 return NotFound();
             }
-            return location;
+            return locations;
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Create(Location location)
+        [Authorize]
+        [HttpPost("create")]
+        public async Task<ActionResult> Create(LocationDTO locationDTO)
         {
+            if (locationDTO == null)
+            {
+                return BadRequest(new { meassage = "Invalid Request!!!" });
+            }
+            var principal = _principal.GetPrincipal(locationDTO.AccessToken, _configuration["JWT:SecretKey"]);
+            var userMail = principal.FindFirst(ClaimTypes.Email)?.Value;
+            var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail.Trim() == userMail);
+            if (user == null)
+            {
+                return NotFound(new { meassage = "User Not Found!!!" });
+            }
+            if (user.RoleId.Trim() != "RO01")
+            {
+                return BadRequest(new { message = "You Aren't Allowed to Do This Action" });
+            }
+            List<string> listID = await _context.Locations.Select(s => s.LocationId).ToListAsync();
+            Location location = new Location
+            {
+                LocationId = _newID.CreateLocationID(listID),
+                LocationName = locationDTO.LocationName,
+                LocationSummary = locationDTO.LocationSummary,
+                LocationContent = locationDTO.LocationContent,
+                LocationImagePath = locationDTO.LocationImagePath,
+                LocationTypeId = locationDTO.LocationTypeId
+            };
             await _context.Locations.AddAsync(location);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = location.LocationId }, location);
+            return Ok(new { message = "Create Successful~" });
         }
 
-        [HttpPut]
-        public async Task<ActionResult> Edit(Location location)
+        [Authorize]
+        [HttpPut("update")]
+        public async Task<ActionResult> Edit(LocationDTO locationDTO)
         {
-            _context.Entry(location).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = location.LocationId }, location);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(string id)
-        {
-            var location = await _context.Locations.FindAsync(id);
-            if (location == null)
+            if (locationDTO == null)
             {
-                return NotFound();
+                return BadRequest(new { meassage = "Invalid Request!!!" });
             }
-            _context.Locations.Remove(location);
+            var principal = _principal.GetPrincipal(locationDTO.AccessToken, _configuration["JWT:SecretKey"]);
+            var userMail = principal.FindFirst(ClaimTypes.Email)?.Value;
+            var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail.Trim() == userMail);
+            if (user == null)
+            {
+                return NotFound(new { meassage = "User Not Found!!!" });
+            }
+            if (user.RoleId.Trim() != "RO01")
+            {
+                return BadRequest(new { message = "You Aren't Allowed to Do This Action" });
+            }
+            Location location = new Location
+            {
+                LocationId = locationDTO.LocationId,
+                LocationName = locationDTO.LocationName,
+                LocationSummary = locationDTO.LocationSummary,
+                LocationContent = locationDTO.LocationContent,
+                LocationImagePath = locationDTO.LocationImagePath,
+                LocationTypeId = locationDTO.LocationTypeId
+            };
+            _context.Locations.Update(location);
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(new { message = "Update Successful~" });
         }
     }
 }

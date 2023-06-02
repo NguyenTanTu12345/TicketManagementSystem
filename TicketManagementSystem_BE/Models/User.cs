@@ -17,9 +17,12 @@ namespace TicketManagementSystem_BE.Models
 
         public string UserId { get; set; } = null!;
         public string UserPassword { get; set; } = null!;
-        public string? Mail { get; set; }
+        public string Mail { get; set; } = null!;
         public string? PhoneNumber { get; set; }
         public bool UserState { get; set; }
+        public string? Cccd { get; set; }
+        public string? FullName { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public string? RoleId { get; set; }
 
         public virtual Role? Role { get; set; }

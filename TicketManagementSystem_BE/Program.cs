@@ -12,9 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddScoped<ICustomEmailService, CustomEmailService>();
-builder.Services.AddScoped<INewID, NewID>();
-builder.Services.AddScoped<IPrincipal, Principal>();
+builder.Services.AddSingleton<ICustomEmailService, CustomEmailService>();
+builder.Services.AddSingleton<INewID, NewID>();
+builder.Services.AddSingleton<IPrincipal, Principal>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

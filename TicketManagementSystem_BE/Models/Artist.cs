@@ -12,6 +12,7 @@ namespace TicketManagementSystem_BE.Models
 
         public string ArtistId { get; set; } = null!;
         public string ArtistName { get; set; } = null!;
+        public string? ArtistImagePath { get; set; }
 
         public virtual ICollection<Show> Shows { get; set; }
     }
