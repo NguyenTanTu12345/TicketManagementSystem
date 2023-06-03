@@ -210,7 +210,7 @@ namespace TicketManagementSystem_BE.Controllers
         {
             if (_context.Users == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Resources Not Found!!!" });
             }
             return await _context.Users.Where(s => s.RoleId.Trim() != "RO01").ToListAsync();
         }

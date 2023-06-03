@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Security.Claims;
 using TicketManagementSystem_BE.Data;
 using TicketManagementSystem_BE.DTO;
@@ -12,52 +13,54 @@ using TicketManagementSystem_BE.Models;
 namespace TicketManagementSystem_BE.Controllers
 {
     [EnableCors("myOrigins")]
-    [Route("api/support-menu")]
+    [Route("api/news")]
     [ApiController]
-    public class SupportMenuController : ControllerBase
+    public class NewsController : ControllerBase
     {
         private readonly TicketManagementSystemContext _context;
+        private readonly INewID _newID;
         private readonly IPrincipal _principal;
         private readonly IConfiguration _configuration;
 
-        public SupportMenuController(TicketManagementSystemContext context, IPrincipal principal,
-            IConfiguration configuration)
+        public NewsController(TicketManagementSystemContext context, INewID newID,
+            IPrincipal principal, IConfiguration configuration)
         {
             _context = context;
+            _newID = newID;
             _principal = principal;
             _configuration = configuration;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SupportMenu>>> GetAll()
+        public async Task<ActionResult<IEnumerable<News>>> GetAll()
         {
-            if (_context.SupportMenus == null)
+            if (_context.News == null)
             {
                 return NotFound(new { message = "Resources Not Found!!!" });
             }
-            return await _context.SupportMenus.ToListAsync();
+            return await _context.News.ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<SupportMenu>> Get(int id)
+        public async Task<ActionResult<News>> Get(string id)
         {
-            var supportMenu = await _context.SupportMenus.FindAsync(id);
-            if (supportMenu == null)
+            var news = await _context.News.FindAsync(id);
+            if (news == null)
             {
                 return NotFound(new { message = "Resource Not Found!!!" });
             }
-            return supportMenu;
+            return news;
         }
 
         [Authorize]
         [HttpPost("create")]
-        public async Task<ActionResult> Create(SupportMenuDTO supportMenuDTO)
+        public async Task<ActionResult> Create(NewsDTO newsDTO)
         {
-            if (supportMenuDTO == null)
+            if (newsDTO == null)
             {
                 return BadRequest(new { meassage = "Invalid Request!!!" });
             }
-            var principal = _principal.GetPrincipal(supportMenuDTO.AccessToken, _configuration["JWT:SecretKey"]);
+            var principal = _principal.GetPrincipal(newsDTO.AccessToken, _configuration["JWT:SecretKey"]);
             var userMail = principal.FindFirst(ClaimTypes.Email)?.Value;
             var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail.Trim() == userMail);
             if (user == null)
@@ -68,34 +71,37 @@ namespace TicketManagementSystem_BE.Controllers
             {
                 return BadRequest(new { message = "You Aren't Allowed to Do This Action" });
             }
-            SupportMenu supportMenu = new SupportMenu
+            List<string> listID = await _context.News.Select(s => s.NewsId).ToListAsync();
+            News news = new News
             {
-                SupportMenuTitle = supportMenuDTO.SupportMenuTitle,
-                SupportMenuContent = supportMenuDTO.SupportMenuContent,
-                UserId = user.UserId.Trim()
+                NewsId = _newID.CreateNewsID(listID),
+                NewsContent = newsDTO.NewsContent,
+                NewsDate = newsDTO.NewsDate,
+                NewsImagePath = newsDTO.NewsImagePath,
+                NewsTitle = newsDTO.NewsTitle
             };
-            await _context.SupportMenus.AddAsync(supportMenu);
+            await _context.News.AddAsync(news);
             await _context.SaveChangesAsync();
-            return Ok(new { message  = "Create Successful~"});
+            return Ok(new { message = "Create Successful~" });
         }
 
         [HttpPost("create-range")]
-        public async Task<IActionResult> CreateRange(List<SupportMenu> supportMenus)
+        public async Task<IActionResult> CreateRange(List<News> news)
         {
-            await _context.SupportMenus.AddRangeAsync(supportMenus);
+            await _context.News.AddRangeAsync(news);
             await _context.SaveChangesAsync();
             return Ok(new { message = "Create Successful~" });
         }
 
         [Authorize]
         [HttpPut("update")]
-        public async Task<ActionResult> Update(SupportMenuDTO supportMenuDTO)
+        public async Task<ActionResult> Edit(NewsDTO newsDTO)
         {
-            if (supportMenuDTO == null)
+            if (newsDTO == null)
             {
                 return BadRequest(new { meassage = "Invalid Request!!!" });
             }
-            var principal = _principal.GetPrincipal(supportMenuDTO.AccessToken, _configuration["JWT:SecretKey"]);
+            var principal = _principal.GetPrincipal(newsDTO.AccessToken, _configuration["JWT:SecretKey"]);
             var userMail = principal.FindFirst(ClaimTypes.Email)?.Value;
             var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail.Trim() == userMail);
             if (user == null)
@@ -106,31 +112,18 @@ namespace TicketManagementSystem_BE.Controllers
             {
                 return BadRequest(new { message = "You Aren't Allowed to Do This Action" });
             }
-            var supportMenu = await _context.SupportMenus.FindAsync(supportMenuDTO.SupportMenuId);
-            if (supportMenu == null) 
+            var news = await _context.News.FindAsync(newsDTO.NewsId);
+            if (news == null)
             {
-                return NotFound(new { meassage = "Resource Not Found!!!" });
+                return NotFound(new { message = "Resource Not Found!!!" });
             }
-            supportMenu.SupportMenuTitle = supportMenuDTO.SupportMenuTitle;
-            supportMenu.SupportMenuContent = supportMenuDTO.SupportMenuContent;
-            supportMenu.UserId = user.UserId;
-            _context.Update(supportMenu);
+            news.NewsContent = newsDTO.NewsContent;
+            news.NewsDate = newsDTO.NewsDate;
+            news.NewsImagePath = newsDTO.NewsImagePath;
+            news.NewsTitle = newsDTO.NewsTitle;
+            _context.News.Update(news);
             await _context.SaveChangesAsync();
             return Ok(new { message = "Update Successful~" });
-        }
-
-        [Authorize]
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
-        {
-            var supportMenu = await _context.SupportMenus.FindAsync(id);
-            if (supportMenu == null)
-            {
-                return NotFound();
-            }
-            _context.SupportMenus.Remove(supportMenu);
-            await _context.SaveChangesAsync();
-            return Ok(new { message = "Delete Successful~" });
         }
     }
 }

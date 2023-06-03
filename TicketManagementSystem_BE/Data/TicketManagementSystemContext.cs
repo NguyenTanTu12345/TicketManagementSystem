@@ -55,7 +55,7 @@ namespace TicketManagementSystem_BE.Data
                     .IsFixedLength();
 
                 entity.Property(e => e.ArtistImagePath)
-                    .HasMaxLength(100)
+                    .HasMaxLength(150)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ArtistName).HasMaxLength(35);
@@ -110,7 +110,7 @@ namespace TicketManagementSystem_BE.Data
                 entity.Property(e => e.LocationContent).HasMaxLength(1000);
 
                 entity.Property(e => e.LocationImagePath)
-                    .HasMaxLength(100)
+                    .HasMaxLength(150)
                     .IsUnicode(false);
 
                 entity.Property(e => e.LocationName).HasMaxLength(100);
@@ -142,7 +142,7 @@ namespace TicketManagementSystem_BE.Data
                 entity.Property(e => e.LocationTypeName).HasMaxLength(100);
 
                 entity.Property(e => e.LocationTypePath)
-                    .HasMaxLength(100)
+                    .HasMaxLength(150)
                     .IsUnicode(false);
             });
 
@@ -159,7 +159,7 @@ namespace TicketManagementSystem_BE.Data
                 entity.Property(e => e.NewsDate).HasColumnType("datetime");
 
                 entity.Property(e => e.NewsImagePath)
-                    .HasMaxLength(100)
+                    .HasMaxLength(150)
                     .IsUnicode(false);
 
                 entity.Property(e => e.NewsTitle).HasMaxLength(100);
@@ -172,7 +172,7 @@ namespace TicketManagementSystem_BE.Data
                         r => r.HasOne<News>().WithMany().HasForeignKey("NewsId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__UserLikeN__NewsI__4222D4EF"),
                         j =>
                         {
-                            j.HasKey("NewsId", "UserId").HasName("PK__UserLike__4436311998856D03");
+                            j.HasKey("NewsId", "UserId").HasName("PK__UserLike__44363119BF4DA6D3");
 
                             j.ToTable("UserLikeNews");
 
@@ -225,11 +225,7 @@ namespace TicketManagementSystem_BE.Data
             {
                 entity.ToTable("ProgramImage");
 
-                entity.Property(e => e.ProgramImageId)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("ProgramImageID")
-                    .IsFixedLength();
+                entity.Property(e => e.ProgramImageId).HasColumnName("ProgramImageID");
 
                 entity.Property(e => e.ProgramId)
                     .HasMaxLength(10)
@@ -238,13 +234,13 @@ namespace TicketManagementSystem_BE.Data
                     .IsFixedLength();
 
                 entity.Property(e => e.ProgramImagePath)
-                    .HasMaxLength(100)
+                    .HasMaxLength(150)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Program)
                     .WithMany(p => p.ProgramImages)
                     .HasForeignKey(d => d.ProgramId)
-                    .HasConstraintName("FK__ProgramIm__Progr__3C69FB99");
+                    .HasConstraintName("FK__ProgramIm__Progr__5CD6CB2B");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -261,7 +257,7 @@ namespace TicketManagementSystem_BE.Data
             modelBuilder.Entity<Show>(entity =>
             {
                 entity.HasKey(e => new { e.ProgramId, e.ArtistId })
-                    .HasName("PK__Show__6772668F98FEA0DC");
+                    .HasName("PK__Show__6772668F0CF9D97D");
 
                 entity.ToTable("Show");
 
@@ -380,7 +376,7 @@ namespace TicketManagementSystem_BE.Data
                         r => r.HasOne<User>().WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__UserLikeL__UserI__45F365D3"),
                         j =>
                         {
-                            j.HasKey("UserId", "LocationId").HasName("PK__UserLike__79F726EBB1416DA1");
+                            j.HasKey("UserId", "LocationId").HasName("PK__UserLike__79F726EB63276B34");
 
                             j.ToTable("UserLikeLocation");
 
@@ -393,7 +389,7 @@ namespace TicketManagementSystem_BE.Data
             modelBuilder.Entity<UserProgram>(entity =>
             {
                 entity.HasKey(e => new { e.UserId, e.ProgramId })
-                    .HasName("PK__UserProg__80DA9AAFE5E02C62");
+                    .HasName("PK__UserProg__80DA9AAF07DA6831");
 
                 entity.ToTable("UserProgram");
 
@@ -415,7 +411,7 @@ namespace TicketManagementSystem_BE.Data
                     .IsFixedLength();
 
                 entity.Property(e => e.QrcodePath)
-                    .HasMaxLength(100)
+                    .HasMaxLength(150)
                     .IsUnicode(false)
                     .HasColumnName("QRCodePath");
 
@@ -440,7 +436,7 @@ namespace TicketManagementSystem_BE.Data
             modelBuilder.Entity<UserSchedule>(entity =>
             {
                 entity.HasKey(e => new { e.UserId, e.TicketScheduleId })
-                    .HasName("PK__UserSche__8253A542B44A1F2E");
+                    .HasName("PK__UserSche__8253A542BE8D3D39");
 
                 entity.ToTable("UserSchedule");
 
@@ -479,7 +475,7 @@ namespace TicketManagementSystem_BE.Data
             modelBuilder.Entity<UserToken>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__UserToke__1788CCAC24C0A448");
+                    .HasName("PK__UserToke__1788CCACA390ECA7");
 
                 entity.ToTable("UserToken");
 

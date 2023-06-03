@@ -36,7 +36,7 @@ namespace TicketManagementSystem_BE.Controllers
         {
             if (_context.Locations == null)
             {
-                return NotFound();
+                return NotFound(new {message = "Resources Not Found!!!" });
             }
             return await _context.Locations.ToListAsync();
         }
@@ -47,7 +47,7 @@ namespace TicketManagementSystem_BE.Controllers
             var locations = await _context.Locations.FindAsync(id);
             if (locations == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Resource Not Found!!!" });
             }
             return locations;
         }
@@ -86,6 +86,14 @@ namespace TicketManagementSystem_BE.Controllers
             return Ok(new { message = "Create Successful~" });
         }
 
+        [HttpPost("create-range")]
+        public async Task<IActionResult> CreateRange(List<Location> locations)
+        {
+            await _context.Locations.AddRangeAsync(locations);
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Create Successful~" });
+        }
+
         [Authorize]
         [HttpPut("update")]
         public async Task<ActionResult> Edit(LocationDTO locationDTO)
@@ -105,15 +113,16 @@ namespace TicketManagementSystem_BE.Controllers
             {
                 return BadRequest(new { message = "You Aren't Allowed to Do This Action" });
             }
-            Location location = new Location
+            var location = await _context.Locations.FindAsync(locationDTO.LocationId);
+            if (location  == null)
             {
-                LocationId = locationDTO.LocationId,
-                LocationName = locationDTO.LocationName,
-                LocationSummary = locationDTO.LocationSummary,
-                LocationContent = locationDTO.LocationContent,
-                LocationImagePath = locationDTO.LocationImagePath,
-                LocationTypeId = locationDTO.LocationTypeId
-            };
+                return NotFound(new { message = "Resource Not Found!!!" });
+            }
+            location.LocationName = locationDTO.LocationName;
+            location.LocationSummary = locationDTO.LocationSummary;
+            location.LocationContent = locationDTO.LocationContent;
+            location.LocationImagePath = locationDTO.LocationImagePath;
+            location.LocationTypeId = locationDTO.LocationTypeId;
             _context.Locations.Update(location);
             await _context.SaveChangesAsync();
             return Ok(new { message = "Update Successful~" });

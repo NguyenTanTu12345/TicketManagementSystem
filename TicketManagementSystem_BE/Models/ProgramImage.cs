@@ -5,7 +5,7 @@ namespace TicketManagementSystem_BE.Models
 {
     public partial class ProgramImage
     {
-        public string ProgramImageId { get; set; } = null!;
+        public int ProgramImageId { get; set; }
         public string ProgramImagePath { get; set; } = null!;
         public string? ProgramId { get; set; }
 

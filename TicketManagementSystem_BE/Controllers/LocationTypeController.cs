@@ -13,7 +13,7 @@ using TicketManagementSystem_BE.Models;
 namespace TicketManagementSystem_BE.Controllers
 {
     [EnableCors("myOrigins")]
-    [Route("api/[controller]")]
+    [Route("api/location-type")]
     [ApiController]
     public class LocationTypeController : ControllerBase
     {
@@ -36,7 +36,7 @@ namespace TicketManagementSystem_BE.Controllers
         {
             if (_context.LocationTypes == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Resources Not Found!!!" });
             }
             return await _context.LocationTypes.ToListAsync();
         }
@@ -47,7 +47,7 @@ namespace TicketManagementSystem_BE.Controllers
             var locationType = await _context.LocationTypes.FindAsync(id);
             if (locationType == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Resource Not Found!!!" });
             }
             return locationType;
         }
@@ -83,6 +83,14 @@ namespace TicketManagementSystem_BE.Controllers
             return Ok(new { message = "Create Successful~" });
         }
 
+        [HttpPost("create-range")]
+        public async Task<IActionResult> CreateRange(List<LocationType> locationTypes)
+        {
+            await _context.LocationTypes.AddRangeAsync(locationTypes);
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Create Successful~" });
+        }
+
         [Authorize]
         [HttpPut("update")]
         public async Task<ActionResult> Edit(LocationTypeDTO locationTypeDTO)
@@ -102,12 +110,13 @@ namespace TicketManagementSystem_BE.Controllers
             {
                 return BadRequest(new { message = "You Aren't Allowed to Do This Action" });
             }
-            LocationType locationType = new LocationType
+            var locationType = await _context.LocationTypes.FindAsync(locationTypeDTO.LocationTypeId);
+            if (locationType == null)
             {
-                LocationTypeId = locationTypeDTO.LocationTypeId,
-                LocationTypeName = locationTypeDTO.LocationTypeName,
-                LocationTypePath = locationTypeDTO.LocationTypePath
-            };
+                return NotFound(new { message = "Resource Not Found!!!" });
+            }
+            locationType.LocationTypeName = locationTypeDTO.LocationTypeName;
+            locationType.LocationTypePath = locationTypeDTO.LocationTypePath;
             _context.LocationTypes.Update(locationType);
             await _context.SaveChangesAsync();
             return Ok(new { message = "Update Successful~" });
