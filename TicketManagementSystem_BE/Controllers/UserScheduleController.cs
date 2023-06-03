@@ -16,7 +16,7 @@ namespace TicketManagementSystem_BE.Controllers
     [ApiController]
     public class UserScheduleController : ControllerBase
     {
-       /* private readonly TicketManagementSystemContext _context;
+        private readonly TicketManagementSystemContext _context;
         private readonly INewID _newID;
         private readonly IPrincipal _principal;
         private readonly IConfiguration _configuration;
@@ -189,6 +189,6 @@ namespace TicketManagementSystem_BE.Controllers
             _context.UserSchedules.Update(userSchedule);
             await _context.SaveChangesAsync();
             return Ok(new { message = "Create Successful~" });
-        }*/
+        }
     }
 }

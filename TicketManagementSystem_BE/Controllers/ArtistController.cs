@@ -17,7 +17,7 @@ namespace TicketManagementSystem_BE.Controllers
     [ApiController]
     public class ArtistController : ControllerBase
     {
-        /*private readonly TicketManagementSystemContext _context;
+        private readonly TicketManagementSystemContext _context;
         private readonly INewID _newID;
         private readonly IPrincipal _principal;
         private readonly IConfiguration _configuration;
@@ -67,7 +67,7 @@ namespace TicketManagementSystem_BE.Controllers
             return programDTOs;
         }
 
-       // [Authorize]
+        [Authorize]
         [HttpPost("create")]
         public async Task<ActionResult> Create(ArtistDTO artistDTO)
         {
@@ -95,8 +95,7 @@ namespace TicketManagementSystem_BE.Controllers
                 ArtistImagePath = artistDTO.ArtistImagePath
             };
             await _context.Artists.AddAsync(artist);
-            string programId = artistDTO.ProgramID;
-            string[] programIds = programId.Split('@');
+            List<string> programIds = artistDTO.ProgramID;
             foreach (var item in programIds)
             {
                 if (item != "" || item != null)
@@ -106,7 +105,7 @@ namespace TicketManagementSystem_BE.Controllers
                         ArtistId = artistId,
                         ProgramId = item
                     };
-                    await _context.AddAsync(show);
+                    await _context.Shows.AddAsync(show);
                 }
             }
             await _context.SaveChangesAsync();
@@ -140,9 +139,9 @@ namespace TicketManagementSystem_BE.Controllers
             artist.ArtistName = artistDTO.ArtistName;
             artist.ArtistImagePath = artistDTO.ArtistImagePath;
             _context.Artists.Update(artist);
-            //var shows = await _context.Fi
-            string programId = artistDTO.ProgramID;
-            string[] programIds = programId.Split('@');
+            var shows = await _context.Shows.Where(s => s.ArtistId == artistDTO.ArtistId).ToListAsync();
+            _context.Shows.RemoveRange(shows);
+            List<string> programIds = artistDTO.ProgramID;
             foreach (var item in programIds)
             {
                 if (item != "" || item != null)
@@ -157,6 +156,6 @@ namespace TicketManagementSystem_BE.Controllers
             }
             await _context.SaveChangesAsync();
             return Ok(new { message = "Update Successful~" });
-        }*/
+        }
     }
 }

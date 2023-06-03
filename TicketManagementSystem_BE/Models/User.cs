@@ -9,10 +9,10 @@ namespace TicketManagementSystem_BE.Models
         {
             Histories = new HashSet<History>();
             SupportMenus = new HashSet<SupportMenu>();
+            UserLikeLocations = new HashSet<UserLikeLocation>();
+            UserLikeNews = new HashSet<UserLikeNews>();
             UserPrograms = new HashSet<UserProgram>();
             UserSchedules = new HashSet<UserSchedule>();
-            Locations = new HashSet<Location>();
-            News = new HashSet<News>();
         }
 
         public string UserId { get; set; } = null!;
@@ -29,10 +29,9 @@ namespace TicketManagementSystem_BE.Models
         public virtual UserToken? UserToken { get; set; }
         public virtual ICollection<History> Histories { get; set; }
         public virtual ICollection<SupportMenu> SupportMenus { get; set; }
+        public virtual ICollection<UserLikeLocation> UserLikeLocations { get; set; }
+        public virtual ICollection<UserLikeNews> UserLikeNews { get; set; }
         public virtual ICollection<UserProgram> UserPrograms { get; set; }
         public virtual ICollection<UserSchedule> UserSchedules { get; set; }
-
-        public virtual ICollection<Location> Locations { get; set; }
-        public virtual ICollection<News> News { get; set; }
     }
 }

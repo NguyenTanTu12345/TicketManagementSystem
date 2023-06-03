@@ -7,7 +7,7 @@ namespace TicketManagementSystem_BE.Models
     {
         public News()
         {
-            Users = new HashSet<User>();
+            UserLikeNews = new HashSet<UserLikeNews>();
         }
 
         public string NewsId { get; set; } = null!;
@@ -16,6 +16,6 @@ namespace TicketManagementSystem_BE.Models
         public string? NewsImagePath { get; set; }
         public DateTime NewsDate { get; set; }
 
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<UserLikeNews> UserLikeNews { get; set; }
     }
 }

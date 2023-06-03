@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using TicketManagementSystem_BE.Data;
-using TicketManagementSystem_BE.Models;
-
-namespace TicketManagementSystem_BE.Helpers
+﻿namespace TicketManagementSystem_BE.Helpers
 {
     public interface INewID
     {

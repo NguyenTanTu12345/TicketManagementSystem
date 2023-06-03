@@ -20,7 +20,7 @@ namespace TicketManagementSystem_BE.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        /*private readonly TicketManagementSystemContext _context;
+        private readonly TicketManagementSystemContext _context;
         private readonly INewID _newID;
         private readonly IConfiguration _configuration;
         private readonly IPrincipal _principal;
@@ -328,6 +328,6 @@ namespace TicketManagementSystem_BE.Controllers
                 _context.UserTokens.Update(userToken);
             }
             await _context.SaveChangesAsync();
-        }*/
+        }
     }
 }

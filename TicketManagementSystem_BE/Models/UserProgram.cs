@@ -5,6 +5,7 @@ namespace TicketManagementSystem_BE.Models
 {
     public partial class UserProgram
     {
+        public int UserProgramId { get; set; }
         public string UserId { get; set; } = null!;
         public string ProgramId { get; set; } = null!;
         public string UserProgramType { get; set; } = null!;

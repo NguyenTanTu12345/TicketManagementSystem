@@ -9,9 +9,9 @@ namespace TicketManagementSystem_BE.Models
         {
             Histories = new HashSet<History>();
             ProgramImages = new HashSet<ProgramImage>();
+            Shows = new HashSet<Show>();
             UserPrograms = new HashSet<UserProgram>();
             UserSchedules = new HashSet<UserSchedule>();
-            Artists = new HashSet<Artist>();
         }
 
         public string ProgramId { get; set; } = null!;
@@ -29,9 +29,8 @@ namespace TicketManagementSystem_BE.Models
         public virtual Location? Location { get; set; }
         public virtual ICollection<History> Histories { get; set; }
         public virtual ICollection<ProgramImage> ProgramImages { get; set; }
+        public virtual ICollection<Show> Shows { get; set; }
         public virtual ICollection<UserProgram> UserPrograms { get; set; }
         public virtual ICollection<UserSchedule> UserSchedules { get; set; }
-
-        public virtual ICollection<Artist> Artists { get; set; }
     }
 }

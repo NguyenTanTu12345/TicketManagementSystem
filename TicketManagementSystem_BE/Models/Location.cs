@@ -8,7 +8,7 @@ namespace TicketManagementSystem_BE.Models
         public Location()
         {
             Programs = new HashSet<Program>();
-            Users = new HashSet<User>();
+            UserLikeLocations = new HashSet<UserLikeLocation>();
         }
 
         public string LocationId { get; set; } = null!;
@@ -20,7 +20,6 @@ namespace TicketManagementSystem_BE.Models
 
         public virtual LocationType? LocationType { get; set; }
         public virtual ICollection<Program> Programs { get; set; }
-
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<UserLikeLocation> UserLikeLocations { get; set; }
     }
 }

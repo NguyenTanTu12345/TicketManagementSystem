@@ -25,8 +25,11 @@ namespace TicketManagementSystem_BE.Data
         public virtual DbSet<Models.Program> Programs { get; set; } = null!;
         public virtual DbSet<ProgramImage> ProgramImages { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
+        public virtual DbSet<Show> Shows { get; set; } = null!;
         public virtual DbSet<SupportMenu> SupportMenus { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<UserLikeLocation> UserLikeLocations { get; set; } = null!;
+        public virtual DbSet<UserLikeNews> UserLikeNews { get; set; } = null!;
         public virtual DbSet<UserProgram> UserPrograms { get; set; } = null!;
         public virtual DbSet<UserSchedule> UserSchedules { get; set; } = null!;
         public virtual DbSet<UserToken> UserTokens { get; set; } = null!;
@@ -42,37 +45,6 @@ namespace TicketManagementSystem_BE.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Show>(entity =>
-            {
-                entity.HasKey(e => new { e.ArtistId, e.ProgramId })
-                    .HasName("PK__Show__6772668F19A1F332");
-
-                entity.ToTable("Show");
-
-                entity.Property(e => e.ArtistId)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("ArtistID")
-                    .IsFixedLength();
-
-                entity.Property(e => e.ProgramId)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("ProgramID")
-                    .IsFixedLength();
-
-                entity.HasOne(d => d.Program)
-                    .WithMany(p => p.Show)
-                    .HasForeignKey(d => d.ProgramId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserSched__Progr__778AC167");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.UserSchedules)
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserSched__UserI__76969D2E");
-            });
             modelBuilder.Entity<Artist>(entity =>
             {
                 entity.ToTable("Artist");
@@ -120,12 +92,12 @@ namespace TicketManagementSystem_BE.Data
                 entity.HasOne(d => d.Program)
                     .WithMany(p => p.Histories)
                     .HasForeignKey(d => d.ProgramId)
-                    .HasConstraintName("FK__History__Program__7B5B524B");
+                    .HasConstraintName("FK__History__Program__5070F446");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Histories)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__History__UserID__7A672E12");
+                    .HasConstraintName("FK__History__UserID__4F7CD00D");
             });
 
             modelBuilder.Entity<Location>(entity =>
@@ -155,7 +127,7 @@ namespace TicketManagementSystem_BE.Data
                 entity.HasOne(d => d.LocationType)
                     .WithMany(p => p.Locations)
                     .HasForeignKey(d => d.LocationTypeId)
-                    .HasConstraintName("FK__Locations__Locat__33D4B598");
+                    .HasConstraintName("FK__Locations__Locat__31EC6D26");
             });
 
             modelBuilder.Entity<LocationType>(entity =>
@@ -192,23 +164,6 @@ namespace TicketManagementSystem_BE.Data
                     .IsUnicode(false);
 
                 entity.Property(e => e.NewsTitle).HasMaxLength(100);
-
-                entity.HasMany(d => d.Users)
-                    .WithMany(p => p.News)
-                    .UsingEntity<Dictionary<string, object>>(
-                        "UserLikeNews",
-                        l => l.HasOne<User>().WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__UserLikeN__UserI__4316F928"),
-                        r => r.HasOne<News>().WithMany().HasForeignKey("NewsId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__UserLikeN__NewsI__4222D4EF"),
-                        j =>
-                        {
-                            j.HasKey("NewsId", "UserId").HasName("PK__UserLike__44363119BF4DA6D3");
-
-                            j.ToTable("UserLikeNews");
-
-                            j.IndexerProperty<string>("NewsId").HasMaxLength(10).IsUnicode(false).HasColumnName("NewsID").IsFixedLength();
-
-                            j.IndexerProperty<string>("UserId").HasMaxLength(10).IsUnicode(false).HasColumnName("UserID").IsFixedLength();
-                        });
             });
 
             modelBuilder.Entity<Models.Program>(entity =>
@@ -247,24 +202,7 @@ namespace TicketManagementSystem_BE.Data
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Programs)
                     .HasForeignKey(d => d.LocationId)
-                    .HasConstraintName("FK__Program__Locatio__36B12243");
-
-                entity.HasMany(d => d.Artists)
-                    .WithMany(p => p.Programs)
-                    .UsingEntity<Dictionary<string, object>>(
-                        "Show",
-                        l => l.HasOne<Artist>().WithMany().HasForeignKey("ArtistId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Show__ArtistID__7F2BE32F"),
-                        r => r.HasOne<Models.Program>().WithMany().HasForeignKey("ProgramId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Show__ProgramID__7E37BEF6"),
-                        j =>
-                        {
-                            j.HasKey("ProgramId", "ArtistId").HasName("PK__Show__6772668F19A1F332");
-
-                            j.ToTable("Show");
-
-                            j.IndexerProperty<string>("ProgramId").HasMaxLength(10).IsUnicode(false).HasColumnName("ProgramID").IsFixedLength();
-
-                            j.IndexerProperty<string>("ArtistId").HasMaxLength(10).IsUnicode(false).HasColumnName("ArtistID").IsFixedLength();
-                        });
+                    .HasConstraintName("FK__Program__Locatio__34C8D9D1");
             });
 
             modelBuilder.Entity<ProgramImage>(entity =>
@@ -286,7 +224,7 @@ namespace TicketManagementSystem_BE.Data
                 entity.HasOne(d => d.Program)
                     .WithMany(p => p.ProgramImages)
                     .HasForeignKey(d => d.ProgramId)
-                    .HasConstraintName("FK__ProgramIm__Progr__5CD6CB2B");
+                    .HasConstraintName("FK__ProgramIm__Progr__3A81B327");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -298,6 +236,37 @@ namespace TicketManagementSystem_BE.Data
                     .IsFixedLength();
 
                 entity.Property(e => e.RoleName).HasMaxLength(30);
+            });
+
+            modelBuilder.Entity<Show>(entity =>
+            {
+                entity.ToTable("Show");
+
+                entity.Property(e => e.ShowId).HasColumnName("ShowID");
+
+                entity.Property(e => e.ArtistId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("ArtistID")
+                    .IsFixedLength();
+
+                entity.Property(e => e.ProgramId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("ProgramID")
+                    .IsFixedLength();
+
+                entity.HasOne(d => d.Artist)
+                    .WithMany(p => p.Shows)
+                    .HasForeignKey(d => d.ArtistId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Show__ArtistID__3D5E1FD2");
+
+                entity.HasOne(d => d.Program)
+                    .WithMany(p => p.Shows)
+                    .HasForeignKey(d => d.ProgramId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Show__ProgramID__3C69FB99");
             });
 
             modelBuilder.Entity<SupportMenu>(entity =>
@@ -319,7 +288,7 @@ namespace TicketManagementSystem_BE.Data
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.SupportMenus)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__SupportMe__UserI__398D8EEE");
+                    .HasConstraintName("FK__SupportMe__UserI__37A5467C");
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -363,37 +332,78 @@ namespace TicketManagementSystem_BE.Data
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleId)
-                    .HasConstraintName("FK__Users__RoleID__2E1BDC42");
-
-                entity.HasMany(d => d.Locations)
-                    .WithMany(p => p.Users)
-                    .UsingEntity<Dictionary<string, object>>(
-                        "UserLikeLocation",
-                        l => l.HasOne<Location>().WithMany().HasForeignKey("LocationId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__UserLikeL__Locat__46E78A0C"),
-                        r => r.HasOne<User>().WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__UserLikeL__UserI__45F365D3"),
-                        j =>
-                        {
-                            j.HasKey("UserId", "LocationId").HasName("PK__UserLike__79F726EB63276B34");
-
-                            j.ToTable("UserLikeLocation");
-
-                            j.IndexerProperty<string>("UserId").HasMaxLength(10).IsUnicode(false).HasColumnName("UserID").IsFixedLength();
-
-                            j.IndexerProperty<string>("LocationId").HasMaxLength(10).IsUnicode(false).HasColumnName("LocationID").IsFixedLength();
-                        });
+                    .HasConstraintName("FK__Users__RoleID__2C3393D0");
             });
 
-            modelBuilder.Entity<UserProgram>(entity =>
+            modelBuilder.Entity<UserLikeLocation>(entity =>
             {
-                entity.HasKey(e => new { e.UserId, e.ProgramId })
-                    .HasName("PK__UserProg__80DA9AAF07DA6831");
+                entity.ToTable("UserLikeLocation");
 
-                entity.ToTable("UserProgram");
+                entity.Property(e => e.UserLikeLocationId).HasColumnName("UserLikeLocationID");
+
+                entity.Property(e => e.LocationId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("LocationID")
+                    .IsFixedLength();
 
                 entity.Property(e => e.UserId)
                     .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("UserID")
+                    .IsFixedLength();
+
+                entity.HasOne(d => d.Location)
+                    .WithMany(p => p.UserLikeLocations)
+                    .HasForeignKey(d => d.LocationId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserLikeL__Locat__44FF419A");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserLikeLocations)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserLikeL__UserI__440B1D61");
+            });
+
+            modelBuilder.Entity<UserLikeNews>(entity =>
+            {
+                entity.Property(e => e.UserLikeNewsId).HasColumnName("UserLikeNewsID");
+
+                entity.Property(e => e.NewsId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("NewsID")
+                    .IsFixedLength();
+
+                entity.Property(e => e.UserId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("UserID")
+                    .IsFixedLength();
+
+                entity.HasOne(d => d.News)
+                    .WithMany(p => p.UserLikeNews)
+                    .HasForeignKey(d => d.NewsId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserLikeN__NewsI__403A8C7D");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserLikeNews)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserLikeN__UserI__412EB0B6");
+            });
+
+            modelBuilder.Entity<UserProgram>(entity =>
+            {
+                entity.ToTable("UserProgram");
+
+                entity.Property(e => e.UserProgramId).HasColumnName("UserProgramID");
+
+                entity.Property(e => e.AlarmTime)
+                    .HasMaxLength(5)
+                    .IsUnicode(false)
                     .IsFixedLength();
 
                 entity.Property(e => e.ProgramId)
@@ -402,15 +412,16 @@ namespace TicketManagementSystem_BE.Data
                     .HasColumnName("ProgramID")
                     .IsFixedLength();
 
-                entity.Property(e => e.AlarmTime)
-                    .HasMaxLength(5)
-                    .IsUnicode(false)
-                    .IsFixedLength();
-
                 entity.Property(e => e.QrcodePath)
                     .HasMaxLength(150)
                     .IsUnicode(false)
                     .HasColumnName("QRCodePath");
+
+                entity.Property(e => e.UserId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("UserID")
+                    .IsFixedLength();
 
                 entity.Property(e => e.UserProgramType)
                     .HasMaxLength(1)
@@ -421,19 +432,19 @@ namespace TicketManagementSystem_BE.Data
                     .WithMany(p => p.UserPrograms)
                     .HasForeignKey(d => d.ProgramId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserProgr__Progr__4AB81AF0");
+                    .HasConstraintName("FK__UserProgr__Progr__48CFD27E");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserPrograms)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserProgr__UserI__49C3F6B7");
+                    .HasConstraintName("FK__UserProgr__UserI__47DBAE45");
             });
 
             modelBuilder.Entity<UserSchedule>(entity =>
             {
                 entity.HasKey(e => new { e.UserId, e.ProgramId })
-                    .HasName("PK__UserSche__80DA9AAF6093A187");
+                    .HasName("PK__UserSche__80DA9AAF973E988A");
 
                 entity.ToTable("UserSchedule");
 
@@ -460,19 +471,19 @@ namespace TicketManagementSystem_BE.Data
                     .WithMany(p => p.UserSchedules)
                     .HasForeignKey(d => d.ProgramId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserSched__Progr__778AC167");
+                    .HasConstraintName("FK__UserSched__Progr__4CA06362");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserSchedules)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserSched__UserI__76969D2E");
+                    .HasConstraintName("FK__UserSched__UserI__4BAC3F29");
             });
 
             modelBuilder.Entity<UserToken>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__UserToke__1788CCACA390ECA7");
+                    .HasName("PK__UserToke__1788CCAC2B395174");
 
                 entity.ToTable("UserToken");
 
@@ -500,7 +511,7 @@ namespace TicketManagementSystem_BE.Data
                     .WithOne(p => p.UserToken)
                     .HasForeignKey<UserToken>(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserToken__UserI__30F848ED");
+                    .HasConstraintName("FK__UserToken__UserI__2F10007B");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -7,13 +7,13 @@ namespace TicketManagementSystem_BE.Models
     {
         public Artist()
         {
-            Programs = new HashSet<Program>();
+            Shows = new HashSet<Show>();
         }
 
         public string ArtistId { get; set; } = null!;
         public string ArtistName { get; set; } = null!;
         public string? ArtistImagePath { get; set; }
 
-        public virtual ICollection<Program> Programs { get; set; }
+        public virtual ICollection<Show> Shows { get; set; }
     }
 }

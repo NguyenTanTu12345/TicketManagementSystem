@@ -16,7 +16,7 @@ namespace TicketManagementSystem_BE.Controllers
     [ApiController]
     public class ProgramController : ControllerBase
     {
-        /*private readonly TicketManagementSystemContext _context;
+        private readonly TicketManagementSystemContext _context;
         private readonly IPrincipal _principal;
         private readonly IConfiguration _configuration;
         private readonly INewID _newID;
@@ -194,6 +194,6 @@ namespace TicketManagementSystem_BE.Controllers
             }
             await _context.SaveChangesAsync();
             return Ok(new { message = "Update Successful~" });
-        }*/
+        }
     }
 }
