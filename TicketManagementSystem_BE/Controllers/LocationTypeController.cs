@@ -17,7 +17,7 @@ namespace TicketManagementSystem_BE.Controllers
     [ApiController]
     public class LocationTypeController : ControllerBase
     {
-        private readonly TicketManagementSystemContext _context;
+        /*private readonly TicketManagementSystemContext _context;
         private readonly INewID _newID;
         private readonly IPrincipal _principal;
         private readonly IConfiguration _configuration;
@@ -83,6 +83,7 @@ namespace TicketManagementSystem_BE.Controllers
             return Ok(new { message = "Create Successful~" });
         }
 
+        [Authorize]
         [HttpPost("create-range")]
         public async Task<IActionResult> CreateRange(List<LocationType> locationTypes)
         {
@@ -120,6 +121,6 @@ namespace TicketManagementSystem_BE.Controllers
             _context.LocationTypes.Update(locationType);
             await _context.SaveChangesAsync();
             return Ok(new { message = "Update Successful~" });
-        }
+        }*/
     }
 }

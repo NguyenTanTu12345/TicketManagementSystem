@@ -16,7 +16,7 @@ namespace TicketManagementSystem_BE.Controllers
     [ApiController]
     public class SupportMenuController : ControllerBase
     {
-        private readonly TicketManagementSystemContext _context;
+       /* private readonly TicketManagementSystemContext _context;
         private readonly IPrincipal _principal;
         private readonly IConfiguration _configuration;
 
@@ -79,6 +79,7 @@ namespace TicketManagementSystem_BE.Controllers
             return Ok(new { message  = "Create Successful~"});
         }
 
+        [Authorize]
         [HttpPost("create-range")]
         public async Task<IActionResult> CreateRange(List<SupportMenu> supportMenus)
         {
@@ -131,6 +132,6 @@ namespace TicketManagementSystem_BE.Controllers
             _context.SupportMenus.Remove(supportMenu);
             await _context.SaveChangesAsync();
             return Ok(new { message = "Delete Successful~" });
-        }
+        }*/
     }
 }

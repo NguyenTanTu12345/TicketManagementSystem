@@ -25,9 +25,7 @@ namespace TicketManagementSystem_BE.Data
         public virtual DbSet<Models.Program> Programs { get; set; } = null!;
         public virtual DbSet<ProgramImage> ProgramImages { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
-        public virtual DbSet<Show> Shows { get; set; } = null!;
         public virtual DbSet<SupportMenu> SupportMenus { get; set; } = null!;
-        public virtual DbSet<TicketSchedule> TicketSchedules { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<UserProgram> UserPrograms { get; set; } = null!;
         public virtual DbSet<UserSchedule> UserSchedules { get; set; } = null!;
@@ -44,6 +42,37 @@ namespace TicketManagementSystem_BE.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Show>(entity =>
+            {
+                entity.HasKey(e => new { e.ArtistId, e.ProgramId })
+                    .HasName("PK__Show__6772668F19A1F332");
+
+                entity.ToTable("Show");
+
+                entity.Property(e => e.ArtistId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("ArtistID")
+                    .IsFixedLength();
+
+                entity.Property(e => e.ProgramId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("ProgramID")
+                    .IsFixedLength();
+
+                entity.HasOne(d => d.Program)
+                    .WithMany(p => p.Show)
+                    .HasForeignKey(d => d.ProgramId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserSched__Progr__778AC167");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserSchedules)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserSched__UserI__76969D2E");
+            });
             modelBuilder.Entity<Artist>(entity =>
             {
                 entity.ToTable("Artist");
@@ -76,10 +105,10 @@ namespace TicketManagementSystem_BE.Data
                     .IsUnicode(false)
                     .IsFixedLength();
 
-                entity.Property(e => e.TicketScheduleId)
+                entity.Property(e => e.ProgramId)
                     .HasMaxLength(10)
                     .IsUnicode(false)
-                    .HasColumnName("TicketScheduleID")
+                    .HasColumnName("ProgramID")
                     .IsFixedLength();
 
                 entity.Property(e => e.UserId)
@@ -88,15 +117,15 @@ namespace TicketManagementSystem_BE.Data
                     .HasColumnName("UserID")
                     .IsFixedLength();
 
-                entity.HasOne(d => d.TicketSchedule)
+                entity.HasOne(d => d.Program)
                     .WithMany(p => p.Histories)
-                    .HasForeignKey(d => d.TicketScheduleId)
-                    .HasConstraintName("FK__History__TicketS__52593CB8");
+                    .HasForeignKey(d => d.ProgramId)
+                    .HasConstraintName("FK__History__Program__7B5B524B");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Histories)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__History__UserID__5165187F");
+                    .HasConstraintName("FK__History__UserID__7A672E12");
             });
 
             modelBuilder.Entity<Location>(entity =>
@@ -219,6 +248,23 @@ namespace TicketManagementSystem_BE.Data
                     .WithMany(p => p.Programs)
                     .HasForeignKey(d => d.LocationId)
                     .HasConstraintName("FK__Program__Locatio__36B12243");
+
+                entity.HasMany(d => d.Artists)
+                    .WithMany(p => p.Programs)
+                    .UsingEntity<Dictionary<string, object>>(
+                        "Show",
+                        l => l.HasOne<Artist>().WithMany().HasForeignKey("ArtistId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Show__ArtistID__7F2BE32F"),
+                        r => r.HasOne<Models.Program>().WithMany().HasForeignKey("ProgramId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__Show__ProgramID__7E37BEF6"),
+                        j =>
+                        {
+                            j.HasKey("ProgramId", "ArtistId").HasName("PK__Show__6772668F19A1F332");
+
+                            j.ToTable("Show");
+
+                            j.IndexerProperty<string>("ProgramId").HasMaxLength(10).IsUnicode(false).HasColumnName("ProgramID").IsFixedLength();
+
+                            j.IndexerProperty<string>("ArtistId").HasMaxLength(10).IsUnicode(false).HasColumnName("ArtistID").IsFixedLength();
+                        });
             });
 
             modelBuilder.Entity<ProgramImage>(entity =>
@@ -254,40 +300,6 @@ namespace TicketManagementSystem_BE.Data
                 entity.Property(e => e.RoleName).HasMaxLength(30);
             });
 
-            modelBuilder.Entity<Show>(entity =>
-            {
-                entity.HasKey(e => new { e.ProgramId, e.ArtistId })
-                    .HasName("PK__Show__6772668F0CF9D97D");
-
-                entity.ToTable("Show");
-
-                entity.Property(e => e.ProgramId)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("ProgramID")
-                    .IsFixedLength();
-
-                entity.Property(e => e.ArtistId)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("ArtistID")
-                    .IsFixedLength();
-
-                entity.Property(e => e.RoleName).HasMaxLength(100);
-
-                entity.HasOne(d => d.Artist)
-                    .WithMany(p => p.Shows)
-                    .HasForeignKey(d => d.ArtistId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Show__ArtistID__3F466844");
-
-                entity.HasOne(d => d.Program)
-                    .WithMany(p => p.Shows)
-                    .HasForeignKey(d => d.ProgramId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Show__ProgramID__3E52440B");
-            });
-
             modelBuilder.Entity<SupportMenu>(entity =>
             {
                 entity.ToTable("SupportMenu");
@@ -308,21 +320,6 @@ namespace TicketManagementSystem_BE.Data
                     .WithMany(p => p.SupportMenus)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK__SupportMe__UserI__398D8EEE");
-            });
-
-            modelBuilder.Entity<TicketSchedule>(entity =>
-            {
-                entity.ToTable("TicketSchedule");
-
-                entity.Property(e => e.TicketScheduleId)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("TicketScheduleID")
-                    .IsFixedLength();
-
-                entity.Property(e => e.LocationName).HasMaxLength(100);
-
-                entity.Property(e => e.ProgramName).HasMaxLength(100);
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -435,8 +432,8 @@ namespace TicketManagementSystem_BE.Data
 
             modelBuilder.Entity<UserSchedule>(entity =>
             {
-                entity.HasKey(e => new { e.UserId, e.TicketScheduleId })
-                    .HasName("PK__UserSche__8253A542BE8D3D39");
+                entity.HasKey(e => new { e.UserId, e.ProgramId })
+                    .HasName("PK__UserSche__80DA9AAF6093A187");
 
                 entity.ToTable("UserSchedule");
 
@@ -446,10 +443,10 @@ namespace TicketManagementSystem_BE.Data
                     .HasColumnName("UserID")
                     .IsFixedLength();
 
-                entity.Property(e => e.TicketScheduleId)
+                entity.Property(e => e.ProgramId)
                     .HasMaxLength(10)
                     .IsUnicode(false)
-                    .HasColumnName("TicketScheduleID")
+                    .HasColumnName("ProgramID")
                     .IsFixedLength();
 
                 entity.Property(e => e.UserScheduleDate).HasColumnType("datetime");
@@ -459,17 +456,17 @@ namespace TicketManagementSystem_BE.Data
                     .IsUnicode(false)
                     .IsFixedLength();
 
-                entity.HasOne(d => d.TicketSchedule)
+                entity.HasOne(d => d.Program)
                     .WithMany(p => p.UserSchedules)
-                    .HasForeignKey(d => d.TicketScheduleId)
+                    .HasForeignKey(d => d.ProgramId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserSched__Ticke__4E88ABD4");
+                    .HasConstraintName("FK__UserSched__Progr__778AC167");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserSchedules)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserSched__UserI__4D94879B");
+                    .HasConstraintName("FK__UserSched__UserI__76969D2E");
             });
 
             modelBuilder.Entity<UserToken>(entity =>

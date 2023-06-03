@@ -16,7 +16,7 @@ namespace TicketManagementSystem_BE.Controllers
     [ApiController]
     public class ProgramController : ControllerBase
     {
-        private readonly TicketManagementSystemContext _context;
+        /*private readonly TicketManagementSystemContext _context;
         private readonly IPrincipal _principal;
         private readonly IConfiguration _configuration;
         private readonly INewID _newID;
@@ -41,14 +41,36 @@ namespace TicketManagementSystem_BE.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Models.Program>> Get(int id)
+        public async Task<ActionResult<ProgramDTO>> Get(string id)
         {
             var program = await _context.Programs.FindAsync(id);
             if (program == null)
             {
                 return NotFound(new { message = "Resource Not Found!!!" });
             }
-            return program;
+            ProgramDTO programDTO = new ProgramDTO
+            {
+                ProgramId = program.ProgramId,
+                ProgramContent = program.ProgramContent,
+                ProgramFdate = (DateTime)program.ProgramFdate,
+                ProgramTdate = program.ProgramTdate,
+                ProgramName = program.ProgramName,
+                ProgramPrice = program.ProgramPrice,
+                ProgramTime = program.ProgramTime,
+                TypeInOff = program.TypeInOff,
+                TotalTicket = program.TotalTicket,
+                LocationId = program.LocationId,
+                ProgramType = program.ProgramType
+            };
+            var listProgramImage = await _context.ProgramImages.Where(s => s.ProgramId.Trim() == id).ToListAsync();
+            if (listProgramImage != null)
+            {
+                foreach (var image in listProgramImage)
+                {
+                    programDTO.ImagePaths += image.ProgramImagePath + "@"; 
+                }
+            }
+            return programDTO;
         }
 
         [Authorize]
@@ -69,6 +91,10 @@ namespace TicketManagementSystem_BE.Controllers
             if (user.RoleId.Trim() != "RO01")
             {
                 return BadRequest(new { message = "You Aren't Allowed to Do This Action" });
+            }
+            if (programDTO.ProgramTdate < DateTime.Now)
+            {
+                return BadRequest(new { message = "Invalid DateTime" });
             }
             List<string> listID = await _context.Programs.Select(s => s.ProgramId).ToListAsync();
             string newProgramID = _newID.CreateProgramID(listID);
@@ -102,6 +128,7 @@ namespace TicketManagementSystem_BE.Controllers
             return Ok(new { message = "Create Successful~" });
         }
 
+        [Authorize]
         [HttpPost("create-range")]
         public async Task<IActionResult> CreateRange(List<Models.Program> programs)
         {
@@ -128,6 +155,10 @@ namespace TicketManagementSystem_BE.Controllers
             if (user.RoleId.Trim() != "RO01")
             {
                 return BadRequest(new { message = "You Aren't Allowed to Do This Action" });
+            }
+            if (programDTO.ProgramTdate < DateTime.Now)
+            {
+                return BadRequest(new { message = "Invalid DateTime" });
             }
             var program = await _context.Programs.FindAsync(programDTO.ProgramId);
             if (program == null)
@@ -163,6 +194,6 @@ namespace TicketManagementSystem_BE.Controllers
             }
             await _context.SaveChangesAsync();
             return Ok(new { message = "Update Successful~" });
-        }
+        }*/
     }
 }
