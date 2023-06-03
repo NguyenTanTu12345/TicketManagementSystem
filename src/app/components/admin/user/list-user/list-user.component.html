@@ -50,6 +50,9 @@
       <ng-container matColumnDef="other">
         <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;"> Khác </th>
         <td mat-cell *matCellDef="let row" style="width: 10%;">
+          <a mat-icon-button color="primary" [routerLink]="['create-user-schedule', row.userId]" *ngIf="row.roleId?.trim() == 'RO03'">
+            <mat-icon>edit</mat-icon>
+          </a>
           <mat-icon (click)="checkDelete(row.userId)">delete</mat-icon>
         </td>
       </ng-container>

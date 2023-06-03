@@ -2,33 +2,34 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
-import { News } from 'src/app/models/news.model';
+import { Artist } from 'src/app/models/artist.model';
+import { ListProgram } from 'src/app/models/list-program.model';
+import { ArtistService } from 'src/app/services/artist/artist.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { NewsService } from 'src/app/services/news/news.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-form-news',
-  templateUrl: './form-news.component.html',
-  styleUrls: ['./form-news.component.css']
+  selector: 'app-form-artist',
+  templateUrl: './form-artist.component.html',
+  styleUrls: ['./form-artist.component.css']
 })
-export class FormNewsComponent {
+export class FormArtistComponent {
 
   customForm!: FormGroup;
-  news: News = {
-    newsId: '',
-    newsContent: '',
-    newsDate: null,
-    newsTitle: '',
-    newsImagePath: '',
+  artist: Artist = {
+    artistId: '',
+    artistName: '',
+    artistImagePath: '',
+    programId: [],
     accessToken: ''
-  }
+  };
   btnValue: string = "";
   toastMessage: string = "";
   mySrc: string = "";
+  programs: ListProgram[] = [];
 
   constructor(
-    private newsService: NewsService,
+    private artistService: ArtistService,
     private router: Router,
     private activedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
@@ -38,23 +39,21 @@ export class FormNewsComponent {
 
   ngOnInit(): void {
     this.customForm = this.formBuilder.group({
-      newsId: ['', null],
-      newsContent: ['', Validators.required],
-      newsTitle: ['', [Validators.required]],
-
+      artistId: ['', null],
+      artistName: ['', Validators.required],
+      programId: ['', Validators.required]
     });
     this.activedRoute.paramMap.subscribe({
       next: params => {
         let id = params.get('id');
         if (id) {
-          this.newsService.get(id).subscribe({
+          this.artistService.get(id).subscribe({
             next: (res) => {
               this.btnValue = "Cập nhật";
               this.toastMessage = "Cập nhật thành công~";
-              this.customForm.controls['newsId']?.setValue(res.newsId);
-              this.customForm.controls['newsContent']?.setValue(res.newsContent);
-              this.customForm.controls['newsTitle']?.setValue(res.newsTitle);
-              this.mySrc = res.newsImagePath;
+              this.customForm.controls['artistName']?.setValue(res.artistName);
+              this.customForm.controls['artistId']?.setValue(res.artistId);
+              this.mySrc = res.artistImagePath;
             },
             error: (err) => {
               console.log(err);
@@ -67,28 +66,34 @@ export class FormNewsComponent {
         }
       }
     });
+    this.artistService.getListProgram().subscribe({
+      next: (res) => {
+        this.programs = res;
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
   }
 
   createOrUpdate() {
     if (this.customForm.valid) {
       var result;
-      this.news.newsContent = this.customForm.controls['newsContent']?.value;
-      this.news.newsTitle = this.customForm.controls['newsTitle']?.value;
-      this.news.newsImagePath = this.mySrc;
-      this.news.newsDate = new Date(Date.now());
-      this.news.accessToken = this.authService.getJWT() ?? '';
-      console.log(this.news);
-      if (this.customForm.controls['newsId']?.value == '') {
-        result = this.newsService.create(this.news);
+      this.artist.artistName = this.customForm.controls['artistName']?.value;
+      this.artist.programId = this.customForm.controls['programId']?.value;
+      this.artist.artistImagePath = this.mySrc;
+      this.artist.accessToken = this.authService.getJWT() ?? '';
+      if (this.customForm.controls['artistId']?.value == '') {
+        result = this.artistService.create(this.artist);
       }
       else {
-        this.news.newsId = this.customForm.controls['newsId']?.value;
-        result = this.newsService.update(this.news);
+        this.artist.artistId = this.customForm.controls['artistId']?.value;
+        result = this.artistService.update(this.artist);
       }
       result.subscribe({
         next: (res) => {
           this.toast.success({ detail: "SUCCESS", summary: this.toastMessage, duration: 4000 });
-          this.router.navigate(['admin/dashboard/list-news']);
+          this.router.navigate(['admin/dashboard/list-artist']);
         },
         error: (err) => {
           this.toast.error({ detail: "FAILURE", summary: err.message, duration: 4000 });
@@ -98,13 +103,13 @@ export class FormNewsComponent {
     }
   }
 
-  CLOUDINARY_UPLOAD_PRESET4: string = environment.CLOUDINARY_UPLOAD_PRESET4;
+  CLOUDINARY_UPLOAD_PRESET3: string = environment.CLOUDINARY_UPLOAD_PRESET3;
   CLOUDINARY_URL: string = environment.CLOUDINARY_URL;
 
   onChangeFile(event: any) {
     const formData = new FormData();
     formData.append('file', event.target.files[0]);
-    formData.append('upload_preset', this.CLOUDINARY_UPLOAD_PRESET4);
+    formData.append('upload_preset', this.CLOUDINARY_UPLOAD_PRESET3);
     fetch(this.CLOUDINARY_URL, {
       method: 'POST',
       body: formData,

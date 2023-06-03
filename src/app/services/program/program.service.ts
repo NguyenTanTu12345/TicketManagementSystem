@@ -25,7 +25,7 @@ export class ProgramService {
     return this.http.post<any>(this.url + "/create", program);
   }
 
-  createRange(programs: Program[]) {
+  createRange(programs: any[]) {
     return this.http.post<any>(this.url + "/create-range", programs);
   }
 

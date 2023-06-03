@@ -1,0 +1,71 @@
+<div class="container my-5">
+  <div class="row">
+    <div class="col-12">
+      <mat-card class="example-card" style="width: 100%;">
+        <mat-card-header>
+          <mat-card-title>{{ userSchedule.fullName }}</mat-card-title>
+          <mat-card-subtitle>Nhân viên</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Danh sách chương trình soát vé</p>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Tên chương trình</th>
+                <th scope="col">Khác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of userSchedule.listProgram1; let pos = index">
+                <th scope="row">{{ pos + 1 }}</th>
+                <td>{{ item.programName }}</td>
+                <td>
+                  <a mat-icon-button color="primary"
+                    [routerLink]="['../../update-user-schedule', userSchedule.userId + '@' + item.programId]">
+                    <mat-icon>edit</mat-icon>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-6">
+        <form [formGroup]="customForm">
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Chương trình</mat-label>
+            <mat-select formControlName="programId">
+              <mat-option *ngFor="let item of userSchedule.listProgram2" [value]="item.programId">
+                {{item.programName}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Giờ soát vé</mat-label>
+            <mat-select formControlName="userScheduleTime">
+              <mat-option value="07:00 - 11:00">07:00 - 11:00</mat-option>
+              <mat-option value="13:00 - 17:00">13:00 - 17:00</mat-option>
+              <mat-option value="18:00 - 21:00">18:00 - 21:00</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Ngày soát vé</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="userScheduleDate">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+
+          <button mat-raised-button color="primary" (click)="create()">Thêm</button>
+        </form>
+      </div>
+    </div>
+  </div>

@@ -47,6 +47,7 @@ export class ListProgramComponent {
 
   excelData: any;
   importFileExcel(event: any) {
+    console.log("hello");
     let file = event.target.files[0];
     let fileReader = new FileReader();
     fileReader.readAsBinaryString(file);
@@ -54,6 +55,7 @@ export class ListProgramComponent {
       var workBook = XLSX.read(fileReader.result, { type: 'binary' });
       var sheetNames = workBook.SheetNames;
       this.excelData = XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]]);
+      console.log(this.excelData);
       this.programService.createRange(this.excelData).subscribe({
         next: (res) => {
           console.log(res);

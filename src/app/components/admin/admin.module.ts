@@ -31,6 +31,11 @@ import { FormNewsComponent } from './news/form-news/form-news.component';
 import { ListProgramComponent } from './program/list-program/list-program.component';
 import { FormProgramComponent } from './program/form-program/form-program.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { FormScheduleComponent } from './user/form-schedule/form-schedule.component';
+import {MatCardModule} from '@angular/material/card';
+import { UpdateScheduleComponent } from './user/update-schedule/update-schedule.component';
+import { ListArtistComponent } from './artist/list-artist/list-artist.component';
+import { FormArtistComponent } from './artist/form-artist/form-artist.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +51,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     ListNewsComponent,
     FormNewsComponent,
     ListProgramComponent,
-    FormProgramComponent
+    FormProgramComponent,
+    FormScheduleComponent,
+    UpdateScheduleComponent,
+    ListArtistComponent,
+    FormArtistComponent
   ],
   imports: [
     CommonModule,
@@ -68,7 +77,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     FormsModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatCardModule
   ]
 })
 export class AdminModule { }

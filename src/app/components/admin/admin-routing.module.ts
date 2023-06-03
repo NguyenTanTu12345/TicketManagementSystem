@@ -13,6 +13,10 @@ import { ListNewsComponent } from './news/list-news/list-news.component';
 import { FormNewsComponent } from './news/form-news/form-news.component';
 import { ListProgramComponent } from './program/list-program/list-program.component';
 import { FormProgramComponent } from './program/form-program/form-program.component';
+import { FormScheduleComponent } from './user/form-schedule/form-schedule.component';
+import { UpdateScheduleComponent } from './user/update-schedule/update-schedule.component';
+import { ListArtistComponent } from './artist/list-artist/list-artist.component';
+import { FormArtistComponent } from './artist/form-artist/form-artist.component';
 
 
 const routes: Routes = [
@@ -104,7 +108,32 @@ const routes: Routes = [
       {
         path: 'list-program/update/:id',
         component: FormProgramComponent,
-        data: { animation: 'form-program' }
+        data: { animation: 'form-program1' }
+      },
+      {
+        path: 'list-user/create-user-schedule/:id',
+        component: FormScheduleComponent,
+        data: { animation: 'create-user-schedule' }
+      },
+      {
+        path: 'list-user/update-user-schedule/:id',
+        component: UpdateScheduleComponent,
+        data: { animation: 'update-user-schedule' }
+      },
+      {
+        path: 'list-artist',
+        component: ListArtistComponent,
+        data: { animation: 'list-artist' }
+      },
+      {
+        path: 'list-artist/create',
+        component: FormArtistComponent,
+        data: { animation: 'form-artist' }
+      },
+      {
+        path: 'list-artist/update/:id',
+        component: FormArtistComponent,
+        data: { animation: 'form-artist' }
       }
     ]
   }

@@ -1,0 +1,38 @@
+<div class="container my-5">
+    <div class="row">
+        <div class="col-6">
+            <form [formGroup]="customForm" (ngSubmit)="createOrUpdate()">
+                <input type="hidden" formControlName="artistId" />
+                <p>
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Tên nghệ sĩ</mat-label>
+                        <input matInput placeholder="Vui lòng điền tên nghệ sĩ" formControlName="artistName">
+                        <mat-error *ngIf="customForm.hasError('required', 'artistName')">
+                            Vui lòng điền tên nghệ sĩ
+                        </mat-error>
+                    </mat-form-field>
+                </p>
+
+                <p>
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Tham gia các chương trình</mat-label>
+                        <mat-select formControlName="programId" multiple>
+                            <mat-option *ngFor="let item of programs" [value]="item.programId">
+                                {{item.programName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </p>
+
+                <img [src]="mySrc" style="width: 100%; height: auto; margin-bottom: 20px;">
+
+                <div class="btn btn-warning" style="color: white; margin-right: 10px;"
+                    onclick="document.getElementById('inputFile').click();">
+                    <input style="display: none;" id="inputFile" (change)="onChangeFile($event)" type="file" />
+                    <i class="fa fa-folder"></i> Chọn ảnh
+                </div>
+                <button mat-raised-button color="primary" type="submit">{{ btnValue }}</button>
+            </form>
+        </div>
+    </div>
+</div>
