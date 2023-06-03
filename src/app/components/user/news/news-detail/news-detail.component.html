@@ -1,0 +1,18 @@
+<a href="{{news.newsImagePath == '' ? './assets/img/default-image.png' : news.newsImagePath.trim() }}">
+    <img style="width: 100%;"
+        src="{{news.newsImagePath == '' ? './assets/img/default-image.png' : news.newsImagePath.trim() }}" />
+</a>
+<div style="background-color: #ff4081; height: 9vh; display: flex;">
+    <mat-icon (click)="like()"
+        style="font-size: 40px; padding-top: 10px; width: 100%; height: 100%;padding-left: 40px;color: aliceblue;">favorite</mat-icon>
+    <mat-icon
+        style="font-size: 40px;padding-top: 10px; width: 100%; height: 100%; color: aliceblue;">bookmark</mat-icon>
+</div>
+<div style="padding-left: 10px;">
+    <h1><b>{{ news.newsTitle }}</b></h1>
+    <h6>{{ news.newsDate}}</h6>
+</div>
+<hr />
+<p style="padding-left: 10px;">
+    {{ news.newsContent }}
+</p>

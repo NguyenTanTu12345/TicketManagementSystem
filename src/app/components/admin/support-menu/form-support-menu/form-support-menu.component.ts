@@ -27,7 +27,8 @@ export class FormSupportMenuComponent implements OnInit {
   btnValue: string = "";
   toastMessage: string = "";
 
-  constructor(private supportMenuService: SupportMenuService,
+  constructor(
+    private supportMenuService: SupportMenuService,
     private router: Router,
     private activedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,

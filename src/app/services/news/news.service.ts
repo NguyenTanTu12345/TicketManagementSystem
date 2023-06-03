@@ -29,6 +29,10 @@ export class NewsService {
     return this.http.post<any>(this.url + "/create-range", news);
   }
 
+  userLike(news: News) {
+    return this.http.post<any>(this.url + "/user-like", news);
+  }
+
   update(news: News) {
     return this.http.put<any>(this.url+ "/update", news);
   }
