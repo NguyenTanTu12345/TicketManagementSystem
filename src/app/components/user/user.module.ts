@@ -19,6 +19,8 @@ import { MatTableModule } from '@angular/material/table';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NewsDetailComponent } from './news/news-detail/news-detail.component';
+import { LocationTypeComponent } from './location/location-type/location-type.component';
+import { ListLocationComponent } from './location/list-location/list-location.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { NewsDetailComponent } from './news/news-detail/news-detail.component';
     DashboardChildComponent,
     SupportMenuComponent,
     ListNewsComponent,
-    NewsDetailComponent
+    NewsDetailComponent,
+    LocationTypeComponent,
+    ListLocationComponent
   ],
   imports: [
     CommonModule,
