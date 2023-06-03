@@ -26,6 +26,11 @@ import { ListLocationTypeComponent } from './location-type/list-location-type/li
 import { FormLocationTypeComponent } from './location-type/form-location-type/form-location-type.component';
 import { ListLocationComponent } from './location/list-location/list-location.component';
 import { FormLocationComponent } from './location/form-location/form-location.component';
+import { ListNewsComponent } from './news/list-news/list-news.component';
+import { FormNewsComponent } from './news/form-news/form-news.component';
+import { ListProgramComponent } from './program/list-program/list-program.component';
+import { FormProgramComponent } from './program/form-program/form-program.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
@@ -37,7 +42,11 @@ import { FormLocationComponent } from './location/form-location/form-location.co
     ListLocationTypeComponent,
     FormLocationTypeComponent,
     ListLocationComponent,
-    FormLocationComponent
+    FormLocationComponent,
+    ListNewsComponent,
+    FormNewsComponent,
+    ListProgramComponent,
+    FormProgramComponent
   ],
   imports: [
     CommonModule,
@@ -58,7 +67,8 @@ import { FormLocationComponent } from './location/form-location/form-location.co
     MatButtonModule,
     FormsModule,
     MatFormFieldModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDatepickerModule
   ]
 })
 export class AdminModule { }

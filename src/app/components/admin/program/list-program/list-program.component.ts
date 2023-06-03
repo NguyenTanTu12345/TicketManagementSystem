@@ -1,29 +1,29 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { SupportMenu } from 'src/app/models/support-menu.model';
-import { SupportMenuService } from 'src/app/services/support-menu/support-menu.service';
+import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import * as XLSX from 'xlsx';
+import { Program } from 'src/app/models/program.model';
 import { ExcelService } from 'src/app/services/excel/excel.service';
+import { ProgramService } from 'src/app/services/program/program.service';
+import * as XLSX from 'xlsx';
 
 @Component({
-  selector: 'app-list-support-menu',
-  templateUrl: './list-support-menu.component.html',
-  styleUrls: ['./list-support-menu.component.css']
+  selector: 'app-list-program',
+  templateUrl: './list-program.component.html',
+  styleUrls: ['./list-program.component.css']
 })
-export class ListSupportMenuComponent implements OnInit {
+export class ListProgramComponent {
 
-  displayedColumns: string[] = ['No.', 'supportMenuTitle', 'supportMenuContent', 'other'];
+  displayedColumns: string[] = ['No.', 'programName', 'programTdate', 'programFdate', 'status','other'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  supportMenus: SupportMenu[] = [];
+  programs: Program[] = [];
 
   constructor(
-    private supportMenuService: SupportMenuService,
+    private programService: ProgramService,
     private excelService: ExcelService
   ) { }
 
@@ -32,10 +32,10 @@ export class ListSupportMenuComponent implements OnInit {
   }
 
   getAll() {
-    this.supportMenuService.getAll().subscribe({
+    this.programService.getAll().subscribe({
       next: (res) => {
-        this.supportMenus = res;
-        this.dataSource = new MatTableDataSource(this.supportMenus);
+        this.programs = res;
+        this.dataSource = new MatTableDataSource(this.programs);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       },
@@ -54,7 +54,7 @@ export class ListSupportMenuComponent implements OnInit {
       var workBook = XLSX.read(fileReader.result, { type: 'binary' });
       var sheetNames = workBook.SheetNames;
       this.excelData = XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]]);
-      this.supportMenuService.createRange(this.excelData).subscribe({
+      this.programService.createRange(this.excelData).subscribe({
         next: (res) => {
           console.log(res);
           this.getAll();
@@ -66,32 +66,16 @@ export class ListSupportMenuComponent implements OnInit {
     }
   }
 
+  exportFileExcel() {
+    this.excelService.exportExcelFile(this.programs, 'programs');
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-  }
-
-  exportFileExcel() {
-    this.excelService.exportExcelFile(this.supportMenus, 'support_menu');
-  }
-
-  checkDelete(id: number) {
-    if (confirm("Bạn có chắc muốn xóa?")) {
-      this.delete(id);
-    }
-  }
-
-  delete(id: number) {
-    this.supportMenuService.delete(id).subscribe({
-      next: (res) => {
-        this.getAll();
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    });
   }
 }

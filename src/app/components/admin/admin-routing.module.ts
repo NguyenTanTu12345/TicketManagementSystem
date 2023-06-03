@@ -9,6 +9,10 @@ import { ListLocationTypeComponent } from './location-type/list-location-type/li
 import { FormLocationTypeComponent } from './location-type/form-location-type/form-location-type.component';
 import { ListLocationComponent } from './location/list-location/list-location.component';
 import { FormLocationComponent } from './location/form-location/form-location.component';
+import { ListNewsComponent } from './news/list-news/list-news.component';
+import { FormNewsComponent } from './news/form-news/form-news.component';
+import { ListProgramComponent } from './program/list-program/list-program.component';
+import { FormProgramComponent } from './program/form-program/form-program.component';
 
 
 const routes: Routes = [
@@ -71,6 +75,36 @@ const routes: Routes = [
         path: 'list-location/update/:id',
         component: FormLocationComponent,
         data: { animation: 'form-location1' }
+      },
+      {
+        path: 'list-news',
+        component: ListNewsComponent,
+        data: { animation: 'list-news' }
+      },
+      {
+        path: 'list-news/create',
+        component: FormNewsComponent,
+        data: { animation: 'form-news' }
+      },
+      {
+        path: 'list-news/update/:id',
+        component: FormNewsComponent,
+        data: { animation: 'form-news1' }
+      },
+      {
+        path: 'list-program',
+        component: ListProgramComponent,
+        data: { animation: 'list-program' }
+      },
+      {
+        path: 'list-program/create',
+        component: FormProgramComponent,
+        data: { animation: 'form-program' }
+      },
+      {
+        path: 'list-program/update/:id',
+        component: FormProgramComponent,
+        data: { animation: 'form-program' }
       }
     ]
   }

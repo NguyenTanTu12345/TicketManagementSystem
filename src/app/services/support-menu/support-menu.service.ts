@@ -25,6 +25,10 @@ export class SupportMenuService {
     return this.http.post<any>(this.url + "/create", supportMenu);
   }
 
+  createRange(supportMenus: SupportMenu[]) {
+    return this.http.post<any>(this.url + "/create-range", supportMenus);
+  }
+
   update(supportMenu: SupportMenu) {
     return this.http.put<any>(this.url + "/update", supportMenu);
   }

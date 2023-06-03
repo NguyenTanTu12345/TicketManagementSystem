@@ -1,24 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
-import { LocationType } from 'src/app/models/location-type.model';
+import { News } from 'src/app/models/news.model';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { LocationTypeService } from 'src/app/services/location-type/location-type.service';
+import { NewsService } from 'src/app/services/news/news.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-form-location-type',
-  templateUrl: './form-location-type.component.html',
-  styleUrls: ['./form-location-type.component.css']
+  selector: 'app-form-news',
+  templateUrl: './form-news.component.html',
+  styleUrls: ['./form-news.component.css']
 })
-export class FormLocationTypeComponent implements OnInit {
+export class FormNewsComponent {
 
   customForm!: FormGroup;
-  locationType: LocationType = {
-    locationTypeId: '',
-    locationTypeName: '',
-    locationTypePath: '',
+  news: News = {
+    newsId: '',
+    newsContent: '',
+    newsDate: null,
+    newsTitle: '',
+    newsImagePath: '',
     accessToken: ''
   }
   btnValue: string = "";
@@ -26,7 +28,7 @@ export class FormLocationTypeComponent implements OnInit {
   mySrc: string = "";
 
   constructor(
-    private locationTypeService: LocationTypeService,
+    private newsService: NewsService,
     private router: Router,
     private activedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
@@ -36,20 +38,23 @@ export class FormLocationTypeComponent implements OnInit {
 
   ngOnInit(): void {
     this.customForm = this.formBuilder.group({
-      locationTypeId: ['', null],
-      locationTypeName: ['', Validators.required]
+      newsId: ['', null],
+      newsContent: ['', Validators.required],
+      newsTitle: ['', [Validators.required]],
+
     });
     this.activedRoute.paramMap.subscribe({
       next: params => {
         let id = params.get('id');
         if (id) {
-          this.locationTypeService.get(id).subscribe({
+          this.newsService.get(id).subscribe({
             next: (res) => {
               this.btnValue = "Cập nhật";
               this.toastMessage = "Cập nhật thành công~";
-              this.customForm.controls['locationTypeName']?.setValue(res.locationTypeName);
-              this.customForm.controls['locationTypeId']?.setValue(res.locationTypeId);
-              this.mySrc = res.locationTypePath;
+              this.customForm.controls['newsId']?.setValue(res.newsId);
+              this.customForm.controls['newsContent']?.setValue(res.newsContent);
+              this.customForm.controls['newsTitle']?.setValue(res.newsTitle);
+              this.mySrc = res.newsImagePath;
             },
             error: (err) => {
               console.log(err);
@@ -67,20 +72,23 @@ export class FormLocationTypeComponent implements OnInit {
   createOrUpdate() {
     if (this.customForm.valid) {
       var result;
-      this.locationType.locationTypeName = this.customForm.controls['locationTypeName']?.value;
-      this.locationType.locationTypePath = this.mySrc;
-      this.locationType.accessToken = this.authService.getJWT() ?? '';
-      if (this.customForm.controls['locationTypeId']?.value == '') {
-        result = this.locationTypeService.create(this.locationType);
+      this.news.newsContent = this.customForm.controls['newsContent']?.value;
+      this.news.newsTitle = this.customForm.controls['newsTitle']?.value;
+      this.news.newsImagePath = this.mySrc;
+      this.news.newsDate = new Date(Date.now());
+      this.news.accessToken = this.authService.getJWT() ?? '';
+      console.log(this.news);
+      if (this.customForm.controls['newsId']?.value == '') {
+        result = this.newsService.create(this.news);
       }
       else {
-        this.locationType.locationTypeId = this.customForm.controls['locationTypeId']?.value;
-        result = this.locationTypeService.update(this.locationType);
+        this.news.newsId = this.customForm.controls['newsId']?.value;
+        result = this.newsService.update(this.news);
       }
       result.subscribe({
         next: (res) => {
           this.toast.success({ detail: "SUCCESS", summary: this.toastMessage, duration: 4000 });
-          this.router.navigate(['admin/dashboard/location-type']);
+          this.router.navigate(['admin/dashboard/list-location']);
         },
         error: (err) => {
           this.toast.error({ detail: "FAILURE", summary: err.message, duration: 4000 });
@@ -90,13 +98,13 @@ export class FormLocationTypeComponent implements OnInit {
     }
   }
 
-  CLOUDINARY_UPLOAD_PRESET1: string = environment.CLOUDINARY_UPLOAD_PRESET1;
+  CLOUDINARY_UPLOAD_PRESET4: string = environment.CLOUDINARY_UPLOAD_PRESET4;
   CLOUDINARY_URL: string = environment.CLOUDINARY_URL;
 
   onChangeFile(event: any) {
     const formData = new FormData();
     formData.append('file', event.target.files[0]);
-    formData.append('upload_preset', this.CLOUDINARY_UPLOAD_PRESET1);
+    formData.append('upload_preset', this.CLOUDINARY_UPLOAD_PRESET4);
     fetch(this.CLOUDINARY_URL, {
       method: 'POST',
       body: formData,

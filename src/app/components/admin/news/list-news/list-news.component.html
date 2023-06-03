@@ -31,34 +31,33 @@
         </ng-container>
 
         <!-- Path Column -->
-        <ng-container matColumnDef="locationImagePath">
+        <ng-container matColumnDef="newsImagePath">
             <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Hình ảnh </th>
             <td mat-cell *matCellDef="let row" style="width: 20%;">
-                <a
-                    href="{{row.locationImagePath == '' ? './assets/img/default-image.png' : row.locationImagePath.trim() }}">
+                <a href="{{row.newsImagePath == '' ? './assets/img/default-image.png' : row.newsImagePath.trim() }}">
                     <img style="width: 100%;"
-                        src="{{row.locationImagePath == '' ? './assets/img/default-image.png' : row.locationImagePath.trim() }}" />
+                        src="{{row.newsImagePath == '' ? './assets/img/default-image.png' : row.newsImagePath.trim() }}" />
                 </a>
             </td>
         </ng-container>
 
         <!-- Name Column -->
-        <ng-container matColumnDef="locationName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Tên địa điểm</th>
-            <td mat-cell *matCellDef="let row" style="width: 20%;"> {{row.locationName}} </td>
+        <ng-container matColumnDef="newsTitle">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Tiêu đề</th>
+            <td mat-cell *matCellDef="let row" style="width: 20%;"> {{row.newsTitle}} </td>
         </ng-container>
 
         <!-- Name Column -->
-        <ng-container matColumnDef="locationSummary">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Tóm tắt</th>
-            <td mat-cell *matCellDef="let row" style="width: 20%;"> {{row.locationSummary}} </td>
+        <ng-container matColumnDef="newsDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Ngày viết</th>
+            <td mat-cell *matCellDef="let row" style="width: 20%;"> {{row.newsDate}} </td>
         </ng-container>
 
         <!-- action Column -->
         <ng-container matColumnDef="other">
             <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 10%;">Khác </th>
             <td mat-cell *matCellDef="let row" style="width: 10%;">
-                <a mat-icon-button color="primary" [routerLink]="['update', row.locationId]">
+                <a mat-icon-button color="primary" [routerLink]="['update', row.newsId]">
                     <mat-icon>edit</mat-icon>
                 </a>
             </td>

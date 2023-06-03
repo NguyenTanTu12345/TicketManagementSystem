@@ -15,7 +15,6 @@ import { LocationType } from 'src/app/models/location-type.model';
   styleUrls: ['./form-location.component.css']
 })
 export class FormLocationComponent {
-
   customForm!: FormGroup;
   location: Location = {
     locationId: '',
@@ -44,7 +43,7 @@ export class FormLocationComponent {
   ngOnInit(): void {
     this.getAll();
     this.customForm = this.formBuilder.group({
-      locationId: ['', [Validators.required]],
+      locationId: ['', null],
       locationName: ['', Validators.required],
       locationSummary: ['', [Validators.required]],
       locationContent: ['', Validators.required],
@@ -90,31 +89,32 @@ export class FormLocationComponent {
   }
 
   createOrUpdate() {
-    var result;
-    this.location.locationName = this.customForm.controls['locationName']?.value;
-    this.location.locationSummary = this.customForm.controls['locationSummary']?.value;
-    this.location.locationContent = this.customForm.controls['locationContent']?.value;
-    this.location.locationTypeId = this.customForm.controls['locationTypeId']?.value;
-    this.location.locationImagePath = this.mySrc;
-    this.location.accessToken = this.authService.getJWT() ?? '';
-    console.log(this.location);
-    if (this.customForm.controls['locationId']?.value == '') {
-      result = this.locationService.create(this.location);
-    }
-    else {
-      this.location.locationId = this.customForm.controls['locationId']?.value;
-      result = this.locationService.update(this.location);
-    }
-    result.subscribe({
-      next: (res) => {
-        this.toast.success({ detail: "SUCCESS", summary: this.toastMessage, duration: 4000 });
-        this.router.navigate(['admin/dashboard/list-location']);
-      },
-      error: (err) => {
-        this.toast.error({ detail: "FAILURE", summary: err.message, duration: 4000 });
-        console.log(err);
+    if (this.customForm.valid) {
+      var result;
+      this.location.locationName = this.customForm.controls['locationName']?.value;
+      this.location.locationSummary = this.customForm.controls['locationSummary']?.value;
+      this.location.locationContent = this.customForm.controls['locationContent']?.value;
+      this.location.locationTypeId = this.customForm.controls['locationTypeId']?.value;
+      this.location.locationImagePath = this.mySrc;
+      this.location.accessToken = this.authService.getJWT() ?? '';
+      if (this.customForm.controls['locationId']?.value == '') {
+        result = this.locationService.create(this.location);
       }
-    });
+      else {
+        this.location.locationId = this.customForm.controls['locationId']?.value;
+        result = this.locationService.update(this.location);
+      }
+      result.subscribe({
+        next: (res) => {
+          this.toast.success({ detail: "SUCCESS", summary: this.toastMessage, duration: 4000 });
+          this.router.navigate(['admin/dashboard/list-location']);
+        },
+        error: (err) => {
+          this.toast.error({ detail: "FAILURE", summary: err.message, duration: 4000 });
+          console.log(err);
+        }
+      });
+    }
   }
 
   CLOUDINARY_UPLOAD_PRESET2: string = environment.CLOUDINARY_UPLOAD_PRESET2;

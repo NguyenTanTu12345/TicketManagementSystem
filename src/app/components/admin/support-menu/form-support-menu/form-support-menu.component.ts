@@ -21,6 +21,7 @@ export class FormSupportMenuComponent implements OnInit {
     supportMenuId: 0,
     supportMenuContent: '',
     supportMenuTitle: '',
+    userId: '',
     accessToken: ''
   };
   btnValue: string = "";
@@ -38,7 +39,7 @@ export class FormSupportMenuComponent implements OnInit {
     this.customForm = this.formBuilder.group({
       supportMenuContent: ['', [Validators.required]],
       supportMenuTitle: ['', Validators.required],
-      supportMenuId: ['', Validators.required]
+      supportMenuId: ['', null]
     });
     this.activedRoute.paramMap.subscribe({
       next: params => {
@@ -66,27 +67,28 @@ export class FormSupportMenuComponent implements OnInit {
   }
 
   createOrUpdate() {
-    var result;
-    this.supportMenu.supportMenuTitle = this.customForm.controls['supportMenuTitle']?.value;
-    this.supportMenu.supportMenuContent = this.customForm.controls['supportMenuContent']?.value;
-    this.supportMenu.accessToken = this.authService.getJWT() ?? '';
-    if (this.customForm.controls['supportMenuId']?.value == '') {
-      result = this.supportMenuService.create(this.supportMenu);
-    }
-    else {
-      this.supportMenu.supportMenuId = this.customForm.controls['supportMenuId']?.value;
-      console.log(this.supportMenu);
-      result = this.supportMenuService.update(this.supportMenu);
-    }
-    result.subscribe({
-      next: (res) => {
-        this.toast.success({ detail: "SUCCESS", summary: this.toastMessage, duration: 4000 });
-        this.router.navigate(['admin/dashboard/support-menu']);
-      },
-      error: (err) => {
-        this.toast.success({ detail: "FAILURE", summary: err.message, duration: 4000 });
-        console.log(err);
+    if (this.customForm.valid) {
+      var result;
+      this.supportMenu.supportMenuTitle = this.customForm.controls['supportMenuTitle']?.value;
+      this.supportMenu.supportMenuContent = this.customForm.controls['supportMenuContent']?.value;
+      this.supportMenu.accessToken = this.authService.getJWT() ?? '';
+      if (this.customForm.controls['supportMenuId']?.value == '') {
+        result = this.supportMenuService.create(this.supportMenu);
       }
-    });
+      else {
+        this.supportMenu.supportMenuId = this.customForm.controls['supportMenuId']?.value;
+        result = this.supportMenuService.update(this.supportMenu);
+      }
+      result.subscribe({
+        next: (res) => {
+          this.toast.success({ detail: "SUCCESS", summary: this.toastMessage, duration: 4000 });
+          this.router.navigate(['admin/dashboard/support-menu']);
+        },
+        error: (err) => {
+          this.toast.success({ detail: "FAILURE", summary: err.message, duration: 4000 });
+          console.log(err);
+        }
+      });
+    }
   }
 }

@@ -17,6 +17,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { MatButtonModule } from '@angular/material/button';
 import { ResetPasswordComponent } from './components/login-signup/reset-password/reset-password.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { ResetPasswordComponent } from './components/login-signup/reset-password
     NgToastModule,
     MatButtonModule,
     BrowserAnimationsModule,
-    FormsModule
+    FormsModule,
+    MatNativeDateModule
   ],
   providers: [
     {

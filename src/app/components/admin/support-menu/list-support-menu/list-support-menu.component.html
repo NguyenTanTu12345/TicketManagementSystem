@@ -1,6 +1,19 @@
 <div style="margin-bottom: 20px; margin-top: 20px;">
-  <a mat-raised-button color="primary" routerLink="create">Thêm mới</a>
+  <a mat-raised-button color="primary" routerLink="create"><mat-icon>add</mat-icon>Thêm mới</a>
+
+  <button mat-raised-button onclick="document.getElementById('inputFile').click()" style="margin-left: 10px;background-color: #04AA6D; color: white;">
+    <mat-icon>upgrade</mat-icon>
+    Nhập File Excel
+  </button>
+
+  <button (click)="exportFileExcel()" mat-raised-button
+    style="margin-left: 10px;background-color: #04AA6D; color: white;">
+    <mat-icon>download</mat-icon>
+    Xuất File Excel
+  </button>
 </div>
+
+<input id="inputFile" type="file" accept=".xlsx" (change)="importFileExcel($event)" style="display: none;" />
 
 <mat-form-field>
   <mat-label>Filter</mat-label>

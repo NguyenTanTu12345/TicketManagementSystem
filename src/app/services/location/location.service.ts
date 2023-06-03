@@ -25,6 +25,10 @@ export class LocationService {
     return this.http.post<any>(this.url + "/create", location);
   }
 
+  createRange(locations: Location[]) {
+    return this.http.post<any>(this.url + "/create-range", locations);
+  }
+
   update(location: Location) {
     return this.http.put<any>(this.url+ "/update", location);
   }

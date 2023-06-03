@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class LocationTypeService {
 
-  url: string = environment.apiUrl + "/api/LocationType";
+  url: string = environment.apiUrl + "/api/location-type";
 
   constructor(private http: HttpClient) { }
 
@@ -23,6 +23,10 @@ export class LocationTypeService {
 
   create(locationType: LocationType): Observable<LocationType> {
     return this.http.post<LocationType>(this.url + "/create", locationType);
+  }
+
+  createRange(locationTypes: LocationType[]) {
+    return this.http.post<any>(this.url + "/create-range", locationTypes);
   }
 
   update(locationType: LocationType): Observable<LocationType> {

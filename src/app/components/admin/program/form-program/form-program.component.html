@@ -1,0 +1,121 @@
+<div class="container my-5">
+    <div class="row">
+        <div class="col-6">
+            <form [formGroup]="customForm" (ngSubmit)="createOrUpdate()">
+                <input type="hidden" formControlName="programId" />
+
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Tiêu đề</mat-label>
+                    <input matInput placeholder="Vui lòng điền tiêu đề" formControlName="newsTitle">
+                    <mat-error *ngIf="customForm.hasError('required', 'newsTitle')">
+                        Vui lòng điền tiêu đề
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>programName</mat-label>
+                    <textarea matInput placeholder="Vui lòng điền nội dung" formControlName="programName"></textarea>
+                    <mat-error *ngIf="customForm.hasError('required', 'programName')">
+                        Vui lòng điền nội dung
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>programContent</mat-label>
+                    <textarea matInput placeholder="Vui lòng điền nội dung" formControlName="programContent"></textarea>
+                    <mat-error *ngIf="customForm.hasError('required', 'programContent')">
+                        Vui lòng điền nội dung
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>programTime</mat-label>
+                    <mat-select formControlName="programTime">
+                        <mat-option value="07:00">07:00</mat-option>
+                        <mat-option value="08:00">08:00</mat-option>
+                        <mat-option value="09:00">09:00</mat-option>
+                        <mat-option value="10:00">10:00</mat-option>
+                        <mat-option value="11:00">11:00</mat-option>
+                        <mat-option value="12:00">12:00</mat-option>
+                        <mat-option value="13:00">13:00</mat-option>
+                        <mat-option value="14:00">14:00</mat-option>
+                        <mat-option value="15:00">15:00</mat-option>
+                        <mat-option value="16:00">16:00</mat-option>
+                        <mat-option value="17:00">17:00</mat-option>
+                        <mat-option value="18:00">18:00</mat-option>
+                        <mat-option value="19:00">19:00</mat-option>
+                        <mat-option value="20:00">20:00</mat-option>
+                        <mat-option value="21:00">21:00</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate formControlName="programTdate" placeholder="Start date">
+                        <input matEndDate formControlName="programFdate" placeholder="End date">
+                    </mat-date-range-input>
+                    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+
+                    <mat-error *ngIf="customForm.hasError('matStartDateInvalid', 'programTdate')">Invalid start
+                        date</mat-error>
+                    <mat-error *ngIf="customForm.hasError('matEndDateInvalid', 'programFdate')">Invalid end
+                        date</mat-error>
+                </mat-form-field>
+
+
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>typeInOff</mat-label>
+                    <mat-select formControlName="typeInOff">
+                        <mat-option value="true">true</mat-option>
+                        <mat-option value="false">false</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field floatLabel="always">
+                    <mat-label>programPrice</mat-label>
+                    <input matInput type="number" formControlName="programPrice" class="example-right-align"
+                        placeholder="0">
+                    <span matTextPrefix>$&nbsp;</span>
+                    <span matTextSuffix>.00</span>
+                </mat-form-field>
+
+                <mat-form-field floatLabel="always">
+                    <mat-label>totalTicket</mat-label>
+                    <input matInput type="number" formControlName="totalTicket" class="example-right-align"
+                        placeholder="0">
+                    <span matTextPrefix>$&nbsp;</span>
+                    <span matTextSuffix>.00</span>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>programType</mat-label>
+                    <mat-select formControlName="programType">
+                        <mat-option value="true">true</mat-option>
+                        <mat-option value="false">false</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Loại địa điểm</mat-label>
+                    <mat-select formControlName="locationId">
+                        <mat-option *ngFor="let item of locations" [value]="item.locationId">
+                            {{item.locationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <img [src]="mySrc" style="width: 100%; height: auto; margin-bottom: 20px;">
+
+                <div class="btn btn-warning" style="color: white; margin-right: 10px;"
+                    onclick="document.getElementById('inputFile').click();">
+                    <input style="display: none;" id="inputFile" (change)="onChangeFile($event)" type="file" multiple max="3"/>
+                    <i class="fa fa-folder"></i> Chọn ảnh
+                </div>
+                <button mat-raised-button color="primary" type="submit">{{ btnValue }}</button>
+            </form>
+        </div>
+    </div>
+</div>
