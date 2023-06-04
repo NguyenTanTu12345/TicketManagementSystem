@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute } from '@angular/router';
 import { Location } from 'src/app/models/location.model';
 import { LocationService } from 'src/app/services/location/location.service';
 
@@ -18,16 +19,25 @@ export class ListLocationComponent {
   locations: Location[] = [];
 
   constructor(
-    private nlocationService: LocationService
+    private locationService: LocationService,
+    private activedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.getAll();
+    this.activedRoute.paramMap.subscribe({
+      next: params => {
+        let id = params.get('id');
+        if (id) {
+          this.getByType(id);
+        }
+      }
+    });
   }
 
-  getAll() {
-    this.nlocationService.getAll().subscribe({
+  getByType(id: string) {
+    this.locationService.getByType(id).subscribe({
       next: (res) => {
+        console.log(res);
         this.locations = res;
         this.dataSource = new MatTableDataSource(this.locations);
         this.dataSource.paginator = this.paginator;

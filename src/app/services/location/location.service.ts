@@ -17,12 +17,20 @@ export class LocationService {
     return this.http.get<Location[]>(this.url);
   }
 
+  getByType(id: string): Observable<Location[]> {
+    return this.http.get<Location[]>(this.url + "/get-by-type/" + id);
+  }
+
   get(id: string): Observable<Location> {
     return this.http.get<Location>(this.url + "/" + id);
   }
 
   create(location: Location){
     return this.http.post<any>(this.url + "/create", location);
+  }
+
+  userLike(location: Location) {
+    return this.http.post<any>(this.url + "/user-like", location);
   }
 
   createRange(locations: Location[]) {

@@ -1,28 +1,30 @@
 import { Component } from '@angular/core';
+import { LocationService } from 'src/app/services/location/location.service';
+import { Location } from 'c:/Users/ad/source/repos/TicketManagementSystem/TicketManagementSystem_FE/src/app/models/location.model';
 import { ActivatedRoute } from '@angular/router';
-import { NgToastService } from 'ng-angular-popup';
-import { News } from 'src/app/models/news.model';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { NewsService } from 'src/app/services/news/news.service';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
-  selector: 'app-news-detail',
-  templateUrl: './news-detail.component.html',
-  styleUrls: ['./news-detail.component.css']
+  selector: 'app-location-detail',
+  templateUrl: './location-detail.component.html',
+  styleUrls: ['./location-detail.component.css']
 })
-export class NewsDetailComponent {
+export class LocationDetailComponent {
 
-  news: News = {
-    newsId: '',
-    newsContent: '',
-    newsDate: null,
-    newsTitle: '',
-    newsImagePath: '',
+  location: Location = {
+    locationId: '',
+    locationName: '',
+    locationSummary: '',
+    locationContent: '',
+    locationImagePath: '',
+    locationTypeId: '',
     accessToken: ''
-  };
+  }
+  toastMessage: string = "";
 
   constructor(
-    private newsService: NewsService,
+    private locationService: LocationService,
     private activedRoute: ActivatedRoute,
     private authService: AuthService,
     private toast: NgToastService
@@ -33,9 +35,9 @@ export class NewsDetailComponent {
       next: params => {
         let id = params.get('id');
         if (id) {
-          this.newsService.get(id).subscribe({
+          this.locationService.get(id).subscribe({
             next: (res) => {
-              this.news = res;
+              this.location = res;
             },
             error: (err) => {
               console.log(err);
@@ -48,8 +50,8 @@ export class NewsDetailComponent {
 
   like() {
     if (this.authService.isLoggedIn()) {
-      this.news.accessToken = this.authService.getJWT() ?? '';
-      this.newsService.userLike(this.news).subscribe({
+      this.location.accessToken = this.authService.getJWT() ?? '';
+      this.locationService.userLike(this.location).subscribe({
         next: (res) => {
           this.toast.success({ detail: "SUCCESS", summary: res.message, duration: 4000 });
         },

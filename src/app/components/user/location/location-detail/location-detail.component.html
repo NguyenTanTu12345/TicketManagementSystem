@@ -1,0 +1,32 @@
+<a href="{{location.locationImagePath == '' ? './assets/img/default-image.png' : location.locationImagePath.trim() }}">
+    <img style="width: 100%;"
+        src="{{location.locationImagePath == '' ? './assets/img/default-image.png' : location.locationImagePath.trim() }}" />
+</a>
+<div style="background-color: #f44336; height: 14vh; display: flex; color: aliceblue;">
+    <div style="width: 33.33%;" (click)="like()">
+        <mat-icon
+            style="font-size: 40px; padding-top: 10px; width: 100%; height: auto; text-align: center;">favorite</mat-icon>
+        <p style="text-align: center;">Thích</p>
+    </div>
+
+    <div style="width: 33.33%;">
+        <mat-icon
+            style="font-size: 40px;padding-top: 10px; width: 100%; height: auto; text-align: center;">bookmark</mat-icon>
+        <p style="text-align: center;">Lưu</p>
+    </div>
+
+    <div style="width: 33.33%;">
+        <a href="https://maps.google.com" target="_blank" style="text-decoration: none; color: aliceblue;">
+            <mat-icon
+                style="font-size: 40px;padding-top: 10px; width: 100%; height: auto; text-align: center;">explore</mat-icon>
+            <p style="text-align: center;">Bản đồ</p>
+        </a>
+    </div>
+</div>
+<div style="padding-left: 10px;">
+    <h1><b>{{ location.locationName }}</b></h1>
+</div>
+<hr />
+<p style="padding-left: 10px;">
+    {{ location.locationContent }}
+</p>

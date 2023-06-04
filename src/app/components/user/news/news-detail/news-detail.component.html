@@ -2,11 +2,18 @@
     <img style="width: 100%;"
         src="{{news.newsImagePath == '' ? './assets/img/default-image.png' : news.newsImagePath.trim() }}" />
 </a>
-<div style="background-color: #ff4081; height: 9vh; display: flex;">
-    <mat-icon (click)="like()"
-        style="font-size: 40px; padding-top: 10px; width: 100%; height: 100%;padding-left: 40px;color: aliceblue;">favorite</mat-icon>
-    <mat-icon
-        style="font-size: 40px;padding-top: 10px; width: 100%; height: 100%; color: aliceblue;">bookmark</mat-icon>
+<div style="background-color: #f44336; height: 14vh; display: flex; color: aliceblue;">
+    <div style="width: 50%;" (click)="like()">
+        <mat-icon
+            style="font-size: 40px; padding-top: 10px; width: 100%; height: auto; text-align: center;">favorite</mat-icon>
+        <p style="text-align: center;">Thích</p>
+    </div>
+
+    <div style="width: 50%;">
+        <mat-icon
+            style="font-size: 40px;padding-top: 10px; width: 100%; height: auto; text-align: center;">bookmark</mat-icon>
+        <p style="text-align: center;">Lưu</p>
+    </div>
 </div>
 <div style="padding-left: 10px;">
     <h1><b>{{ news.newsTitle }}</b></h1>

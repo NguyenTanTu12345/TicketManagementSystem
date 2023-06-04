@@ -21,6 +21,7 @@ import { MatInputModule } from '@angular/material/input';
 import { NewsDetailComponent } from './news/news-detail/news-detail.component';
 import { LocationTypeComponent } from './location/location-type/location-type.component';
 import { ListLocationComponent } from './location/list-location/list-location.component';
+import { LocationDetailComponent } from './location/location-detail/location-detail.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ListLocationComponent } from './location/list-location/list-location.co
     ListNewsComponent,
     NewsDetailComponent,
     LocationTypeComponent,
-    ListLocationComponent
+    ListLocationComponent,
+    LocationDetailComponent
   ],
   imports: [
     CommonModule,

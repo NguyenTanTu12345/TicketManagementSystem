@@ -7,6 +7,8 @@ import { SupportMenuComponent } from './support-menu/support-menu.component';
 import { ListNewsComponent } from './news/list-news/list-news.component';
 import { NewsDetailComponent } from './news/news-detail/news-detail.component';
 import { LocationTypeComponent } from './location/location-type/location-type.component';
+import { ListLocationComponent } from './location/list-location/list-location.component';
+import { LocationDetailComponent } from './location/location-detail/location-detail.component';
 
 const routes: Routes = [
   {
@@ -38,6 +40,16 @@ const routes: Routes = [
         path: 'location-type',
         component: LocationTypeComponent,
         data: { animation: 'location-type' }
+      },
+      {
+        path: 'list-location/:id',
+        component: ListLocationComponent,
+        data: { animation: 'list-location' }
+      },
+      {
+        path: 'location-detail/:id',
+        component: LocationDetailComponent,
+        data: { animation: 'location-detail' }
       }
     ]
   }
