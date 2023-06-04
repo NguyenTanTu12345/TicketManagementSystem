@@ -205,6 +205,24 @@ namespace TicketManagementSystem_BE.Controllers
             return Ok(new { message = "Change Password Successful~" });
         }
 
+        [Authorize]
+        [HttpPut("update")]
+        public async Task<IActionResult> Update(User userObj)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail.Trim() == userObj.Mail);
+            if (user == null)
+            {
+                return BadRequest("Invalid Request!!!");
+            }
+            user.FullName = userObj.FullName;
+            user.PhoneNumber = userObj.PhoneNumber;
+            user.DateOfBirth = userObj.DateOfBirth;
+            user.Cccd = userObj.Cccd;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Change Password Successful~" });
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAll()
         {
@@ -213,6 +231,30 @@ namespace TicketManagementSystem_BE.Controllers
                 return NotFound(new { message = "Resources Not Found!!!" });
             }
             return await _context.Users.Where(s => s.RoleId.Trim() != "RO01").ToListAsync();
+        }
+
+        [Authorize]
+        [HttpGet("get-by-mail/{mail}")]
+        public async Task<ActionResult<User>> GetByMail(string mail)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail.Trim() == mail);
+            if (user == null)
+            {
+                return NotFound(new { message = "User Not Found!!!" });
+            }
+            return user;
+        }
+
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> Get(string id)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(s => s.UserId == id);
+            if (user == null)
+            {
+                return NotFound(new { message = "User Not Found!!!" });
+            }
+            return user;
         }
 
         [HttpPost("create")]

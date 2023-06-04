@@ -73,6 +73,92 @@ namespace TicketManagementSystem_BE.Controllers
             return programDTO;
         }
 
+        [HttpGet("user-like/{id}")]
+        public async Task<ActionResult<IEnumerable<ProgramDTO>>> GetUserLike(string id)
+        {
+            var userPrograms = await _context.UserPrograms.Where(s => s.UserId == id
+                && s.IsLike == true).ToListAsync();
+            if (userPrograms == null)
+            {
+                return NoContent();
+            }
+            List<ProgramDTO> programDTOs = new List<ProgramDTO>();
+            foreach (var item in userPrograms)
+            {
+                var program = await _context.Programs.FindAsync(item.ProgramId);
+                if (program != null)
+                {
+                    ProgramDTO programDTO = new ProgramDTO
+                    {
+                        ProgramId = program.ProgramId,
+                        ProgramContent = program.ProgramContent,
+                        ProgramFdate = (DateTime)program.ProgramFdate,
+                        ProgramTdate = program.ProgramTdate,
+                        ProgramName = program.ProgramName,
+                        ProgramPrice = program.ProgramPrice,
+                        ProgramTime = program.ProgramTime,
+                        TypeInOff = program.TypeInOff,
+                        TotalTicket = program.TotalTicket,
+                        LocationId = program.LocationId,
+                        ProgramType = program.ProgramType
+                    };
+                    var listProgramImage = await _context.ProgramImages.FirstOrDefaultAsync(s => s.ProgramId.Trim() == id);
+                    if (listProgramImage != null)
+                    {
+                        programDTO.ImagePaths += listProgramImage.ProgramImagePath;
+                    }
+                    programDTOs.Add(programDTO);
+                }
+            }
+            return programDTOs;
+        }
+
+        [HttpGet("alarm/{id}")]
+        public async Task<ActionResult<IEnumerable<UserProgramDTO>>> GetAlarm(string id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            var userPrograms = await _context.UserPrograms.Where(s => s.UserId == id
+                && s.AlarmDate != null && s.AlarmTime != null).ToListAsync();
+            if (userPrograms == null || user == null)
+            {
+                return NoContent();
+            }
+            List<UserProgramDTO> userProgramDTOs = new List<UserProgramDTO>();
+            foreach (var item in userPrograms)
+            {
+                var program = await _context.Programs.FindAsync(item.ProgramId);
+                if (program != null)
+                {
+                    UserProgramDTO userProgramDTO = new UserProgramDTO
+                    {
+                        UserProgramId = item.UserProgramId,
+                        ProgramId = program.ProgramId,
+                        ProgramName = program.ProgramName,
+                        UserId = user.UserId,
+                        FullName = user.FullName,
+                        AlarmTime = item.AlarmTime,
+                        AlarmDate = (DateTime)item.AlarmDate
+                    };
+                    userProgramDTOs.Add(userProgramDTO);
+                }
+            }
+            return userProgramDTOs;
+        }
+
+        [HttpGet("get-by-date/{id}")]
+        public async Task<ActionResult<IEnumerable<Models.Program>>> GetByProgramDate(int day)
+        {
+            int month = DateTime.Now.Month;
+            int year = DateTime.Now.Year;
+            var programs = await _context.Programs.Where(s => s.ProgramTdate.Year == year
+                || s.ProgramTdate.Month == month || s.ProgramTdate.Day == day).ToListAsync();
+            if (programs == null)
+            {
+                return NotFound(new { message = "Resource Not Found!!!" });
+            }
+            return programs;
+        }
+
         [HttpGet("get-list-program")]
         public async Task<ActionResult<IEnumerable<ListProgramDTO>>> GetListProgram()
         {
@@ -99,6 +185,35 @@ namespace TicketManagementSystem_BE.Controllers
                         listProgramDTO.ProgramImagePath = programImage.ProgramImagePath;
                     }
                     list.Add(listProgramDTO);
+                }
+            }
+            return list;
+        }
+
+        [HttpGet("program-date")]
+        public async Task<ActionResult<IEnumerable<ProgramDateDTO>>> ProgramDate()
+        {
+            var programs = await _context.Programs.ToListAsync();
+            if (programs == null) 
+            {
+                return NoContent();
+            }
+            int month = DateTime.Now.Month;
+            int year = DateTime.Now.Year;
+            int totalDay = DateTime.DaysInMonth(year, month);
+            List<ProgramDateDTO> list = new List<ProgramDateDTO>(); 
+            for (int i = 1; i <= totalDay; i++)
+            {
+                var programsInThisDay = await _context.Programs.Where(s => s.ProgramTdate.Month == month
+                    && s.ProgramTdate.Day == i && s.ProgramTdate.Year == year).ToListAsync();
+                if (programsInThisDay != null && programsInThisDay.Count > 0)
+                {
+                    ProgramDateDTO programDateDTO = new ProgramDateDTO
+                    {
+                        DateTime = new DateTime(year, month, i),
+                        TotalProgram = programsInThisDay.Count
+                    };
+                    list.Add(programDateDTO);
                 }
             }
             return list;

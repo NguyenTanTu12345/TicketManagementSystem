@@ -52,6 +52,26 @@ namespace TicketManagementSystem_BE.Controllers
             return news;
         }
 
+        [HttpGet("user-like/{id}")]
+        public async Task<ActionResult<IEnumerable<News>>> GetUserLike(string id)
+        {
+            var userLikes = await _context.UserLikeNews.Where(s => s.UserId == id).ToListAsync();
+            if (userLikes == null)
+            {
+                return NoContent();
+            }
+            List<News> list = new List<News>();
+            foreach (var item in userLikes)
+            {
+                var news = await _context.News.FindAsync(item.NewsId);
+                if (news != null)
+                {
+                    list.Add(news);
+                }
+            }
+            return list;
+        }
+
         [Authorize]
         [HttpPost("create")]
         public async Task<ActionResult> Create(NewsDTO newsDTO)

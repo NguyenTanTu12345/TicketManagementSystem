@@ -41,6 +41,26 @@ namespace TicketManagementSystem_BE.Controllers
             return await _context.Locations.ToListAsync();
         }
 
+        [HttpGet("user-like/{id}")]
+        public async Task<ActionResult<IEnumerable<Location>>> GetUserLike(string id)
+        {
+            var userLike = await _context.UserLikeLocations.Where(s => s.UserId == id).ToListAsync();
+            if (userLike == null)
+            {
+                return NoContent();
+            }
+            List<Location> locations = new List<Location>();
+            foreach (var userLikeLocation in userLike)
+            {
+                var location = await _context.Locations.FindAsync(userLikeLocation.LocationId);
+                if (location != null)
+                {
+                    locations.Add(location);
+                }
+            }
+            return locations;
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Location>> Get(string id)
         {
