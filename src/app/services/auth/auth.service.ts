@@ -53,8 +53,16 @@ export class AuthService {
     return this.http.get<User>(this.url + "/" + id);
   }
 
+  getByMail(id: string): Observable<User> {
+    return this.http.get<User>(this.url + "/get-by-mail/" + id);
+  }
+
   create(user: User) {
     return this.http.post<any>(this.url + "/create", user);
+  }
+
+  update(user: User) {
+    return this.http.put<any>(this.url + "/update", user);
   }
 
   delete(id: number) {

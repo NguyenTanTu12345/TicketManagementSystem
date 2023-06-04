@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ListProgram } from 'src/app/models/list-program.model';
 import { ProgramDate } from 'src/app/models/program-date.model';
 import { Program } from 'src/app/models/program.model';
+import { UserProgram } from 'src/app/models/user-program.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -21,6 +22,14 @@ export class ProgramService {
 
   get(id: string): Observable<Program> {
     return this.http.get<Program>(this.url + "/" + id);
+  }
+
+  getUserLike(id: string): Observable<Program[]> {
+    return this.http.get<Program[]>(this.url + "/user-like/" + id);
+  }
+
+  getAlarm(id: string): Observable<UserProgram[]> {
+    return this.http.get<UserProgram[]>(this.url + "/alarm/" + id);
   }
 
   getByDate(id: number): Observable<Program[]> {

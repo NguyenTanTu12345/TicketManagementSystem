@@ -17,6 +17,10 @@ export class NewsService {
     return this.http.get<News[]>(this.url);
   }
 
+  getUserLike(id: string): Observable<News[]> {
+    return this.http.get<News[]>(this.url + "/user-like/" +id);
+  }
+
   get(id: string): Observable<News> {
     return this.http.get<News>(this.url + "/" + id);
   }

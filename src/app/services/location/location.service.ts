@@ -21,6 +21,10 @@ export class LocationService {
     return this.http.get<Location[]>(this.url + "/get-by-type/" + id);
   }
 
+  getUserLike(id: string): Observable<Location[]> {
+    return this.http.get<Location[]>(this.url + "/user-like/" + id);
+  }
+
   get(id: string): Observable<Location> {
     return this.http.get<Location>(this.url + "/" + id);
   }

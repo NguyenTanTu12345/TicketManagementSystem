@@ -27,6 +27,11 @@ import { ProgramDetailComponent } from './program/program-detail/program-detail.
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatSelectModule} from '@angular/material/select';
 import { ProgramDateComponent } from './program/program-date/program-date.component';
+import { DashboardComponent } from './account/dashboard/dashboard.component';
+import { AccountLikeComponent } from './account/account-like/account-like.component';
+import { AlarmComponent } from './account/alarm/alarm.component';
+import { FormAccountComponent } from './account/form-account/form-account.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -40,7 +45,11 @@ import { ProgramDateComponent } from './program/program-date/program-date.compon
     LocationDetailComponent,
     ListProgramComponent,
     ProgramDetailComponent,
-    ProgramDateComponent
+    ProgramDateComponent,
+    DashboardComponent,
+    AccountLikeComponent,
+    AlarmComponent,
+    FormAccountComponent
   ],
   imports: [
     CommonModule,
@@ -59,7 +68,8 @@ import { ProgramDateComponent } from './program/program-date/program-date.compon
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
-    MatSelectModule
+    MatSelectModule,
+    ReactiveFormsModule
   ]
 })
 export class UserModule { }

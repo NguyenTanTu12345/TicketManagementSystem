@@ -1,0 +1,41 @@
+<div>
+    <div style="background-color: brown; color: aliceblue; height: 10vh; ">
+        <p style="text-align: center; font-size: 30px; padding-top: 20px;">
+            Chương trình đã thích
+        </p>
+    </div>
+    <div *ngFor="let item of programs">
+        <a [routerLink]="['../../program-detail', item.programId]" style="text-decoration: none; color: black;">
+            <img src="{{ item.imagePaths == null ? './assets/img/default-image.png' : item.imagePaths.trim() }}" style="width: 30vw;">
+            <p>{{ item.programName }}</p>
+        </a>
+    </div>
+</div>
+
+<div>
+    <div style="background-color: brown; color: aliceblue; height: 10vh; ">
+        <p style="text-align: center; font-size: 30px; padding-top: 20px;">
+            Địa điểm đã thích
+        </p>
+    </div>
+    <div *ngFor="let item of locations">
+        <a [routerLink]="['../../location-detail', item.locationId]" style="text-decoration: none; color: black;">
+            <img src="{{ item.locationImagePath == null ? './assets/img/default-image.png' : item.locationImagePath.trim() }}" style="width: 30vw;">
+            <p>{{ item.locationName }}</p>
+        </a>
+    </div>
+</div>
+
+<div>
+    <div style="background-color: brown; color: aliceblue; height: 10vh; ">
+        <p style="text-align: center; font-size: 30px;">
+            Chương trình đã thích
+        </p>
+    </div>
+    <div *ngFor="let item of news">
+        <a [routerLink]="['../../news-detail', item.newsId]" style="text-decoration: none; color: black;">
+            <img src="{{ item.newsImagePath == '' ? './assets/img/default-image.png' : item.newsImagePath.trim() }}" style="width: 30vw;">
+            <p>{{ item.newsTitle }}</p>
+        </a>
+    </div>
+</div>

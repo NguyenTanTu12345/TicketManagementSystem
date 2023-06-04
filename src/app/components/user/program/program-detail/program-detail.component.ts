@@ -16,7 +16,6 @@ import { saveAs} from 'file-saver';
 })
 export class ProgramDetailComponent {
 
-  //customForm!: FormGroup;
   program: Program = {
     programId: '',
     programName: '',
@@ -94,7 +93,6 @@ export class ProgramDetailComponent {
   like() {
     if (this.authService.isLoggedIn()) {
       this.program.accessToken = this.authService.getJWT() ?? '';
-      console.log(this.program);
       this.programService.userLike(this.program).subscribe({
         next: (res) => {
           this.toast.success({ detail: "SUCCESS", summary: res.message, duration: 4000 });
@@ -119,7 +117,6 @@ export class ProgramDetailComponent {
       this.program.programTdate = this.selectedDate ?? new Date(Date.now());
       this.program.programTime = this.selectedTime;
       this.program.accessToken = this.authService.getJWT() ?? '';
-      console.log(this.program);
       this.programService.alarm(this.program).subscribe({
         next: (res) => {
           this.toast.success({ detail: "SUCCESS", summary: res.message, duration: 4000 });

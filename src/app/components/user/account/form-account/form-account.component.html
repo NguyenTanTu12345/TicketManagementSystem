@@ -1,0 +1,52 @@
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <form [formGroup]="customForm" (ngSubmit)="update()">
+
+                <div class="example-container">
+                    <mat-form-field appearance="outline" style="width: 45%;">
+                        <mat-label>Họ và tên</mat-label>
+                        <input matInput placeholder="Vui lòng điền số điện thoại"
+                            formControlName="fullName" maxlength="35">
+                        <mat-error *ngIf="customForm.hasError('required', 'fullName')">
+                            Vui lòng điền họ và tên
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" style="width: 45%;">
+                        <mat-label>Số điện thoại</mat-label>
+                        <input matInput placeholder="Vui lòng điền số điện thoại"
+                            formControlName="phoneNumber" maxlength="10" type="number">
+                        <mat-error *ngIf="customForm.hasError('required', 'phoneNumber')">
+                            Vui lòng điền số điện thoại
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="example-container">
+                    <mat-form-field appearance="outline" style="width: 45%;">
+                        <mat-label>CCCD</mat-label>
+                        <input matInput placeholder="Vui lòng điền căn cước công dân"
+                            formControlName="cccd" maxlength="11">
+                        <mat-error *ngIf="customForm.hasError('required', 'cccd')">
+                            Vui lòng điền căn cước công dân
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" style="width: 45%;">
+                        <mat-label>Ngày sinh</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                <mat-form-field appearance="outline" style="width: 45%;">
+                    <mat-label>Mail</mat-label>
+                    <input matInput placeholder="Vui lòng điền tên chương trình" value="{{userObj.mail}}" disabled>
+                </mat-form-field>
+                <button mat-raised-button color="primary" type="submit">Cập nhật</button>
+            </form>
+        </div>
+    </div>
+</div>
