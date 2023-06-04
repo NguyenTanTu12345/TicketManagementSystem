@@ -26,6 +26,7 @@ import { ListProgramComponent } from './program/list-program/list-program.compon
 import { ProgramDetailComponent } from './program/program-detail/program-detail.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatSelectModule} from '@angular/material/select';
+import { ProgramDateComponent } from './program/program-date/program-date.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import {MatSelectModule} from '@angular/material/select';
     ListLocationComponent,
     LocationDetailComponent,
     ListProgramComponent,
-    ProgramDetailComponent
+    ProgramDetailComponent,
+    ProgramDateComponent
   ],
   imports: [
     CommonModule,

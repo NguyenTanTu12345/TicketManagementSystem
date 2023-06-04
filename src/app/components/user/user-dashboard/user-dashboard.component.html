@@ -1,24 +1,22 @@
-<!--<p>dashboard works!</p>
-<p>{{ mail }}</p>
-<button (click)="signOut()">Đăng xuất</button>
-<ul>
-    <li *ngFor="let item of supportMenu">
-        {{ item.supportMenuTitle }}
-    </li>
-</ul>-->
-
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
-    <mat-toolbar color="primary" class="example-toolbar">
+    <mat-toolbar style="background-color: #f44336; color: white;" class="example-toolbar">
         <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
         <h2 class="example-app-name" style="margin-bottom: 0;">Trang chủ</h2>
     </mat-toolbar>
 
     <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
         <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
-            fixedTopGap="56">
+            fixedTopGap="56" style="background-color: #f44336; ">
             <mat-list role="list">
+                <mat-list-item role="listitem" style="cursor: pointer;" (click)="backHome()">
+                    <label style="color: white;">Trang chủ</label>
+                </mat-list-item>
                 <mat-list-item role="listitem" *ngFor="let item of supportMenu">
-                    <a style="text-decoration: none; color: black;" ariaCurrentWhenActive="page" [routerLink]="['support-menu', item.supportMenuId]">{{ item.supportMenuTitle }}</a>
+                    <a style="text-decoration: none; color: white;" ariaCurrentWhenActive="page"
+                        [routerLink]="['support-menu', item.supportMenuId]">{{ item.supportMenuTitle }}</a>
+                </mat-list-item>
+                <mat-list-item role="listitem" (click)="logOut()" style="cursor: pointer;">
+                    <label style="color: white;">Đăng xuất</label>
                 </mat-list-item>
             </mat-list>
         </mat-sidenav>

@@ -4,6 +4,7 @@ import { Location } from 'c:/Users/ad/source/repos/TicketManagementSystem/Ticket
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { NgToastService } from 'ng-angular-popup';
+import { saveAs} from 'file-saver';
 
 @Component({
   selector: 'app-location-detail',
@@ -61,5 +62,9 @@ export class LocationDetailComponent {
         }
       });
     }
+  }
+
+  downloadImage(){
+    saveAs(this.location.locationImagePath, this.location.locationName+'.png');
   }
 }

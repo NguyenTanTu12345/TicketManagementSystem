@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ListProgram } from 'src/app/models/list-program.model';
+import { ProgramDate } from 'src/app/models/program-date.model';
 import { Program } from 'src/app/models/program.model';
 import { environment } from 'src/environments/environment';
 
@@ -21,9 +22,17 @@ export class ProgramService {
   get(id: string): Observable<Program> {
     return this.http.get<Program>(this.url + "/" + id);
   }
+
+  getByDate(id: number): Observable<Program[]> {
+    return this.http.get<Program[]>(this.url + "/get-by-date/" + id);
+  }
   
   getListProgram(): Observable<ListProgram[]> {
     return this.http.get<ListProgram[]>(this.url + "/get-list-program");
+  }
+
+  getProgramDate(): Observable<ProgramDate[]> {
+    return this.http.get<ProgramDate[]>(this.url + "/program-date");
   }
 
   create(program: Program) {

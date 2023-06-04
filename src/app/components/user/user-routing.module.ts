@@ -9,9 +9,9 @@ import { NewsDetailComponent } from './news/news-detail/news-detail.component';
 import { LocationTypeComponent } from './location/location-type/location-type.component';
 import { ListLocationComponent } from './location/list-location/list-location.component';
 import { LocationDetailComponent } from './location/location-detail/location-detail.component';
-import { ListProgram } from 'src/app/models/list-program.model';
 import { ListProgramComponent } from './program/list-program/list-program.component';
 import { ProgramDetailComponent } from './program/program-detail/program-detail.component';
+import { ProgramDateComponent } from './program/program-date/program-date.component';
 
 const routes: Routes = [
   {
@@ -63,6 +63,11 @@ const routes: Routes = [
         path: 'program-detail/:id',
         component: ProgramDetailComponent,
         data: { animation: 'program-detail' }
+      },
+      {
+        path: 'program-date/:id',
+        component: ProgramDateComponent,
+        data: { animation: 'program-date' }
       }
     ]
   }

@@ -7,6 +7,7 @@ import { ArtistService } from 'src/app/services/artist/artist.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { LocationService } from 'src/app/services/location/location.service';
 import { ProgramService } from 'src/app/services/program/program.service';
+import { saveAs} from 'file-saver';
 
 @Component({
   selector: 'app-program-detail',
@@ -101,6 +102,14 @@ export class ProgramDetailComponent {
         error: (err) => {
           this.toast.error({ detail: "FAILURE", summary: err.error?.message, duration: 4000 });
         }
+      });
+    }
+  }
+
+  downloadImage(){
+    if (this.arrImage != null) {
+      this.arrImage.forEach(element => {
+        saveAs(element, this.program.programName + '.png');
       });
     }
   }

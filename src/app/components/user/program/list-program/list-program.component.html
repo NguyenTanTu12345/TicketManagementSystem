@@ -30,10 +30,33 @@
 
     <mat-tab>
         <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">calendar_month</mat-icon>
+            <mat-icon class="example-tab-icon" (click)="onClickProgramDate()">calendar_month</mat-icon>
             Lịch diễn
         </ng-template>
-        Content 2
+
+        <div *ngFor="let item of programDates">
+            <a [routerLink]="['../program-date', item.dateTime == null ? 0 : getDay(item.dateTime.toString())]" style="text-decoration: none; color: black;">
+                <div style="float: left; width: 33.33%; color: aliceblue; background-color: #f44336;">
+                    <p style="text-align: center; font-size: 36px; padding: 20px; background-color: #f44336;">
+                        {{ item.dateTime == null ? '' : getDay(item.dateTime.toString()) }}
+                    </p>
+                    <p
+                        style="text-align: center; font-size: 18px; background-color: #820c04; margin: 0%; padding: 10px;">
+                        Tháng {{ item.dateTime == null ? '' : getMonth(item.dateTime.toString()) }}
+                    </p>
+                </div>
+                <div style="float: left; width: 66.66%; background-color: #d3bbbb;">
+                    <p style="text-align: center; font-size: 26px; padding-top: 30px; text-decoration: underline;">
+                        {{ item.dateTime == null ? '' : getDayOfWeek(item.dateTime.toString()) }}
+                    </p>
+                    <p style="text-align: center; font-size: 14px; padding: 15px; margin: 0%;">
+                        Có {{ item.totalProgram }} chương trình
+                    </p>
+                </div>
+                <div class="clear-fix"></div>
+                <p style="background-color: aliceblue; height: 1vh;"></p>
+            </a>
+        </div>
     </mat-tab>
 
     <mat-tab>
@@ -67,7 +90,7 @@
 
     <mat-tab>
         <ng-template mat-tab-label>
-            <mat-icon class="example-tab-icon">thumb_up</mat-icon>
+            <mat-icon class="example-tab-icon" (click)="onClickArtist()">thumb_up</mat-icon>
             Nghệ sĩ
         </ng-template>
 
@@ -80,10 +103,8 @@
             <ng-container matColumnDef="No.">
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let row">
-                    <a [routerLink]="['../list-location', row.artistId]">
-                        <img style="width: 100%;"
-                            src="{{row.artistImagePath == '' ? './assets/img/default-image.png' : row.artistImagePath.trim() }}" />
-                    </a>
+                    <img style="width: 100%;"
+                        src="{{row.artistImagePath == '' ? './assets/img/default-image.png' : row.artistImagePath.trim() }}" />
                     <p style="padding: 10px;"><b>{{ row.artistName }}</b></p>
                 </td>
             </ng-container>

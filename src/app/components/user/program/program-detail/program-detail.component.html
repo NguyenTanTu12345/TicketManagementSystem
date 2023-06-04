@@ -1,24 +1,24 @@
 <div class="scroll-container">
-    <a href="{{ (item == null || item == '') ? './assets/img/default-image.png' : item }}" *ngFor="let item of arrImage">
-        <img style="width: 100%;"
-            src="{{ (item == null || item == '') ? './assets/img/default-image.png' : item }}" />
+    <a href="{{ (item == null || item == '') ? './assets/img/default-image.png' : item }}"
+        *ngFor="let item of arrImage">
+        <img style="width: 100%;" src="{{ (item == null || item == '') ? './assets/img/default-image.png' : item }}" />
     </a>
 </div>
 
 <div style="background-color: #f44336; height: 14vh; display: flex; color: aliceblue;">
-    <div style="width: 33.33%;" (click)="like()">
+    <div style="width: 33.33%; cursor: pointer;" (click)="like()">
         <mat-icon
             style="font-size: 40px; padding-top: 10px; width: 100%; height: auto; text-align: center;">favorite</mat-icon>
         <p style="text-align: center;">Thích</p>
     </div>
 
-    <div style="width: 33.33%;">
+    <div style="width: 33.33%; cursor: pointer;" (click)="downloadImage()">
         <mat-icon
             style="font-size: 40px;padding-top: 10px; width: 100%; height: auto; text-align: center;">bookmark</mat-icon>
         <p style="text-align: center;">Lưu</p>
     </div>
 
-    <div style="width: 33.33%;">
+    <div style="width: 33.33%; cursor: pointer;">
         <a href="https://maps.google.com" target="_blank" style="text-decoration: none; color: aliceblue;">
             <mat-icon
                 style="font-size: 40px;padding-top: 10px; width: 100%; height: auto; text-align: center;">explore</mat-icon>
@@ -48,10 +48,8 @@
 <div>
     <h3>Danh sách các nghệ sĩ</h3>
     <div *ngFor="let item of artist" style="margin-bottom: 25%;">
-        <a [routerLink]="['../../location-detail', item.artistId]">
-            <img style="width: 40%; float: left; "
-                src="{{item.artistImagePath == '' ? './assets/img/default-image.png' : item.artistImagePath.trim() }}" />
-        </a>
+        <img style="width: 40%; float: left; "
+            src="{{item.artistImagePath == '' ? './assets/img/default-image.png' : item.artistImagePath.trim() }}" />
         <div style="margin-left: 10px; float: left; width: 50%;">
             <p><b>{{item.artistName}}</b></p>
         </div>

@@ -1,3 +1,9 @@
 .example-tab-icon {
     margin-right: 8px;
 }
+
+.clear-fix:after {
+    content: "";
+    display: table;
+    clear: both;
+}

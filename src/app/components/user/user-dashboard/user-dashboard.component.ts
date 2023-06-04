@@ -1,8 +1,7 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { FlatTreeControl } from '@angular/cdk/tree';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { ChildrenOutletContexts } from '@angular/router';
+import { ChildrenOutletContexts, Router } from '@angular/router';
+import { slideInAnimation } from 'src/app/helpers/animations';
 import { SupportMenu } from 'src/app/models/support-menu.model';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { SupportMenuService } from 'src/app/services/support-menu/support-menu.service';
@@ -10,7 +9,8 @@ import { SupportMenuService } from 'src/app/services/support-menu/support-menu.s
 @Component({
   selector: 'app-user-dashboard',
   templateUrl: './user-dashboard.component.html',
-  styleUrls: ['./user-dashboard.component.css']
+  styleUrls: ['./user-dashboard.component.css'],
+  animations: [ slideInAnimation ]
 })
 export class UserDashboardComponent implements OnInit {
 
@@ -21,7 +21,8 @@ export class UserDashboardComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef,
     private authService: AuthService,
     private media: MediaMatcher,
-    private contexts: ChildrenOutletContexts
+    private contexts: ChildrenOutletContexts,
+    private router: Router
   ) { 
     this.mobileQuery = this.media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => this.changeDetectorRef.detectChanges();
@@ -50,11 +51,11 @@ export class UserDashboardComponent implements OnInit {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
-  logOut() {
-    this.authService.signOut();
+  backHome() {
+    this.router.navigate(['user/dashboard']);
   }
 
-  signOut() {
+  logOut() {
     this.authService.signOut();
   }
 }

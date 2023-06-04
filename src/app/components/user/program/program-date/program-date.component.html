@@ -1,0 +1,34 @@
+<div>
+    <div style="background-color: brown; color: aliceblue; height: 10vh; ">
+        <p style="text-align: center; font-size: 30px; padding-top: 20px;">
+            Chương trình có bán vé
+        </p>
+    </div>
+    <div *ngFor="let program of programs1" style="padding-left: 20px;">
+        <a [routerLink]="['../../program-detail', program.programId]" style="text-decoration: none; color: black;">
+            <h1><b>{{ program.programName }}</b></h1>
+            <br />
+            <p>
+                <mat-icon style="vertical-align: middle;">schedule</mat-icon> Thời gian: {{ program.programTime }} {{
+                program.programTdate | date:"dd/MM" }} - {{ program.programFdate | date:"dd/MM" }}
+            </p>
+        </a>
+    </div>
+</div>
+<div>
+    <div style="background-color: brown; color: aliceblue; height: 10vh; ">
+        <p style="text-align: center; font-size: 30px; padding-top: 20px;">
+            Chương trình không bán vé
+        </p>
+    </div>
+    <div *ngFor="let program of programs2" style="padding-left: 20px;">
+        <a [routerLink]="['../../program-detail', program.programId]" style="text-decoration: none; color: black;">
+            <h1><b>{{ program.programName }}</b></h1>
+            <br />
+            <p>
+                <mat-icon style="vertical-align: middle;">schedule</mat-icon> Thời gian: {{ program.programTime }} {{
+                program.programTdate | date:"dd/MM" }} - {{ program.programFdate | date:"dd/MM" }}
+            </p>
+        </a>
+    </div>
+</div>

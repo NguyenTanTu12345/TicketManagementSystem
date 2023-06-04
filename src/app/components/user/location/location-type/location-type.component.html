@@ -11,15 +11,15 @@
             <ng-container matColumnDef="No.">
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let row">
-                    <div class="container">
-                        <a [routerLink]="['../list-location', row.locationTypeId]">
+                    <a [routerLink]="['../list-location', row.locationTypeId]">
+                        <div class="container">
                             <img style="width: 100%;"
                                 src="{{row.locationTypePath == '' ? './assets/img/default-image.png' : row.locationTypePath.trim() }}" />
-                        </a>
-                        <div class="overlay">
-                            <div class="text">{{ row.locationTypeName }}</div>
+                            <div class="overlay">
+                                <div class="text">{{ row.locationTypeName }}</div>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </td>
             </ng-container>
 
