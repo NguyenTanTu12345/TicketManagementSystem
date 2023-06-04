@@ -8,8 +8,9 @@ namespace TicketManagementSystem_BE.Models
         public int UserProgramId { get; set; }
         public string UserId { get; set; } = null!;
         public string ProgramId { get; set; } = null!;
-        public string UserProgramType { get; set; } = null!;
+        public bool? IsLike { get; set; }
         public string? AlarmTime { get; set; }
+        public DateTime? AlarmDate { get; set; }
         public string? QrcodePath { get; set; }
 
         public virtual Program Program { get; set; } = null!;

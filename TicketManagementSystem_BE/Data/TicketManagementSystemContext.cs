@@ -401,10 +401,14 @@ namespace TicketManagementSystem_BE.Data
 
                 entity.Property(e => e.UserProgramId).HasColumnName("UserProgramID");
 
+                entity.Property(e => e.AlarmDate).HasColumnType("datetime");
+
                 entity.Property(e => e.AlarmTime)
                     .HasMaxLength(5)
                     .IsUnicode(false)
                     .IsFixedLength();
+
+                entity.Property(e => e.IsLike).HasColumnName("isLike");
 
                 entity.Property(e => e.ProgramId)
                     .HasMaxLength(10)
@@ -423,22 +427,17 @@ namespace TicketManagementSystem_BE.Data
                     .HasColumnName("UserID")
                     .IsFixedLength();
 
-                entity.Property(e => e.UserProgramType)
-                    .HasMaxLength(1)
-                    .IsUnicode(false)
-                    .IsFixedLength();
-
                 entity.HasOne(d => d.Program)
                     .WithMany(p => p.UserPrograms)
                     .HasForeignKey(d => d.ProgramId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserProgr__Progr__48CFD27E");
+                    .HasConstraintName("FK__UserProgr__Progr__6FE99F9F");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserPrograms)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserProgr__UserI__47DBAE45");
+                    .HasConstraintName("FK__UserProgr__UserI__6EF57B66");
             });
 
             modelBuilder.Entity<UserSchedule>(entity =>

@@ -52,19 +52,28 @@ namespace TicketManagementSystem_BE.Controllers
             return artist;
         }
 
-        [HttpGet("get-list-program")]
-        public async Task<ActionResult<IEnumerable<ListProgramDTO>>> GetListProgram()
+        [HttpGet("get-by-program/{id}")]
+        public async Task<ActionResult<IEnumerable<Artist>>> GetByProgram(string id)
         {
-            if (_context.Programs == null)
+            var programs = await _context.Programs.FindAsync(id);
+            if (programs == null)
             {
-                return NotFound(new { message = "Resources Not Found!!!" });
+                return NotFound(new { message = "Resource Not Found!!!" });
             }
-            List<ListProgramDTO> programDTOs = await _context.Programs.Select(s => new ListProgramDTO { ProgramId = s.ProgramId, ProgramName = s.ProgramName }).ToListAsync();
-            if(programDTOs == null)
+            List<Artist> artists = new List<Artist>();
+            var show = await _context.Shows.Where(s => s.ProgramId == programs.ProgramId).ToListAsync();
+            if (show != null)
             {
-                return NotFound(new { message = "Resources Not Found!!!" });
+                foreach (var item in show)
+                {
+                    var artist = await _context.Artists.FirstOrDefaultAsync(s => s.ArtistId == item.ArtistId);
+                    if (artist != null)
+                    {
+                        artists.Add(artist);
+                    }
+                }
             }
-            return programDTOs;
+            return artists;
         }
 
         [Authorize]

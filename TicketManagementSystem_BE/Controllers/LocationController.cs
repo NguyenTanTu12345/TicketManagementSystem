@@ -52,6 +52,22 @@ namespace TicketManagementSystem_BE.Controllers
             return locations;
         }
 
+        [HttpGet("get-by-type/{id}")]
+        public async Task<ActionResult<IEnumerable<Location>>> GetByType(string id)
+        {
+            var locationType = await _context.LocationTypes.FindAsync(id);
+            if (locationType == null)
+            {
+                return NotFound(new { message = "Resource Not Found!!!" });
+            }
+            var locations = await _context.Locations.Where(s => s.LocationTypeId == locationType.LocationTypeId).ToListAsync();
+            if (locations == null)
+            {
+                return NotFound(new { message = "Resource Not Found!!!" });
+            }
+            return locations;
+        }
+
         [Authorize]
         [HttpPost("create")]
         public async Task<ActionResult> Create(LocationDTO locationDTO)
@@ -84,6 +100,42 @@ namespace TicketManagementSystem_BE.Controllers
             await _context.Locations.AddAsync(location);
             await _context.SaveChangesAsync();
             return Ok(new { message = "Create Successful~" });
+        }
+
+        [Authorize]
+        [HttpPost("user-like")]
+        public async Task<ActionResult> UserLike(LocationDTO locationDTO)
+        {
+            if (locationDTO == null)
+            {
+                return BadRequest(new { meassage = "Invalid Request!!!" });
+            }
+            var principal = _principal.GetPrincipal(locationDTO.AccessToken, _configuration["JWT:SecretKey"]);
+            var userMail = principal.FindFirst(ClaimTypes.Email)?.Value;
+            var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail.Trim() == userMail);
+            if (user == null)
+            {
+                return NotFound(new { meassage = "User Not Found!!!" });
+            }
+            var userLikeLocation = await _context.UserLikeLocations.FirstOrDefaultAsync(s => s.LocationId == locationDTO.LocationId 
+                && s.UserId == user.UserId);
+            if (userLikeLocation != null)
+            {
+                _context.UserLikeLocations.Remove(userLikeLocation);
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Dislike Successful~" });
+            }
+            else
+            {
+                UserLikeLocation userLikeLocation1 = new UserLikeLocation
+                {
+                    UserId = user.UserId,
+                    LocationId = locationDTO.LocationId
+                };
+                await _context.UserLikeLocations.AddAsync(userLikeLocation1);
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Like Successful~" });
+            }
         }
 
         [Authorize]

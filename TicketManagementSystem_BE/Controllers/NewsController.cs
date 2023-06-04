@@ -126,5 +126,41 @@ namespace TicketManagementSystem_BE.Controllers
             await _context.SaveChangesAsync();
             return Ok(new { message = "Update Successful~" });
         }
+
+        [Authorize]
+        [HttpPost("user-like")]
+        public async Task<ActionResult> UserLike(NewsDTO newsDTO)
+        {
+            if (newsDTO == null)
+            {
+                return BadRequest(new { meassage = "Invalid Request!!!" });
+            }
+            var principal = _principal.GetPrincipal(newsDTO.AccessToken, _configuration["JWT:SecretKey"]);
+            var userMail = principal.FindFirst(ClaimTypes.Email)?.Value;
+            var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail.Trim() == userMail);
+            if (user == null)
+            {
+                return NotFound(new { meassage = "User Not Found!!!" });
+            }
+            var userLikeNews = await _context.UserLikeNews.FirstOrDefaultAsync(s => s.UserId == user.UserId 
+                && s.NewsId ==  newsDTO.NewsId);
+            if (userLikeNews != null)
+            {
+                _context.UserLikeNews.Remove(userLikeNews);
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "DisLike Successful~" });
+            }
+            else
+            {
+                UserLikeNews userLikeNews1 = new UserLikeNews
+                {
+                    NewsId = newsDTO.NewsId,
+                    UserId = user.UserId
+                };
+                await _context.UserLikeNews.AddAsync(userLikeNews1);
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Like Successful~" });
+            }    
+        }
     }
 }

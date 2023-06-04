@@ -60,6 +60,11 @@ namespace TicketManagementSystem_BE.Controllers
                             ProgramId = program.ProgramId,
                             ProgramName = program.ProgramName
                         };
+                        var programImagePath = await _context.ProgramImages.FirstOrDefaultAsync(s => s.ProgramId == program.ProgramId);
+                        if (programImagePath != null)
+                        {
+                            listProgramDTO.ProgramImagePath = programImagePath.ProgramImagePath;
+                        }
                         programs2.Add(listProgramDTO);
                         programs1.Remove(program);
                     }
