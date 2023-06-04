@@ -22,8 +22,8 @@ export class ArtistService {
     return this.http.get<Artist>(this.url + "/" + id);
   }
 
-  getListProgram(): Observable<ListProgram[]> {
-    return this.http.get<ListProgram[]>(this.url + "/get-list-program");
+  getByProgram(id: string): Observable<Artist[]> {
+    return this.http.get<Artist[]>(this.url + "/get-by-program/" + id);
   }
 
   create(artist: Artist): Observable<Artist> {

@@ -1,0 +1,93 @@
+<div class="scroll-container">
+    <a href="{{ (item == null || item == '') ? './assets/img/default-image.png' : item }}" *ngFor="let item of arrImage">
+        <img style="width: 100%;"
+            src="{{ (item == null || item == '') ? './assets/img/default-image.png' : item }}" />
+    </a>
+</div>
+
+<div style="background-color: #f44336; height: 14vh; display: flex; color: aliceblue;">
+    <div style="width: 33.33%;" (click)="like()">
+        <mat-icon
+            style="font-size: 40px; padding-top: 10px; width: 100%; height: auto; text-align: center;">favorite</mat-icon>
+        <p style="text-align: center;">Thích</p>
+    </div>
+
+    <div style="width: 33.33%;">
+        <mat-icon
+            style="font-size: 40px;padding-top: 10px; width: 100%; height: auto; text-align: center;">bookmark</mat-icon>
+        <p style="text-align: center;">Lưu</p>
+    </div>
+
+    <div style="width: 33.33%;">
+        <a href="https://maps.google.com" target="_blank" style="text-decoration: none; color: aliceblue;">
+            <mat-icon
+                style="font-size: 40px;padding-top: 10px; width: 100%; height: auto; text-align: center;">explore</mat-icon>
+            <p style="text-align: center;">Bản đồ</p>
+        </a>
+    </div>
+</div>
+<div style="padding-left: 10px;">
+    <h1><b>{{ program.programName }}</b></h1>
+    <br />
+    <p>
+        <mat-icon style="vertical-align: middle;">schedule</mat-icon> Thời gian: {{ program.programTime }} {{
+        program.programTdate | date:"dd/MM" }} - {{ program.programFdate | date:"dd/MM" }}
+    </p>
+    <p>
+        <mat-icon style="vertical-align: middle;">location_on</mat-icon> Địa điểm: {{ locationName }}
+    </p>
+    <p *ngIf="program.typeInOff == true">
+        <mat-icon style="vertical-align: middle;">paid</mat-icon> Giá vé: {{ program.programPrice }}
+    </p>
+</div>
+<hr />
+<p style="padding-left: 10px;">
+    {{ program.programContent }}
+</p>
+
+<div>
+    <h3>Danh sách các nghệ sĩ</h3>
+    <div *ngFor="let item of artist" style="margin-bottom: 25%;">
+        <a [routerLink]="['../../location-detail', item.artistId]">
+            <img style="width: 40%; float: left; "
+                src="{{item.artistImagePath == '' ? './assets/img/default-image.png' : item.artistImagePath.trim() }}" />
+        </a>
+        <div style="margin-left: 10px; float: left; width: 50%;">
+            <p><b>{{item.artistName}}</b></p>
+        </div>
+    </div>
+</div>
+
+<hr />
+<div style="margin-top: 10%; margin-left: 10%;">
+    <p>Chọn ngày: {{selectedDate}}</p>
+    <mat-card class="demo-inline-calendar-card">
+        <mat-calendar [(selected)]="selectedDate"></mat-calendar>
+    </mat-card>
+    <br />
+    <p>Chọn giờ</p>
+    <mat-form-field appearance="outline">
+        <mat-label>Giờ khai mạc</mat-label>
+        <mat-select [(value)]="selectedTime">
+            <mat-option value="07:00">07:00</mat-option>
+            <mat-option value="08:00">08:00</mat-option>
+            <mat-option value="09:00">09:00</mat-option>
+            <mat-option value="10:00">10:00</mat-option>
+            <mat-option value="11:00">11:00</mat-option>
+            <mat-option value="12:00">12:00</mat-option>
+            <mat-option value="13:00">13:00</mat-option>
+            <mat-option value="14:00">14:00</mat-option>
+            <mat-option value="15:00">15:00</mat-option>
+            <mat-option value="16:00">16:00</mat-option>
+            <mat-option value="17:00">17:00</mat-option>
+            <mat-option value="18:00">18:00</mat-option>
+            <mat-option value="19:00">19:00</mat-option>
+            <mat-option value="20:00">20:00</mat-option>
+            <mat-option value="21:00">21:00</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div>
+        <button mat-raised-button color="primary" (click)="setAlarm()">Đặt báo thức</button>
+    </div>
+</div>

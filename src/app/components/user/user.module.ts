@@ -22,6 +22,10 @@ import { NewsDetailComponent } from './news/news-detail/news-detail.component';
 import { LocationTypeComponent } from './location/location-type/location-type.component';
 import { ListLocationComponent } from './location/list-location/list-location.component';
 import { LocationDetailComponent } from './location/location-detail/location-detail.component';
+import { ListProgramComponent } from './program/list-program/list-program.component';
+import { ProgramDetailComponent } from './program/program-detail/program-detail.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -32,7 +36,9 @@ import { LocationDetailComponent } from './location/location-detail/location-det
     NewsDetailComponent,
     LocationTypeComponent,
     ListLocationComponent,
-    LocationDetailComponent
+    LocationDetailComponent,
+    ListProgramComponent,
+    ProgramDetailComponent
   ],
   imports: [
     CommonModule,
@@ -49,7 +55,9 @@ import { LocationDetailComponent } from './location/location-detail/location-det
     MatPaginatorModule,
     MatTableModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatDatepickerModule,
+    MatSelectModule
   ]
 })
 export class UserModule { }

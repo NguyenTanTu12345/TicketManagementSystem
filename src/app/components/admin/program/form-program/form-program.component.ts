@@ -90,7 +90,7 @@ export class FormProgramComponent {
                 this.isSell = true;
               }
               else {
-                this.customForm.controls['typeInOff']?.setValue("False");
+                this.customForm.controls['typeInOff']?.setValue("false");
               }
               this.customForm.controls['programPrice']?.setValue(res.programPrice);
               this.customForm.controls['totalTicket']?.setValue(res.totalTicket);
@@ -140,23 +140,30 @@ export class FormProgramComponent {
       this.program.programTime = this.customForm.controls['programTime']?.value;
       this.program.programTdate = this.customForm.controls['programTdate']?.value;
       this.program.programFdate = this.customForm.controls['programFdate']?.value;
-      this.program.typeInOff = Boolean(this.customForm.controls['typeInOff']?.value);
-      this.program.programType = Boolean(this.customForm.controls['programType']?.value);
       this.program.locationId = this.customForm.controls['locationId']?.value;
       if (this.customForm.controls['typeInOff']?.value != null
         && this.customForm.controls['typeInOff']?.value == 'true') {
         this.program.programPrice = this.customForm.controls['programPrice']?.value;
         this.program.totalTicket = this.customForm.controls['totalTicket']?.value;
+        this.program.typeInOff = true;
       }
       else {
         this.program.programPrice = 0;
         this.program.totalTicket = 0;
+        this.program.typeInOff = false;
       }
       if (this.mySrc != '') {
         this.program.imagePaths = this.mySrc;
       }
       else {
         this.program.imagePaths = "./assets/img/default-image.png";
+      }
+      if (this.customForm.controls['programType']?.value != null
+        && this.customForm.controls['programType']?.value == 'true') {
+          this.program.programType = true;
+      }
+      else {
+        this.program.programType = false;
       }
       this.program.accessToken = this.authService.getJWT() ?? '';
       if (this.customForm.controls['programId']?.value == '') {

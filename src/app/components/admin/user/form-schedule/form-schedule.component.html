@@ -12,6 +12,7 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
+                <th scope="col">Hình ảnh</th>
                 <th scope="col">Tên chương trình</th>
                 <th scope="col">Khác</th>
               </tr>
@@ -19,6 +20,12 @@
             <tbody>
               <tr *ngFor="let item of userSchedule.listProgram1; let pos = index">
                 <th scope="row">{{ pos + 1 }}</th>
+                <td style="width: 15vw; height: 15vh;">
+                  <a href="{{item.programImagePath == '' ? './assets/img/default-image.png' : item.programImagePath.trim()}}">
+                    <img style="width: 100%;"
+                      src="{{item.programImagePath == '' ? './assets/img/default-image.png' : item.programImagePath.trim()}}" />
+                  </a>
+                </td>
                 <td>{{ item.programName }}</td>
                 <td>
                   <a mat-icon-button color="primary"

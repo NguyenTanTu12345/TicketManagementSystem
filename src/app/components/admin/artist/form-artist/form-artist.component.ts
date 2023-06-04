@@ -6,6 +6,7 @@ import { Artist } from 'src/app/models/artist.model';
 import { ListProgram } from 'src/app/models/list-program.model';
 import { ArtistService } from 'src/app/services/artist/artist.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { ProgramService } from 'src/app/services/program/program.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -30,6 +31,7 @@ export class FormArtistComponent {
 
   constructor(
     private artistService: ArtistService,
+    private programService: ProgramService,
     private router: Router,
     private activedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
@@ -66,7 +68,7 @@ export class FormArtistComponent {
         }
       }
     });
-    this.artistService.getListProgram().subscribe({
+    this.programService.getListProgram().subscribe({
       next: (res) => {
         this.programs = res;
       },
