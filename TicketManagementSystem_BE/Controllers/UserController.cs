@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using MoMo;
+using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -255,6 +257,102 @@ namespace TicketManagementSystem_BE.Controllers
                 return NotFound(new { message = "User Not Found!!!" });
             }
             return user;
+        }
+
+        [HttpPost("payment")]
+        public async Task<ActionResult> Payment(UserDTO userDTO)
+        {
+            /*if (userDTO == null)
+            {
+                return BadRequest(new { meassage = "Invalid Request!!!" });
+            }
+            var principal = _principal.GetPrincipal(userDTO.AccessToken, _configuration["JWT:SecretKey"]);
+            var userMail = principal.FindFirst(ClaimTypes.Email)?.Value;
+            var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail.Trim() == userMail);
+            if (user == null)
+            {
+                return NotFound(new { meassage = "User Not Found!!!" });
+            }*/
+
+            //request params need to request to MoMo system
+            string endpoint = "https://test-payment.momo.vn/gw_payment/transactionProcessor";
+            string partnerCode = "MOMOIY6L20220625";
+            string accessKey = "9hvcineYO8gf5NAk";
+            string serectkey = "LOAQkwrK57jnVGmDBPxmvnxX1sSHPpuj";
+            string orderInfo = "Cảm ơn bạn đã thanh toán hóa đơn: ";
+            string returnUrl = "http://localhost:4200/user/dashboard/display";
+            string notifyurl = "https://be01-116-106-201-230.ngrok-free.app/api/user/check";
+
+            string amount = "1000";
+            string orderid = DateTime.Now.Ticks.ToString();
+            string requestId = DateTime.Now.Ticks.ToString();
+            string extraData = "";
+
+            //Before sign HMAC SHA256 signature
+            string rawHash = "partnerCode=" +
+                partnerCode + "&accessKey=" +
+                accessKey + "&requestId=" +
+                requestId + "&amount=" +
+                amount + "&orderId=" +
+                orderid + "&orderInfo=" +
+                orderInfo + "&returnUrl=" +
+                returnUrl + "&notifyUrl=" +
+                notifyurl + "&extraData=" +
+                extraData;
+
+            MoMoSecurity crypto = new MoMoSecurity();
+            //sign signature SHA256
+            string signature = crypto.signSHA256(rawHash, serectkey);
+
+            //build body json request
+            JObject message = new JObject
+            {
+                { "partnerCode", partnerCode },
+                { "accessKey", accessKey },
+                { "requestId", requestId },
+                { "amount", amount },
+                { "orderId", orderid },
+                { "orderInfo", orderInfo },
+                { "returnUrl", returnUrl },
+                { "notifyUrl", notifyurl },
+                { "extraData", extraData },
+                { "requestType", "captureMoMoWallet" },
+                { "signature", signature }
+            };
+            string responseFromMomo = PaymentRequest.sendPaymentRequest(endpoint, message.ToString());
+            JObject jmessage = JObject.Parse(responseFromMomo);
+            return Ok(new { message = jmessage.GetValue("payUrl").ToString() });
+        }
+        [HttpGet("ConfirmPaymentClient")]
+        public ActionResult ConfirmPaymentClient(ResultDTO result)
+        {
+            //lấy kết quả Momo trả về và hiển thị thông báo cho người dùng (có thể lấy dữ liệu ở đây cập nhật xuống db)
+            string rMessage = result.message;
+            string rOrderId = result.orderId;
+            string rErrorCode = result.errorCode; // = 0: thanh toán thành công
+            return Ok(new { message = rErrorCode });
+        }
+
+        [HttpGet("check")]
+        public async Task<ActionResult> Check(ResultDTO result)
+        {
+            string rMessage = result.message;
+            string rOrderId = result.orderId;
+            string rErrorCode = result.errorCode; // = 0: thanh toán thành công
+            if (rErrorCode == "0")
+            {
+                SupportMenu supportMenu = new SupportMenu
+                {
+                    SupportMenuTitle = "abc",
+                    SupportMenuContent = "abc",
+                    UserId = "US01"
+                };
+                await _context.SupportMenus.AddAsync(supportMenu);
+                await _context.SaveChangesAsync();
+
+            }
+            
+            return NoContent();
         }
 
         [HttpPost("create")]

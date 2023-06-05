@@ -31,6 +31,16 @@ builder.Services.AddCors(option =>
         });
 });
 
+/*builder.Services.AddCors(option =>
+{
+    option.AddPolicy(name: "myOrigins",
+        policy =>
+        {
+            policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+        });
+});*/
+
+
 builder.Services.AddDbContext<TicketManagementSystemContext>(option => 
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("TicketManagementSystem"));
