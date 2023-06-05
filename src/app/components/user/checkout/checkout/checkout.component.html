@@ -1,0 +1,73 @@
+<div class="container my-5">
+    <div class="row">
+        <div class="col-7">
+            <form>
+                <h1>Thông tin của bạn</h1>
+                <div class="example-container">
+                    <mat-form-field appearance="outline" style="width: 45%; padding-right: 10px;">
+                        <mat-label>Họ và tên</mat-label>
+                        <input matInput placeholder="Vui lòng điền họ và tên" maxlength="35"
+                            value="{{userObj.fullName}}" disabled>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" style="width: 45%; padding-right: 10px;">
+                        <mat-label>Số điện thoại</mat-label>
+                        <input matInput placeholder="Vui lòng điền số điện thoại" maxlength="10" type="text"
+                            value="{{userObj.phoneNumber}}" disabled>
+                    </mat-form-field>
+                </div>
+
+                <div class="example-container">
+                    <mat-form-field appearance="outline" style="width: 45%; padding-right: 10px;">
+                        <mat-label>CCCD</mat-label>
+                        <input matInput placeholder="Vui lòng điền căn cước công dân" maxlength="11"
+                            value="{{userObj.cccd}}" disabled>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" style="width: 45%; padding-right: 10px;">
+                        <mat-label>Ngày sinh</mat-label>
+                        <input matInput [matDatepicker]="picker" value="{{userObj.dateOfBirth}}" disabled>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                <mat-form-field appearance="outline" style="width: 45%; padding-right: 10px;">
+                    <mat-label>Mail</mat-label>
+                    <input matInput placeholder="Vui lòng điền mail" value="{{userObj.mail}}" disabled>
+                </mat-form-field>
+
+                <a mat-raised-button style="color: white; background-color: #3f51b5;">Thay đổi thông tin</a>
+            </form>
+        </div>
+
+
+        <div class="col-5">
+                <h1>Thông tin của chương trình</h1>
+                <div class="scroll-container">
+                    <a href="{{ (arrImage[0] == null || arrImage[0] == '') ? './assets/img/default-image.png' : arrImage[0] }}">
+                        <img style="width: 100%;"
+                            src="{{ (arrImage[0] == null || arrImage[0] == '') ? './assets/img/default-image.png' : arrImage[0] }}" />
+                    </a>
+                </div>
+                <div style="padding-left: 10px;">
+                    <h1><b>{{ program.programName }}</b></h1>
+                    <br />
+                    <p>
+                        <mat-icon style="vertical-align: middle;">schedule</mat-icon> Thời gian: {{ program.programTime
+                        }} {{
+                        program.programTdate | date:"dd/MM" }} - {{ program.programFdate | date:"dd/MM" }}
+                    </p>
+                    <p>
+                        <mat-icon style="vertical-align: middle;">location_on</mat-icon> Địa điểm: {{ locationName }}
+                    </p>
+                    <p *ngIf="program.typeInOff == true">
+                        <mat-icon style="vertical-align: middle;">paid</mat-icon> Giá vé: <span style="color: #f44336; font-size: 24px; font-weight: bold;"> {{ program.programPrice }} vnđ</span>
+                    </p>
+                    
+                </div>
+                <hr />
+                <button mat-raised-button color="accent" style="width: 100%;" (click)="payment()">Thanh toán với MoMo</button>
+        </div>
+    </div>
+</div>

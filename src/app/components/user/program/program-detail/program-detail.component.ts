@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
 import { Artist } from 'src/app/models/artist.model';
 import { Program } from 'src/app/models/program.model';
@@ -43,7 +43,8 @@ export class ProgramDetailComponent {
     private programService: ProgramService,
     private activedRoute: ActivatedRoute,
     private authService: AuthService,
-    private toast: NgToastService
+    private toast: NgToastService,
+    private route: Router
   ) { }
 
   ngOnInit(): void {
@@ -125,6 +126,26 @@ export class ProgramDetailComponent {
           this.toast.error({ detail: "FAILURE", summary: err.error?.message, duration: 4000 });
         }
       });
+    }
+  }
+
+  checkout() {
+    if (this.authService.isLoggedIn()) {
+      this.authService.getByMail(this.authService.getMail()).subscribe({
+        next: (res) => {
+          if (res.cccd != null && res.phoneNumber != null && res.fullName != null) {
+            this.route.navigate(['user/dashboard/checkout/' + this.program.programId]);
+          }
+          else {
+            this.toast.info({ detail: "INFO", summary: 'Bạn cần điền đầy đủ thông tin trước', duration: 4000 });
+            this.route.navigate(['user/dashboard/form-account/' + res.userId]);
+          }
+        }
+      })
+    }
+    else {
+      this.toast.info({ detail: "INFO", summary: 'Bạn cần đăng nhập trước', duration: 4000 });
+      this.route.navigate(['login']);
     }
   }
 }

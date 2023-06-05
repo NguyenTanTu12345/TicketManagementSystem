@@ -61,6 +61,10 @@ export class AuthService {
     return this.http.post<any>(this.url + "/create", user);
   }
 
+  payment(user: User) {
+    return this.http.post<any>(this.url + "/payment", user);
+  }
+
   update(user: User) {
     return this.http.put<any>(this.url + "/update", user);
   }

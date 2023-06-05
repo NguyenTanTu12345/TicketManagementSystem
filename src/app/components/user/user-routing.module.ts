@@ -16,6 +16,8 @@ import { DashboardComponent } from './account/dashboard/dashboard.component';
 import { AccountLikeComponent } from './account/account-like/account-like.component';
 import { AlarmComponent } from './account/alarm/alarm.component';
 import { FormAccountComponent } from './account/form-account/form-account.component';
+import { CheckoutComponent } from './checkout/checkout/checkout.component';
+import { DisplayResultComponent } from './checkout/display-result/display-result.component';
 
 const routes: Routes = [
   {
@@ -93,6 +95,16 @@ const routes: Routes = [
         path: 'form-account/:id',
         component: FormAccountComponent,
         data: { animation: 'form-account' }
+      },
+      {
+        path: 'checkout/:id',
+        component: CheckoutComponent,
+        data: { animation: 'checkout' }
+      },
+      {
+        path: 'display',
+        component: DisplayResultComponent,
+        data: { animation: 'display' }
       }
     ]
   }

@@ -39,6 +39,7 @@
     <p *ngIf="program.typeInOff == true">
         <mat-icon style="vertical-align: middle;">paid</mat-icon> Giá vé: {{ program.programPrice }}
     </p>
+    <button mat-raised-button color="primary" (click)="checkout()">Mua vé</button>
 </div>
 <hr />
 <p style="padding-left: 10px;">

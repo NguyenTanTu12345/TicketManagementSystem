@@ -32,6 +32,8 @@ import { AccountLikeComponent } from './account/account-like/account-like.compon
 import { AlarmComponent } from './account/alarm/alarm.component';
 import { FormAccountComponent } from './account/form-account/form-account.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CheckoutComponent } from './checkout/checkout/checkout.component';
+import { DisplayResultComponent } from './checkout/display-result/display-result.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     DashboardComponent,
     AccountLikeComponent,
     AlarmComponent,
-    FormAccountComponent
+    FormAccountComponent,
+    CheckoutComponent,
+    DisplayResultComponent
   ],
   imports: [
     CommonModule,
