@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using MoMo;
 using System.Text;
 using System.Text.Json.Serialization;
 using TicketManagementSystem_BE.Data;
@@ -22,23 +23,23 @@ builder.Services.AddSingleton<IPrincipal, Principal>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors(option =>
+/*builder.Services.AddCors(option =>
 {
     option.AddPolicy(name: "myOrigins",
         policy =>
         {
             policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
         });
-});
+});*/
 
-/*builder.Services.AddCors(option =>
+builder.Services.AddCors(option =>
 {
     option.AddPolicy(name: "myOrigins",
         policy =>
         {
             policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
         });
-});*/
+});
 
 
 builder.Services.AddDbContext<TicketManagementSystemContext>(option => 
@@ -73,7 +74,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors();
+app.UseCors("myOrigins");
 
 app.UseHttpsRedirection();
 

@@ -12,5 +12,6 @@
         public DateTime AlarmDate { get; set; }
         public string QrcodePath { get; set; } = null!;
         public string AccessToken { get; set;} = null!;
+        public int Quantity { get; set; }
     }
 }

@@ -431,13 +431,13 @@ namespace TicketManagementSystem_BE.Data
                     .WithMany(p => p.UserPrograms)
                     .HasForeignKey(d => d.ProgramId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserProgr__Progr__6FE99F9F");
+                    .HasConstraintName("FK__UserProgr__Progr__02FC7413");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserPrograms)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserProgr__UserI__6EF57B66");
+                    .HasConstraintName("FK__UserProgr__UserI__02084FDA");
             });
 
             modelBuilder.Entity<UserSchedule>(entity =>

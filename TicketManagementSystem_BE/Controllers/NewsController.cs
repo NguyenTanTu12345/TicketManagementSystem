@@ -12,7 +12,7 @@ using TicketManagementSystem_BE.Models;
 
 namespace TicketManagementSystem_BE.Controllers
 {
-    [EnableCors("myOrigins")]
+    //[EnableCors("myOrigins")]
     [Route("api/news")]
     [ApiController]
     public class NewsController : ControllerBase

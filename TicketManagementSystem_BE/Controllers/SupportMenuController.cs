@@ -11,7 +11,7 @@ using TicketManagementSystem_BE.Models;
 
 namespace TicketManagementSystem_BE.Controllers
 {
-    [EnableCors("myOrigins")]
+    //[EnableCors("myOrigins")]
     [Route("api/support-menu")]
     [ApiController]
     public class SupportMenuController : ControllerBase

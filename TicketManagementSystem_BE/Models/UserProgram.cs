@@ -12,6 +12,7 @@ namespace TicketManagementSystem_BE.Models
         public string? AlarmTime { get; set; }
         public DateTime? AlarmDate { get; set; }
         public string? QrcodePath { get; set; }
+        public int? Quantity { get; set; }
 
         public virtual Program Program { get; set; } = null!;
         public virtual User User { get; set; } = null!;

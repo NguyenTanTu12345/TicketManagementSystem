@@ -12,7 +12,7 @@ using TicketManagementSystem_BE.Models;
 
 namespace TicketManagementSystem_BE.Controllers
 {
-    [EnableCors("myOrigins")]
+    //[EnableCors("myOrigins")]
     [Route("api/location")]
     [ApiController]
     public class LocationController : ControllerBase

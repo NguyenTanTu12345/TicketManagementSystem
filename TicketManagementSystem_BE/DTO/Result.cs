@@ -1,4 +1,4 @@
-﻿public class ResultDTO
+﻿public class Result
 {
     public string partnerCode { get; set; }
     public string accessKey { get; set; }

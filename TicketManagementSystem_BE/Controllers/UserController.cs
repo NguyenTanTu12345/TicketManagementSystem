@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MoMo;
 using Newtonsoft.Json.Linq;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -17,7 +18,7 @@ using TicketManagementSystem_BE.Services;
 
 namespace TicketManagementSystem_BE.Controllers
 {
-    [EnableCors("myOrigins")]
+    //[EnableCors("myOrigins")]
     [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
@@ -260,34 +261,47 @@ namespace TicketManagementSystem_BE.Controllers
         }
 
         [HttpPost("payment")]
-        public async Task<ActionResult> Payment(UserDTO userDTO)
+        public async Task<ActionResult> Payment(UserProgramDTO userProgramDTO)
         {
-            /*if (userDTO == null)
+            if (userProgramDTO == null)
             {
                 return BadRequest(new { meassage = "Invalid Request!!!" });
             }
-            var principal = _principal.GetPrincipal(userDTO.AccessToken, _configuration["JWT:SecretKey"]);
+            var principal = _principal.GetPrincipal(userProgramDTO.AccessToken, _configuration["JWT:SecretKey"]);
             var userMail = principal.FindFirst(ClaimTypes.Email)?.Value;
             var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail.Trim() == userMail);
             if (user == null)
             {
                 return NotFound(new { meassage = "User Not Found!!!" });
-            }*/
-
+            }
+            var program = await _context.Programs.FirstOrDefaultAsync(s => s.ProgramId.Trim() == s.ProgramId.Trim());
+            if (program == null)
+            {
+                return NotFound(new { meassage = "User Not Found!!!" });
+            }
+            var userPrograms = await _context.UserPrograms.Where(s => s.ProgramId == 
+                program.ProgramId).Select(s => s.Quantity).ToListAsync();
+            int totalSell = 0;
+            foreach (var item in userPrograms)
+            {
+                totalSell = totalSell + int.Parse(item.ToString());
+            }
+            if (program.TotalTicket <= totalSell || program.TotalTicket <= userProgramDTO.Quantity)
+            {
+                return NotFound(new { meassage = "Out of Ticket!!!" });
+            }
             //request params need to request to MoMo system
-            string endpoint = "https://test-payment.momo.vn/gw_payment/transactionProcessor";
-            string partnerCode = "MOMOIY6L20220625";
-            string accessKey = "9hvcineYO8gf5NAk";
-            string serectkey = "LOAQkwrK57jnVGmDBPxmvnxX1sSHPpuj";
-            string orderInfo = "Cảm ơn bạn đã thanh toán hóa đơn: ";
-            string returnUrl = "http://localhost:4200/user/dashboard/display";
-            string notifyurl = "https://be01-116-106-201-230.ngrok-free.app/api/user/check";
-
-            string amount = "1000";
+            string endpoint = _configuration["MoMo:endpoint"];
+            string partnerCode = _configuration["MoMo:partnerCode"];
+            string accessKey = _configuration["MoMo:accessKey"];
+            string serectkey = _configuration["MoMo:serectkey"];
+            string orderInfo = "Cảm ơn bạn đã thanh toán hóa đơn~";
+            string returnUrl = _configuration["MoMo:returnUrl"];
+            string notifyurl = _configuration["MoMo:notifyurl"];
+            string amount = (program.ProgramPrice * userProgramDTO.Quantity).ToString();
             string orderid = DateTime.Now.Ticks.ToString();
             string requestId = DateTime.Now.Ticks.ToString();
-            string extraData = "";
-
+            string extraData = user.UserId.Trim()+"@"+program.ProgramId.Trim() + "@" + userProgramDTO.Quantity;
             //Before sign HMAC SHA256 signature
             string rawHash = "partnerCode=" +
                 partnerCode + "&accessKey=" +
@@ -299,11 +313,9 @@ namespace TicketManagementSystem_BE.Controllers
                 returnUrl + "&notifyUrl=" +
                 notifyurl + "&extraData=" +
                 extraData;
-
             MoMoSecurity crypto = new MoMoSecurity();
             //sign signature SHA256
             string signature = crypto.signSHA256(rawHash, serectkey);
-
             //build body json request
             JObject message = new JObject
             {
@@ -323,37 +335,60 @@ namespace TicketManagementSystem_BE.Controllers
             JObject jmessage = JObject.Parse(responseFromMomo);
             return Ok(new { message = jmessage.GetValue("payUrl").ToString() });
         }
-        [HttpGet("ConfirmPaymentClient")]
-        public ActionResult ConfirmPaymentClient(ResultDTO result)
-        {
-            //lấy kết quả Momo trả về và hiển thị thông báo cho người dùng (có thể lấy dữ liệu ở đây cập nhật xuống db)
-            string rMessage = result.message;
-            string rOrderId = result.orderId;
-            string rErrorCode = result.errorCode; // = 0: thanh toán thành công
-            return Ok(new { message = rErrorCode });
-        }
 
-        [HttpGet("check")]
-        public async Task<ActionResult> Check(ResultDTO result)
+        [HttpPost("confirm-payment-server")]
+        public async Task<ActionResult> ConfirmPaymentServer(
+            )
         {
-            string rMessage = result.message;
-            string rOrderId = result.orderId;
-            string rErrorCode = result.errorCode; // = 0: thanh toán thành công
-            if (rErrorCode == "0")
+            string rawContent = string.Empty;
+            using (var reader = new StreamReader(Request.Body,
+                          encoding: Encoding.UTF8, detectEncodingFromByteOrderMarks: false))
             {
-                SupportMenu supportMenu = new SupportMenu
-                {
-                    SupportMenuTitle = "abc",
-                    SupportMenuContent = "abc",
-                    UserId = "US01"
-                };
-                await _context.SupportMenus.AddAsync(supportMenu);
-                await _context.SaveChangesAsync();
-
+                rawContent = await reader.ReadToEndAsync();
             }
-            
+            int first = rawContent.IndexOf("%40");
+            int last = rawContent.LastIndexOf("%40");
+
+            int indexOfUser = rawContent.IndexOf("extraData") + 10;
+            int rangeOfUser = first - indexOfUser;
+            string userId = rawContent.Substring(indexOfUser, rangeOfUser);
+
+            int indexOfProgram = first + 3;
+            int rangeOfProgram = last - indexOfProgram;
+            string programId = rawContent.Substring(indexOfProgram, rangeOfProgram);
+
+            int indexOfTotal = last + 3;
+            int rangeOfTotal = rawContent.IndexOf("&payType") - indexOfTotal;
+            int total = int.Parse(rawContent.Substring(indexOfTotal, rangeOfTotal));
+
+            var userProgram = await _context.UserPrograms.Where(s => s.UserId == userId
+                && s.ProgramId == programId).FirstOrDefaultAsync();
+            if (userProgram == null)
+            {
+                UserProgram userProgram1 = new UserProgram
+                {
+                    UserId = userId,
+                    ProgramId = programId,
+                    Quantity = total
+                };
+                await _context.UserPrograms.AddAsync(userProgram1);
+            }
+            else
+            {
+                if (userProgram.Quantity == null)
+                {
+                    userProgram.Quantity = total;
+                }
+                else
+                {
+                    userProgram.Quantity += total;
+                }
+                _context.UserPrograms.Update(userProgram);
+            }
+            await _context.SaveChangesAsync();
             return NoContent();
         }
+
 
         [HttpPost("create")]
         public async Task<ActionResult> Create(UserDTO userDTO)
