@@ -1,0 +1,18 @@
+<h1>Soát vé</h1>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title style="padding-bottom: 10px;">{{ userSchedule.programName }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content style="display: flex;">
+        <div>
+            <p>Ngày: {{ userSchedule.userScheduleTime }}</p>
+            <p>Thời gian: {{ userSchedule.userScheduleDate }}</p>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<!-- For camera -->
+<ngx-scanner-qrcode #action="scanner" (event)="onEvent($event, action)"></ngx-scanner-qrcode>
+
+<!-- start -->
+<button mat-raised-button color="primary" (click)="action.isStart ? action.stop() : action.start()">{{action.isStart ? 'Stop' : 'Start'}}</button>

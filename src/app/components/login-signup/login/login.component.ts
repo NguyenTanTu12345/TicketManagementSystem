@@ -56,6 +56,9 @@ export class LoginComponent implements OnInit {
           else if (userPayLoad.role === "Administrator") {
             this.router.navigate(['../admin/dashboard']);
           }
+          else if (userPayLoad.role === "Staff") {
+            this.router.navigate(['../staff/dashboard']);
+          }
         },
         error: (err) => {
           console.log(err);

@@ -1,0 +1,11 @@
+<div>
+    <div style="background-color: brown; color: aliceblue; height: 10vh; ">
+        <p style="text-align: center; font-size: 30px; padding-top: 20px;">
+            Vé của tôi
+        </p>
+    </div>
+    <div *ngFor="let item of userPrograms">
+        <h1 style="margin-top: 5%; margin-left: 5%;">{{ item.programName }}</h1>
+        <qrcode [qrdata]="item.userId.trim()+'@'+item.programId.trim()+'@'+item.quantity" style="margin-left: 20%;" [width]="500" [errorCorrectionLevel]="'M'"></qrcode>
+    </div>
+</div>

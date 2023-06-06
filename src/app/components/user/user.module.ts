@@ -34,6 +34,9 @@ import { FormAccountComponent } from './account/form-account/form-account.compon
 import { ReactiveFormsModule } from '@angular/forms';
 import { CheckoutComponent } from './checkout/checkout/checkout.component';
 import { DisplayResultComponent } from './checkout/display-result/display-result.component';
+import { FormsModule } from '@angular/forms';
+import { QRCodeModule } from 'angularx-qrcode';
+import { TicketComponent } from './account/ticket/ticket.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +56,8 @@ import { DisplayResultComponent } from './checkout/display-result/display-result
     AlarmComponent,
     FormAccountComponent,
     CheckoutComponent,
-    DisplayResultComponent
+    DisplayResultComponent,
+    TicketComponent
   ],
   imports: [
     CommonModule,
@@ -73,7 +77,10 @@ import { DisplayResultComponent } from './checkout/display-result/display-result
     MatInputModule,
     MatDatepickerModule,
     MatSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    QRCodeModule
+    
   ]
 })
 export class UserModule { }

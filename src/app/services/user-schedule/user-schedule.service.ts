@@ -21,8 +21,24 @@ export class UserScheduleService {
     return this.http.get<UserSchedule>(this.url + "/" + id);
   }
 
+  getSchedule(mail: string): Observable<UserSchedule[]> {
+    return this.http.get<UserSchedule[]>(this.url + "/get-schedule/" + mail);
+  }
+
+  getTicketScanner(str: string): Observable<UserSchedule> {
+    return this.http.get<UserSchedule>(this.url + "/ticket-scanner/" + str);
+  }
+
   create(userSchedule: UserSchedule) {
     return this.http.post<any>(this.url + "/create", userSchedule);
+  }
+
+  checkDate(userSchedule: UserSchedule) {
+    return this.http.post<any>(this.url + "/check-date", userSchedule);
+  }
+
+  checkQRCode(userSchedule: UserSchedule) {
+    return this.http.post<any>(this.url + "/check-qrcode", userSchedule);
   }
 
   update(userSchedule: UserSchedule) {

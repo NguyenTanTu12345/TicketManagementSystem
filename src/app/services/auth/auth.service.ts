@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 import { ResetPassword } from 'src/app/models/reset-password.model';
+import { UserProgram } from 'src/app/models/user-program.model';
 import { UserToken } from 'src/app/models/user-token.model';
 import { User } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
@@ -61,7 +62,7 @@ export class AuthService {
     return this.http.post<any>(this.url + "/create", user);
   }
 
-  payment(user: User) {
+  payment(user: UserProgram) {
     return this.http.post<any>(this.url + "/payment", user);
   }
 

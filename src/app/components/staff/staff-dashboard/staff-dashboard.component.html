@@ -1,0 +1,32 @@
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+    <mat-toolbar color="primary" class="example-toolbar">
+        <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+        <h2 class="example-app-name" style="margin-bottom: 0;">Trang chủ</h2>
+    </mat-toolbar>
+
+    <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+            fixedTopGap="56" style="background-color: #3f51b5; ">
+            <mat-list role="list">
+                <mat-list-item role="listitem" style="cursor: pointer;" (click)="backHome()">
+                    <label style="color: white;">Soát vé</label>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <a style="text-decoration: none; color: white;" [routerLink]="['support-menu', '']">Lịch sử soát vé</a>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <a style="text-decoration: none; color: white;" [routerLink]="['support-menu', '']">Đổi mật khẩu</a>
+                </mat-list-item>
+                <mat-list-item role="listitem" (click)="logOut()" style="cursor: pointer;">
+                    <label style="color: white;">Đăng xuất</label>
+                </mat-list-item>
+            </mat-list>
+        </mat-sidenav>
+
+        <mat-sidenav-content>
+            <div [@routeAnimation]="getAnimationData()">
+                <router-outlet></router-outlet>
+            </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>

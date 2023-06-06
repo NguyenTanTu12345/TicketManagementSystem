@@ -18,6 +18,7 @@ import { AlarmComponent } from './account/alarm/alarm.component';
 import { FormAccountComponent } from './account/form-account/form-account.component';
 import { CheckoutComponent } from './checkout/checkout/checkout.component';
 import { DisplayResultComponent } from './checkout/display-result/display-result.component';
+import { TicketComponent } from './account/ticket/ticket.component';
 
 const routes: Routes = [
   {
@@ -102,9 +103,14 @@ const routes: Routes = [
         data: { animation: 'checkout' }
       },
       {
-        path: 'display',
+        path: 'display-result',
         component: DisplayResultComponent,
-        data: { animation: 'display' }
+        data: { animation: 'display-result' }
+      },
+      {
+        path: 'ticket/:id',
+        component: TicketComponent,
+        data: { animation: 'ticket' }
       }
     ]
   }

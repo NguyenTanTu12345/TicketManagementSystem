@@ -9,7 +9,6 @@ import { MatCardModule } from '@angular/material/card';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgToastModule } from 'ng-angular-popup';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login-signup/login/login.component';
 import { SignupComponent } from './components/login-signup/signup/signup.component';
@@ -18,7 +17,6 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
 import { MatButtonModule } from '@angular/material/button';
 import { ResetPasswordComponent } from './components/login-signup/reset-password/reset-password.component';
 import { MatNativeDateModule } from '@angular/material/core';
-
 
 @NgModule({
   declarations: [
@@ -51,6 +49,7 @@ import { MatNativeDateModule } from '@angular/material/core';
       multi: true
     }
   ],
+  
   bootstrap: [AppComponent]
 })
 export class AppModule { }

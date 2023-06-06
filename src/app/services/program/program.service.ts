@@ -32,6 +32,10 @@ export class ProgramService {
     return this.http.get<UserProgram[]>(this.url + "/alarm/" + id);
   }
 
+  getTicket(mail: string): Observable<UserProgram[]> {
+    return this.http.get<UserProgram[]>(this.url + "/ticket/" + mail);
+  }
+
   getByDate(id: number): Observable<Program[]> {
     return this.http.get<Program[]>(this.url + "/get-by-date/" + id);
   }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgToastService } from 'ng-angular-popup';
 import { of, switchMap } from 'rxjs';
 
 @Component({
@@ -9,13 +10,16 @@ import { of, switchMap } from 'rxjs';
 })
 export class DisplayResultComponent {
 
-  constructor(
-    private activedRoute: ActivatedRoute
-  ) {}
+  myQRCode: string = '';
 
-  abc: string = '';
-  ngOnInit(): void  {
-    const paramValue = this.activedRoute.snapshot.queryParamMap.get("errorCode");
-    console.log(paramValue);
+  constructor(
+    private activedRoute: ActivatedRoute,
+    private toast: NgToastService,
+  ) { }
+
+  ngOnInit(): void {
+    this.toast.success({ detail: "SUCCESS", summary: 'Thanh toán thành công~', duration: 4000 });
+    const paramValue = this.activedRoute.snapshot.queryParamMap.get("extraData");
+    this.myQRCode = paramValue + "";
   }
 }

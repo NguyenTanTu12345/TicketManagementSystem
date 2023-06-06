@@ -1,7 +1,7 @@
 <div class="container my-5">
     <div class="row">
         <div class="col-7">
-            <form>
+            <form #form="ngForm">
                 <h1>Thông tin của bạn</h1>
                 <div class="example-container">
                     <mat-form-field appearance="outline" style="width: 45%; padding-right: 10px;">
@@ -35,6 +35,11 @@
                 <mat-form-field appearance="outline" style="width: 45%; padding-right: 10px;">
                     <mat-label>Mail</mat-label>
                     <input matInput placeholder="Vui lòng điền mail" value="{{userObj.mail}}" disabled>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="width: 45%; padding-right: 10px;">
+                    <mat-label>Số lượng</mat-label>
+                    <input matInput placeholder="Vui lòng điền số lượng" type="number" name="total" [(ngModel)]="total">
                 </mat-form-field>
 
                 <a mat-raised-button style="color: white; background-color: #3f51b5;">Thay đổi thông tin</a>

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
 import { Program } from 'src/app/models/program.model';
+import { UserProgram } from 'src/app/models/user-program.model';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { LocationService } from 'src/app/services/location/location.service';
@@ -43,12 +44,24 @@ export class CheckoutComponent {
     imagePaths: '',
     accessToken: ''
   };
+  userProgram: UserProgram = {
+    userProgramId: 0,
+    userId: '',
+    fullName: '',
+    programId: '',
+    programName: '',
+    isLike: false,
+    alarmTime: '',
+    alarmDate: new Date(Date.now()),
+    qrcodePath: '',
+    quantity: 0,
+    accessToken: ''
+  };
   arrImage: string[] = [];
   locationName: string = '';
+  total: number = 1;
 
   constructor(private authService: AuthService,
-    private router: Router,
-    private toast: NgToastService,
     private activedRoute: ActivatedRoute,
     private locationService: LocationService,
     private programService: ProgramService
@@ -59,7 +72,6 @@ export class CheckoutComponent {
       next: params => {
         let id = params.get('id');
         if (id) {
-
           this.programService.get(id).subscribe({
             next: (res) => {
               this.program = res;
@@ -96,11 +108,13 @@ export class CheckoutComponent {
     });
   }
 
-  test: string = "abc";
   payment() {
-    this.userObj.accessToken = this.authService.getJWT() ?? '';
-    console.log(this.userObj)
-    this.authService.payment(this.userObj).subscribe({
+    this.userProgram.userId = this.userObj.userId;
+    this.userProgram.programId = this.program.programId;
+    this.userProgram.quantity = this.total;
+    this.userProgram.accessToken = this.authService.getJWT() ?? '';
+    console.log(this.userProgram)
+    this.authService.payment(this.userProgram).subscribe({
       next: (res) => {
         console.log(res);
         window.open(res.message, "_self");

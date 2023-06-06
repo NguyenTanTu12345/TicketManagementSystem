@@ -34,6 +34,11 @@ const routes: Routes = [
   },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
+    path: 'staff',
+    loadChildren: () => import('./components/staff/staff.module').then(m => m.StaffModule),
+    canActivate: [authGuard]
+  },
+  {
     path: '**',
     data: { title: 'Hue Festival - 404 Not Found' },
     component: PageNotFoundComponent

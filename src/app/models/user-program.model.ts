@@ -8,12 +8,13 @@ export class UserProgram {
     alarmTime: string;
     alarmDate: Date | null;
     qrcodePath: string;
+    quantity: number;
     accessToken: string;
 
     constructor(userProgramId: number, userId: string, programId: string,
         isLike: boolean, alarmTime: string, alarmDate: Date,
         qrcodePath: string, accessToken: string,
-        fullName: string, programName: string
+        fullName: string, programName: string, quantity: number
     ) {
         this.userProgramId = userProgramId;
         this.userId = userId;
@@ -26,5 +27,6 @@ export class UserProgram {
         this.accessToken = accessToken;
         this.fullName = fullName;
         this.programName = programName;
+        this.quantity = quantity;
     }
 }

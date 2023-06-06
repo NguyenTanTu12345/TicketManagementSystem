@@ -1,0 +1,16 @@
+<h1>Danh sách địa điểm soát vé</h1>
+<mat-card *ngFor="let item of userSchedule; let pos = index;">
+    <mat-card-header>
+        <mat-card-title style="padding-bottom: 10px;">{{ item.programName }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content style="display: flex;">
+        <div>
+            <p>Ngày: {{ item.userScheduleTime }}</p>
+            <p>Thời gian: {{ item.userScheduleDate }}</p>
+        </div>
+        <div style="padding-left: 100px;" (click)="checkDate(pos)">
+            <mat-icon style="width: 100%; height: 50%; font-size: 50px; ">qr_code_scanner</mat-icon>
+            <p>Soát vé</p>
+        </div>
+    </mat-card-content>
+</mat-card>
