@@ -4,28 +4,30 @@ This is a Backend Project. Please refer to the [Frontend Angular project](https:
 
 ## Backend Features
 
+- MoMo Payment.
+- Send Mail.
 - Authentication and authorization with JWT.
 - Encrypt password using BCrypt.
-- Send Mail.
 - CRUD RESTful API.
-- MoMo Payment.
+
 
 ## Fontend Features
 
-- Integrate Angular Material to impove UI.
-- Lazy loading feature modules.
-- Protect Routes with Angular Guard.
-- Config HTTP requests with Angular Interceptor.
-- Routing transition animations to enchance UX.
-- Communicating with backend services using HTTP.
-- Validating input in reactive forms.
-- Sorting, pangination and filtering.
-- Download image.
-- Display notification with Toast.
 - Generate and scan QRCode.
-- Display chart with chart.js.
 - Upload image to Cloudinary.
 - Import/export an excel file.
+- Protect Routes with Angular Guard.
+- Config HTTP requests with Angular Interceptor.
+- Lazy loading feature modules.
+- Communicating with backend services using HTTP.
+- Sorting, pangination and filtering.
+- Validating input in reactive forms.
+- Routing transition animations to enchance UX.
+- Integrate Angular Material to impove UI.
+- Display chart with chart.js.
+- Download image.
+- Display notification with Toast.
+
 
 
 
