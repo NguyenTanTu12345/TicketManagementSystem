@@ -280,7 +280,7 @@ namespace TicketManagementSystem_BE.Controllers
                 return NotFound(new { meassage = "User Not Found!!!" });
             }
             var userPrograms = await _context.UserPrograms.Where(s => s.ProgramId == 
-                program.ProgramId).Select(s => s.Quantity).ToListAsync();
+                program.ProgramId && s.Quantity != null).Select(s => s.Quantity).ToListAsync();
             int totalSell = 0;
             foreach (var item in userPrograms)
             {

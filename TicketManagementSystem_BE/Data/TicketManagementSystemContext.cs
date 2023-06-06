@@ -72,10 +72,7 @@ namespace TicketManagementSystem_BE.Data
                     .HasColumnName("HistoryID")
                     .IsFixedLength();
 
-                entity.Property(e => e.HistoryTime)
-                    .HasMaxLength(5)
-                    .IsUnicode(false)
-                    .IsFixedLength();
+                entity.Property(e => e.HistoryTime).HasColumnType("datetime");
 
                 entity.Property(e => e.ProgramId)
                     .HasMaxLength(10)
@@ -92,12 +89,12 @@ namespace TicketManagementSystem_BE.Data
                 entity.HasOne(d => d.Program)
                     .WithMany(p => p.Histories)
                     .HasForeignKey(d => d.ProgramId)
-                    .HasConstraintName("FK__History__Program__5070F446");
+                    .HasConstraintName("FK__History__Program__160F4887");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Histories)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__History__UserID__4F7CD00D");
+                    .HasConstraintName("FK__History__UserID__151B244E");
             });
 
             modelBuilder.Entity<Location>(entity =>

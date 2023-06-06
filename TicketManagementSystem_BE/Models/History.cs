@@ -6,7 +6,7 @@ namespace TicketManagementSystem_BE.Models
     public partial class History
     {
         public string HistoryId { get; set; } = null!;
-        public string HistoryTime { get; set; } = null!;
+        public DateTime HistoryTime { get; set; }
         public bool HistoryStatus { get; set; }
         public string? UserId { get; set; }
         public string? ProgramId { get; set; }

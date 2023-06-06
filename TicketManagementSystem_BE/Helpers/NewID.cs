@@ -8,6 +8,7 @@
         public string CreateNewsID(List<string> listID);
         public string CreateProgramID(List<string> listID);
         public string CreateArtistID(List<string> listID);
+        public string CreateHistoryID(List<string> listID);
     }
 
     public class NewID : INewID
@@ -208,6 +209,39 @@
                 return "AT0" + currentID;
             else
                 return "AT" + currentID;
+        }
+
+        public string CreateHistoryID(List<string> listID)
+        {
+            List<string> listIDString = listID;
+            List<int> listIDInt = new List<int>();
+            int temp;
+
+            try
+            {
+                if (listIDString.Count != 0)
+                {
+                    foreach (var ele in listIDString)
+                    {
+                        if (!int.TryParse(ele.Substring(2, ele.Length - 2), out temp))
+                            throw new Exception("Error");
+                        else
+                            listIDInt.Add(temp);
+                    }
+                }
+                else
+                    return "HI01";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+            int currentID = listIDInt.Max();
+            currentID++;
+            if (currentID < 10)
+                return "HI0" + currentID;
+            else
+                return "HI" + currentID;
         }
     }
 }

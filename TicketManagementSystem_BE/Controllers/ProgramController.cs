@@ -145,6 +145,35 @@ namespace TicketManagementSystem_BE.Controllers
             return userProgramDTOs;
         }
 
+        [HttpGet("ticket/{id}")]
+        public async Task<ActionResult<IEnumerable<UserProgramDTO>>> GetTicket(string id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            var userPrograms = await _context.UserPrograms.Where(s => s.UserId == id).ToListAsync();
+            if (userPrograms == null || user == null)
+            {
+                return NoContent();
+            }
+            List<UserProgramDTO> userProgramDTOs = new List<UserProgramDTO>();
+            foreach (var item in userPrograms)
+            {
+                var program = await _context.Programs.FindAsync(item.ProgramId);
+                if (program != null)
+                {
+                    UserProgramDTO userProgramDTO = new UserProgramDTO
+                    {
+                        UserProgramId = item.UserProgramId,
+                        ProgramId = program.ProgramId,
+                        ProgramName = program.ProgramName,
+                        UserId = user.UserId,
+                        Quantity = (int)item.Quantity
+                    };
+                    userProgramDTOs.Add(userProgramDTO);
+                }
+            }
+            return userProgramDTOs;
+        }
+
         [HttpGet("get-by-date/{id}")]
         public async Task<ActionResult<IEnumerable<Models.Program>>> GetByProgramDate(int day)
         {

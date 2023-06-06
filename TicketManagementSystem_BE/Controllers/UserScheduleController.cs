@@ -89,12 +89,12 @@ namespace TicketManagementSystem_BE.Controllers
                 return NotFound(new { message = "Resource Not Found!!!" });
             }
             var user = await _context.Users.FirstOrDefaultAsync(s => s.UserId.Trim() == userId);
-            if (userSchedule == null)
+            if (user == null)
             {
                 return NotFound(new { message = "User Not Found!!!" });
             }
             var program = await _context.Programs.FirstOrDefaultAsync(s => s.ProgramId.Trim() == programId);
-            if (userSchedule == null)
+            if (program == null)
             {
                 return NotFound(new { message = "Program Not Found!!!" });
             }
@@ -108,6 +108,149 @@ namespace TicketManagementSystem_BE.Controllers
                 UserScheduleTime = userSchedule.UserScheduleTime
             };
             return userScheduleDTO;
+        }
+
+        [HttpGet("get-schedule/{mail}")]
+        public async Task<ActionResult<IEnumerable<UserScheduleDTO>>> GetSchedule(string mail)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail.Trim() == mail);
+            if (user == null)
+            {
+                return NotFound(new { message = "User Not Found!!!" });
+            }
+            var userSchedules = await _context.UserSchedules.Where(s => s.UserId.Trim() == user.UserId
+                && s.UserScheduleDate.Year == DateTime.Now.Year && s.UserScheduleDate.Month == DateTime.Now.Month).ToListAsync();
+            if (userSchedules == null)
+            {
+                return BadRequest();
+            }
+            List<UserScheduleDTO> userScheduleDTOs = new List<UserScheduleDTO>();
+            foreach (var item in userSchedules)
+            {
+                var program = await _context.Programs.FirstOrDefaultAsync(s => s.ProgramId.Trim() == item.ProgramId);
+                if (program != null)
+                {
+                    UserScheduleDTO userScheduleDTO = new UserScheduleDTO
+                    {
+                        UserId = user.UserId,
+                        FullName = user.FullName,
+                        ProgramId = program.ProgramId,
+                        ProgramName = program.ProgramName,
+                        UserScheduleDate = item.UserScheduleDate,
+                        UserScheduleTime = item.UserScheduleTime
+                    };
+                    userScheduleDTOs.Add(userScheduleDTO);
+                }
+            }
+            return userScheduleDTOs;
+        }
+
+        [HttpGet("ticket-scanner/{str}")]
+        public async Task<ActionResult<UserScheduleDTO>> GetTicketScanner(string str)
+        {
+            string[] words = str.Split('@');
+            var user = await _context.Users.FirstOrDefaultAsync(s => s.UserId.Trim() == words[1]);
+            if (user == null)
+            {
+                return NotFound(new { message = "User Not Found!!!" });
+            }
+            var program = await _context.Programs.FirstOrDefaultAsync(s => s.ProgramId.Trim() == words[0]);
+            if (program == null)
+            {
+                return NotFound(new { message = "Program Not Found!!!" });
+            }
+            var userSchedule = await _context.UserSchedules.FirstOrDefaultAsync(s => s.UserId == user.UserId
+                && s.ProgramId == program.ProgramId);
+            if (userSchedule == null)
+            {
+                return BadRequest();
+            }
+            UserScheduleDTO userScheduleDTO = new UserScheduleDTO
+            {
+                UserId = user.UserId,
+                FullName = user.FullName,
+                ProgramId = program.ProgramId,
+                ProgramName = program.ProgramName,
+                UserScheduleDate = userSchedule.UserScheduleDate,
+                UserScheduleTime = userSchedule.UserScheduleTime
+            };
+            return userScheduleDTO;
+        }
+
+        [Authorize]
+        [HttpPost("check-date")]
+        public async Task<ActionResult> CheckDate(UserScheduleDTO userScheduleDTO)
+        {
+            if (userScheduleDTO == null)
+            {
+                return BadRequest(new { meassage = "Invalid Request!!!" });
+            }
+            var principal = _principal.GetPrincipal(userScheduleDTO.AccessToken, _configuration["JWT:SecretKey"]);
+            var userMail = principal.FindFirst(ClaimTypes.Email)?.Value;
+            var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail.Trim() == userMail);
+            if (user == null)
+            {
+                return NotFound(new { meassage = "User Not Found!!!" });
+            }
+            var program = await _context.Programs.FirstOrDefaultAsync(s => s.ProgramId == userScheduleDTO.ProgramId);
+            if (program == null)
+            {
+                return NotFound(new { meassage = "Program Not Found!!!" });
+            }
+            var userSchedule = await _context.UserSchedules.Where(s => s.UserId == user.UserId 
+                && s.ProgramId == program.ProgramId).FirstOrDefaultAsync();  
+            if (userSchedule == null)
+            {
+                return NotFound(new { meassage = "Resource Not Found!!!" });
+            }
+            if (userSchedule.UserScheduleDate.Year == userScheduleDTO.UserScheduleDate.Year
+                && userSchedule.UserScheduleDate.Month == userScheduleDTO.UserScheduleDate.Month
+                && userSchedule.UserScheduleDate.Day == userScheduleDTO.UserScheduleDate.Day)
+            {
+                return Ok(new { message = "Verify Successful~" });
+            }
+            else
+            {
+                return BadRequest(new { message = "Not Right Time~" });
+            }
+        }
+
+        [Authorize]
+        [HttpPost("check-qrcode")]
+        public async Task<ActionResult> CheckQRCode(UserScheduleDTO userScheduleDTO)
+        {
+            if (userScheduleDTO == null)
+            {
+                return BadRequest(new { meassage = "Invalid Request!!!" });
+            }
+            string[] words = userScheduleDTO.FullName.Split('@');
+            var userProgram = await _context.UserPrograms.FirstOrDefaultAsync(s => s.UserId.Trim() == words[0]
+                && s.ProgramId.Trim() == words[1] && s.ProgramId == userScheduleDTO.ProgramId
+                && s.Quantity >= 1 && s.Quantity != null);
+            List<string> listID = await _context.Histories.Select(s => s.HistoryId).ToListAsync();
+            History history = new History
+            {
+                HistoryId = _newID.CreateHistoryID(listID),
+                UserId = userScheduleDTO.UserId,
+                ProgramId = userScheduleDTO.ProgramId,
+                HistoryTime = DateTime.Now
+            };
+            if (userProgram == null)
+            {
+                history.HistoryStatus = false;
+                await _context.Histories.AddAsync(history);
+                await _context.SaveChangesAsync();
+                return NotFound(new { meassage = "Ticket Not Found!!!" });
+            }
+            else
+            {
+                userProgram.Quantity -= 1;
+                _context.UserPrograms.Update(userProgram);
+                history.HistoryStatus = true;
+                await _context.Histories.AddAsync(history);
+                await _context.SaveChangesAsync();
+                return Ok(new { meassage = "Verify Successful!!!" });
+            }
         }
 
         [Authorize]
