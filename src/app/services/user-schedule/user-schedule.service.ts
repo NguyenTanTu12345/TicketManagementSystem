@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserSchedule } from 'src/app/models/user-schedule.model';
 import { environment } from 'src/environments/environment';
+import { History } from 'src/app/models/history.model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,10 @@ export class UserScheduleService {
 
   getTicketScanner(str: string): Observable<UserSchedule> {
     return this.http.get<UserSchedule>(this.url + "/ticket-scanner/" + str);
+  }
+
+  getHistory(mail: string): Observable<History[]> {
+    return this.http.get<History[]>(this.url + "/history/" + mail);
   }
 
   create(userSchedule: UserSchedule) {

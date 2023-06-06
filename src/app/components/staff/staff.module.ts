@@ -13,12 +13,14 @@ import { MatCardModule } from '@angular/material/card';
 import { TicketScannerComponent } from './ticket/ticket-scanner/ticket-scanner.component';
 import { NgxScannerQrcodeModule } from 'ngx-scanner-qrcode';
 import { FormsModule } from '@angular/forms';
+import { HistoryComponent } from './ticket/history/history.component';
 
 @NgModule({
   declarations: [
     StaffDashboardComponent,
     DashboardContentComponent,
-    TicketScannerComponent
+    TicketScannerComponent,
+    HistoryComponent
   ],
   imports: [
     CommonModule,

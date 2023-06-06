@@ -16,7 +16,7 @@
                 <td mat-cell *matCellDef="let row;" style="width: 5%;">
                     <a [routerLink]="['../program-detail', row.programId]">
                         <img style="width: 100%;"
-                            src="{{row.programImagePath == '' ? './assets/img/default-image.png' : row.programImagePath.trim() }}" />
+                            src="{{row.programImagePath == '' || row.programImagePath == null ? './assets/img/default-image.png' : row.programImagePath.trim() }}" />
                     </a>
                     <p style="padding: 10px;"><b>{{row.programName}}</b></p>
                 </td>

@@ -17,6 +17,7 @@ import { FormScheduleComponent } from './user/form-schedule/form-schedule.compon
 import { UpdateScheduleComponent } from './user/update-schedule/update-schedule.component';
 import { ListArtistComponent } from './artist/list-artist/list-artist.component';
 import { FormArtistComponent } from './artist/form-artist/form-artist.component';
+import { ChartComponent } from './chart/chart.component';
 
 
 const routes: Routes = [
@@ -25,6 +26,11 @@ const routes: Routes = [
     component: AdminDashboardComponent,
     data: { title: "Hue Festival | Admin DashBoard" },
     children: [
+      {
+        path: '',
+        component: ChartComponent,
+        data: { animation: 'chart' }
+      },
       {
         path: 'support-menu',
         component: ListSupportMenuComponent,

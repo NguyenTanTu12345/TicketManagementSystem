@@ -35,9 +35,9 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Hình ảnh </th>
             <td mat-cell *matCellDef="let row" style="width: 20%;">
                 <a
-                    href="{{row.locationImagePath == '' ? './assets/img/default-image.png' : row.locationImagePath.trim() }}">
+                    href="{{row.locationImagePath == '' || row.locationImagePath == null ? './assets/img/default-image.png' : row.locationImagePath.trim() }}">
                     <img style="width: 100%;"
-                        src="{{row.locationImagePath == '' ? './assets/img/default-image.png' : row.locationImagePath.trim() }}" />
+                        src="{{row.locationImagePath == '' || row.locationImagePath == null ? './assets/img/default-image.png' : row.locationImagePath.trim() }}" />
                 </a>
             </td>
         </ng-container>

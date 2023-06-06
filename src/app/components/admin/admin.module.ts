@@ -36,6 +36,7 @@ import {MatCardModule} from '@angular/material/card';
 import { UpdateScheduleComponent } from './user/update-schedule/update-schedule.component';
 import { ListArtistComponent } from './artist/list-artist/list-artist.component';
 import { FormArtistComponent } from './artist/form-artist/form-artist.component';
+import { ChartComponent } from './chart/chart.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { FormArtistComponent } from './artist/form-artist/form-artist.component'
     FormScheduleComponent,
     UpdateScheduleComponent,
     ListArtistComponent,
-    FormArtistComponent
+    FormArtistComponent,
+    ChartComponent
   ],
   imports: [
     CommonModule,

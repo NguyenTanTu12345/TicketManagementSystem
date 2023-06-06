@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { StaffDashboardComponent } from './staff-dashboard/staff-dashboard.component';
 import { DashboardContentComponent } from './dashboard-content/dashboard-content.component';
 import { TicketScannerComponent } from './ticket/ticket-scanner/ticket-scanner.component';
+import { HistoryComponent } from './ticket/history/history.component';
 
 const routes: Routes = [
   { 
@@ -19,6 +20,11 @@ const routes: Routes = [
         component: TicketScannerComponent,
         data: {animation: 'ticket-scanner'}
       },
+      {
+        path: 'history', 
+        component: HistoryComponent,
+        data: {animation: 'history'}
+      }
     ]
   }
 ];

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ChartObject } from 'src/app/models/chart-object.model';
 import { ListProgram } from 'src/app/models/list-program.model';
 import { ProgramDate } from 'src/app/models/program-date.model';
 import { Program } from 'src/app/models/program.model';
@@ -46,6 +47,10 @@ export class ProgramService {
 
   getProgramDate(): Observable<ProgramDate[]> {
     return this.http.get<ProgramDate[]>(this.url + "/program-date");
+  }
+
+  getChart(): Observable<ChartObject[]> {
+    return this.http.get<ChartObject[]>(this.url + "/chart");
   }
 
   create(program: Program) {

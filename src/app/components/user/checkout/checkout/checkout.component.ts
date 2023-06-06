@@ -113,7 +113,6 @@ export class CheckoutComponent {
     this.userProgram.programId = this.program.programId;
     this.userProgram.quantity = this.total;
     this.userProgram.accessToken = this.authService.getJWT() ?? '';
-    console.log(this.userProgram)
     this.authService.payment(this.userProgram).subscribe({
       next: (res) => {
         console.log(res);

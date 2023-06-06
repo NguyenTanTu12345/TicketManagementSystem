@@ -133,7 +133,9 @@ export class ProgramDetailComponent {
     if (this.authService.isLoggedIn()) {
       this.authService.getByMail(this.authService.getMail()).subscribe({
         next: (res) => {
-          if (res.cccd != null && res.phoneNumber != null && res.fullName != null) {
+          if (res.cccd != null && res.cccd != '' 
+              && res.phoneNumber != null && res.phoneNumber != '' 
+              && res.fullName != null && res.fullName != '') {
             this.route.navigate(['user/dashboard/checkout/' + this.program.programId]);
           }
           else {
