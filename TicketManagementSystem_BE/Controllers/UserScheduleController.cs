@@ -177,6 +177,38 @@ namespace TicketManagementSystem_BE.Controllers
             return userScheduleDTO;
         }
 
+        [HttpGet("history/{mail}")]
+        public async Task<ActionResult<IEnumerable<HistoryDTO>>> GetHistory(string mail)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail.Trim() == mail);
+            if (user == null)
+            {
+                return NotFound(new { message = "User Not Found!!!" });
+            }
+            var historis = await _context.Histories.Where(s => s.UserId == user.UserId).ToListAsync();
+            if (historis == null)
+            {
+                return NoContent();
+            }
+            List<HistoryDTO> historyDTOs = new List<HistoryDTO>();
+            foreach (var item in historis)
+            {
+                var program = await _context.Programs.FirstOrDefaultAsync(s => s.ProgramId.Trim() == item.ProgramId);
+                if (program != null)
+                {
+                    HistoryDTO historyDTO = new HistoryDTO
+                    {
+                        FullName = user.FullName,
+                        ProgramPrice = program.ProgramPrice,
+                        HistoryTime = item.HistoryTime,
+                        HistoryStatus = item.HistoryStatus
+                    };
+                    historyDTOs.Add(historyDTO);
+                }
+            }
+            return historyDTOs;
+        }
+
         [Authorize]
         [HttpPost("check-date")]
         public async Task<ActionResult> CheckDate(UserScheduleDTO userScheduleDTO)
@@ -226,7 +258,7 @@ namespace TicketManagementSystem_BE.Controllers
             string[] words = userScheduleDTO.FullName.Split('@');
             var userProgram = await _context.UserPrograms.FirstOrDefaultAsync(s => s.UserId.Trim() == words[0]
                 && s.ProgramId.Trim() == words[1] && s.ProgramId == userScheduleDTO.ProgramId
-                && s.Quantity >= 1 && s.Quantity != null);
+                && s.Quantity != null && s.Quantity >= 1);
             List<string> listID = await _context.Histories.Select(s => s.HistoryId).ToListAsync();
             History history = new History
             {

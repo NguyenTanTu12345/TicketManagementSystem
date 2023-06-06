@@ -73,6 +73,41 @@ namespace TicketManagementSystem_BE.Controllers
             return programDTO;
         }
 
+        [HttpGet("chart")]
+        public async Task<ActionResult<IEnumerable<ChartDTO>>> GetChart()
+        {
+            var userPrograms = await _context.UserPrograms.Where(s => s.Quantity != null
+                && s.Quantity > 0).ToListAsync();
+            if (userPrograms == null)
+            {
+                return NoContent();
+            }
+            List<ChartDTO> result = new List<ChartDTO>();
+            List<string> strings = new List<string>();
+            foreach (var item in userPrograms)
+            {
+                var program = await _context.Programs.FirstOrDefaultAsync(s => s.ProgramId == item.ProgramId);
+                if (program != null)
+                {
+                    if (strings.Contains(program.ProgramId))
+                    {
+                        result[strings.IndexOf(program.ProgramId)].Data += (int)item.Quantity; 
+                    }
+                    else
+                    {
+                        ChartDTO chartDTO = new ChartDTO
+                        {
+                            Data = (int)item.Quantity,
+                            Label = program.ProgramName
+                        };
+                        strings.Add(program.ProgramId);
+                        result.Add(chartDTO);
+                    }
+                }
+            }
+            return result;
+        }
+
         [HttpGet("user-like/{id}")]
         public async Task<ActionResult<IEnumerable<ProgramDTO>>> GetUserLike(string id)
         {

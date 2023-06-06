@@ -267,24 +267,22 @@ namespace TicketManagementSystem_BE.Controllers
             {
                 return BadRequest(new { meassage = "Invalid Request!!!" });
             }
-            var principal = _principal.GetPrincipal(userProgramDTO.AccessToken, _configuration["JWT:SecretKey"]);
-            var userMail = principal.FindFirst(ClaimTypes.Email)?.Value;
-            var user = await _context.Users.FirstOrDefaultAsync(s => s.Mail.Trim() == userMail);
+            var user = await _context.Users.FirstOrDefaultAsync(s => s.UserId.Trim() == userProgramDTO.UserId.Trim());
             if (user == null)
             {
                 return NotFound(new { meassage = "User Not Found!!!" });
             }
-            var program = await _context.Programs.FirstOrDefaultAsync(s => s.ProgramId.Trim() == s.ProgramId.Trim());
+            var program = await _context.Programs.FirstOrDefaultAsync(s => s.ProgramId.Trim() == userProgramDTO.ProgramId.Trim());
             if (program == null)
             {
-                return NotFound(new { meassage = "User Not Found!!!" });
+                return NotFound(new { meassage = "Program Not Found!!!" });
             }
             var userPrograms = await _context.UserPrograms.Where(s => s.ProgramId == 
                 program.ProgramId && s.Quantity != null).Select(s => s.Quantity).ToListAsync();
             int totalSell = 0;
             foreach (var item in userPrograms)
             {
-                totalSell = totalSell + int.Parse(item.ToString());
+                totalSell += int.Parse(item.ToString());
             }
             if (program.TotalTicket <= totalSell || program.TotalTicket <= userProgramDTO.Quantity)
             {
@@ -388,7 +386,6 @@ namespace TicketManagementSystem_BE.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
-
 
         [HttpPost("create")]
         public async Task<ActionResult> Create(UserDTO userDTO)
